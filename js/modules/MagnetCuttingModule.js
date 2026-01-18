@@ -385,27 +385,39 @@ export class MagnetCuttingModule {
         ctx.fillStyle = '#e8f4ff';
         ctx.font = 'bold 22px Inter, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(this.isCut ? '✂️ Cut into 4 Pieces!' : '🧲 Original Magnet', 250, 45);
+
+        let title, line1, line2, line3;
+        if (this.cutCount === 0) {
+            title = '🧲 Original Magnet';
+            line1 = 'Swipe across the magnet to cut it';
+            line2 = 'Original: [North | South]';
+            line3 = 'What happens to the poles when you cut?';
+        } else if (this.cutCount === 1) {
+            title = '✂️ Cut into 2 Halves!';
+            line1 = 'Each half is now a complete dipole!';
+            line2 = '[N|S]  [N|S]';
+            line3 = 'Cut again to make 4 pieces!';
+        } else {
+            title = '✂️ Cut into 4 Pieces!';
+            line1 = 'Each of the 4 pieces is a complete dipole!';
+            line2 = '[N|S]  [N|S]  [N|S]  [N|S]';
+            line3 = 'You cannot create a magnetic monopole!';
+        }
+
+        ctx.fillText(title, 250, 45);
 
         // Status text
         ctx.font = '16px Inter, sans-serif';
         ctx.fillStyle = '#a0c8e8';
+        ctx.fillText(line1, 250, 70);
 
-        if (this.isCut) {
-            ctx.fillText('Each of the 4 pieces is a complete dipole!', 250, 70);
-            ctx.fillStyle = '#00ff88';
-            ctx.font = '13px Inter, sans-serif';
-            ctx.fillText('[N|s]  [n|s]  [n|s]  [n|S]', 250, 95);
-            ctx.fillStyle = '#ff8888';
-            ctx.font = 'italic 14px Inter, sans-serif';
-            ctx.fillText('You cannot create a magnetic monopole!', 250, 120);
-        } else {
-            ctx.fillText('Swipe across the magnet to cut it', 250, 75);
-            ctx.fillStyle = '#ffcc00';
-            ctx.fillText('Original: [North | South]', 250, 100);
-            ctx.font = 'italic 14px Inter, sans-serif';
-            ctx.fillText('What happens to the poles when you cut?', 250, 125);
-        }
+        ctx.fillStyle = this.cutCount === 0 ? '#ffcc00' : '#00ff88';
+        ctx.font = '13px Inter, sans-serif';
+        ctx.fillText(line2, 250, 95);
+
+        ctx.fillStyle = this.cutCount >= 2 ? '#ff8888' : '#a0c8e8';
+        ctx.font = 'italic 14px Inter, sans-serif';
+        ctx.fillText(line3, 250, 120);
 
         this.infoTexture.needsUpdate = true;
         this.updateTooltip();
@@ -591,14 +603,25 @@ export class MagnetCuttingModule {
     }
 
     performCut() {
-        if (this.cutCount >= 2) return; // Max 4 pieces (2 cuts)
+        if (this.cutCount >= 3) return; // Max 3 cuts total
 
         this.cutCount++;
         this.isCut = true;
 
         if (this.cutCount === 1) {
-            // First cut: Hide original magnet, create 4 pieces
+            // First cut: Hide original magnet, create 2 halves
             this.originalMagnet.visible = false;
+            this.createCutHalves();
+        } else if (this.cutCount === 2 || this.cutCount === 3) {
+            // Second/Third cut: Create 4 pieces from the 2 halves
+            if (this.leftHalf) {
+                this.app.sceneManager.scene.remove(this.leftHalf);
+                this.leftHalf = null;
+            }
+            if (this.rightHalf) {
+                this.app.sceneManager.scene.remove(this.rightHalf);
+                this.rightHalf = null;
+            }
             this.createFourPieces();
         }
 
@@ -611,8 +634,12 @@ export class MagnetCuttingModule {
         // Update button state
         const cutBtn = document.getElementById('cut-magnet-btn');
         if (cutBtn) {
-            cutBtn.disabled = true;
-            cutBtn.textContent = '✅ Cut into 4 Pieces!';
+            if (this.cutCount === 1) {
+                cutBtn.textContent = '✂️ Cut Again (2→4)';
+            } else {
+                cutBtn.disabled = true;
+                cutBtn.textContent = '✅ Cut into 4 Pieces!';
+            }
         }
 
         // Update HUD
@@ -662,7 +689,7 @@ export class MagnetCuttingModule {
         leftLabelN.scale.set(0.3, 0.3, 0.3);
         leftGroup.add(leftLabelN);
 
-        const leftLabelS = this.createLabelSprite('s', '#aaddff'); // Lowercase for new pole
+        const leftLabelS = this.createLabelSprite('S', '#aaddff'); // New pole (lighter)
         leftLabelS.position.set(magnetWidth / 8, 0, magnetDepth / 2 + 0.1);
         leftLabelS.scale.set(0.3, 0.3, 0.3);
         leftGroup.add(leftLabelS);
@@ -701,7 +728,7 @@ export class MagnetCuttingModule {
         rightGroup.add(rightSouth);
 
         // Labels for right half
-        const rightLabelN = this.createLabelSprite('n', '#ffaaaa'); // Lowercase for new pole
+        const rightLabelN = this.createLabelSprite('N', '#ffaaaa'); // New pole (lighter)
         rightLabelN.position.set(-magnetWidth / 8, 0, magnetDepth / 2 + 0.1);
         rightLabelN.scale.set(0.3, 0.3, 0.3);
         rightGroup.add(rightLabelN);
@@ -745,10 +772,10 @@ export class MagnetCuttingModule {
         // Piece 4: Far right [n|S] - original South end
 
         const pieceConfigs = [
-            { leftColor: colors.strongN, rightColor: colors.weakS, leftLabel: 'N', rightLabel: 's', posX: -1.5 },
-            { leftColor: colors.weakN, rightColor: colors.weakS, leftLabel: 'n', rightLabel: 's', posX: -0.5 },
-            { leftColor: colors.weakN, rightColor: colors.weakS, leftLabel: 'n', rightLabel: 's', posX: 0.5 },
-            { leftColor: colors.weakN, rightColor: colors.strongS, leftLabel: 'n', rightLabel: 'S', posX: 1.5 }
+            { leftColor: colors.strongN, rightColor: colors.weakS, leftLabel: 'N', rightLabel: 'S', posX: -1.5 },
+            { leftColor: colors.weakN, rightColor: colors.weakS, leftLabel: 'N', rightLabel: 'S', posX: -0.5 },
+            { leftColor: colors.weakN, rightColor: colors.weakS, leftLabel: 'N', rightLabel: 'S', posX: 0.5 },
+            { leftColor: colors.weakN, rightColor: colors.strongS, leftLabel: 'N', rightLabel: 'S', posX: 1.5 }
         ];
 
         this.magnetPieces = [];

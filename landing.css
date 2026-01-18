@@ -240,6 +240,59 @@ html {
     transform: rotate(30deg);
 }
 
+/* AR Button Styles */
+.ar-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(176, 38, 255, 0.2), rgba(0, 242, 255, 0.2));
+    border: 1px solid rgba(176, 38, 255, 0.4);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+
+.ar-button:hover {
+    background: linear-gradient(135deg, rgba(176, 38, 255, 0.4), rgba(0, 242, 255, 0.4));
+    border-color: rgba(176, 38, 255, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
+}
+
+.ar-button .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: #B026FF;
+}
+
+.ar-button span:last-child {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+html.light .ar-button {
+    background: linear-gradient(135deg, rgba(233, 30, 140, 0.15), rgba(0, 119, 182, 0.15));
+    border-color: rgba(233, 30, 140, 0.3);
+}
+
+html.light .ar-button:hover {
+    background: linear-gradient(135deg, rgba(233, 30, 140, 0.25), rgba(0, 119, 182, 0.25));
+    border-color: rgba(233, 30, 140, 0.5);
+}
+
+html.light .ar-button .material-symbols-outlined {
+    color: #E91E8C;
+}
+
+html.light .ar-button span:last-child {
+    color: #1a0b2e;
+}
+
 /* Light mode specific adjustments */
 html.light .navbar-logo {
     background: linear-gradient(135deg, #E91E8C 0%, #0077B6 100%);
@@ -331,12 +384,35 @@ html.light .search-btn {
    Light Mode - Section Background Fixes
    ======================================== */
 
-/* Reduce background image opacity for light mode */
+/* Reduce background image opacity for light mode - slightly increased visibility */
 html.light .featured-section::before,
 html.light .widgets-section::before,
 html.light .em-intro-section::before,
 html.light .core-modules-section::before {
-    opacity: 0.15;
+    opacity: 0.25;
+}
+
+html.light .widget-action-btn {
+    background: rgba(26, 11, 46, 0.05);
+    border-color: rgba(26, 11, 46, 0.15);
+}
+
+html.light .widget-action-btn span {
+    color: #0077B6;
+}
+
+html.light .widget-action-btn:hover {
+    background: rgba(0, 119, 182, 0.1);
+    border-color: rgba(0, 119, 182, 0.3);
+}
+
+html.light .widget-action-btn.purple span {
+    color: #E91E8C;
+}
+
+html.light .widget-action-btn.purple:hover {
+    background: rgba(233, 30, 140, 0.1);
+    border-color: rgba(233, 30, 140, 0.3);
 }
 
 /* ========================================
@@ -552,6 +628,10 @@ html.light .applications-container .small-card-title {
 }
 
 html.light .applications-container .small-card-description {
+    color: rgba(26, 11, 46, 0.6);
+}
+
+html.light .applications-container .page-title .light {
     color: rgba(26, 11, 46, 0.6);
 }
 
