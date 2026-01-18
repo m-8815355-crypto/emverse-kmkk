@@ -327,6 +327,54 @@ html.light .search-btn {
     background: linear-gradient(135deg, #E91E8C, #0077B6);
 }
 
+/* ========================================
+   Light Mode - Section Background Fixes
+   ======================================== */
+
+/* Reduce background image opacity for light mode */
+html.light .featured-section::before,
+html.light .widgets-section::before,
+html.light .em-intro-section::before,
+html.light .core-modules-section::before {
+    opacity: 0.15;
+}
+
+/* ========================================
+   Light Mode - Portal Header Fixes
+   ======================================== */
+
+html.light .portal-header {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html.light .portal-header h1 {
+    color: #1a0b2e;
+    text-shadow: none;
+}
+
+html.light .portal-header .subtitle {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+html.light .portal-header .material-symbols-outlined {
+    color: #1a0b2e;
+}
+
+html.light .portal-header .header-btn {
+    background: rgba(26, 11, 46, 0.08);
+    border-color: rgba(26, 11, 46, 0.15);
+    color: #1a0b2e;
+}
+
+html.light .portal-header .header-btn:hover {
+    background: rgba(26, 11, 46, 0.12);
+    border-color: rgba(26, 11, 46, 0.25);
+}
+
 body {
     font-family: var(--font-display);
     background: var(--bg-gradient);
