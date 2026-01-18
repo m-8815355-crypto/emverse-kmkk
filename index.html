@@ -16,7 +16,18 @@
     <link rel="stylesheet" href="landing.css">
 </head>
 
-<body>
+<body id="top">
+    <!-- Fixed Top Navigation Bar -->
+    <nav class="top-navbar">
+        <a href="#top" class="navbar-logo">EM-Verse</a>
+        <div class="navbar-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#history" class="nav-link">History</a>
+            <a href="#syllabus" class="nav-link">Learn</a>
+            <a href="#applications" class="nav-link">Explore</a>
+        </div>
+    </nav>
+
     <div id="app" class="portal-container">
         <!-- Header -->
         <header class="portal-header">
@@ -39,7 +50,7 @@
         <!-- Main Content -->
         <main class="portal-main">
             <!-- Featured Card -->
-            <section class="featured-section">
+            <section id="home" class="featured-section">
                 <div class="featured-card glass-card">
                     <div class="featured-gradient-overlay"></div>
                     <div class="featured-grid">
@@ -132,6 +143,8 @@
             </section>
 
             <!-- What is Electromagnetism Section -->
+            <!-- History section anchor for navbar -->
+            <div id="history" class="section-anchor"></div>
             <section class="em-intro-section">
                 <div class="section-header">
                     <div class="section-title">
@@ -202,6 +215,10 @@
             </section>
 
             <!-- Core Modules Section -->
+            <!-- Syllabus/Learn section anchor for navbar -->
+            <div id="syllabus" class="section-anchor"></div>
+            <!-- Applications/Explore section anchor for navbar -->
+            <div id="applications" class="section-anchor"></div>
             <section class="core-modules-section">
                 <div class="section-header">
                     <div class="section-title">

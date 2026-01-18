@@ -59,7 +59,113 @@
 html {
     font-size: 16px;
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    /* Offset for fixed navbar height */
 }
+
+/* ========================================
+   Fixed Top Navigation Bar
+   ======================================== */
+
+.top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(20, 10, 40, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    text-decoration: none;
+    background: linear-gradient(135deg, #00D4FF 0%, #B026FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.4));
+    transition: all var(--transition-fast);
+}
+
+.navbar-logo:hover {
+    filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.6));
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: all var(--transition-fast);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan-glow), var(--purple-glow));
+    transition: width var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Section anchor styling */
+.section-anchor {
+    position: relative;
+    top: -80px;
+    /* Offset to account for fixed navbar */
+    visibility: hidden;
+    height: 0;
+}
+
+/* Mobile responsive navbar */
+@media (max-width: 768px) {
+    .top-navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-logo {
+        font-size: 1.25rem;
+    }
+
+    .navbar-links {
+        gap: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.75rem;
+    }
+}
+
 
 body {
     font-family: var(--font-display);
@@ -278,7 +384,8 @@ body {
     flex-direction: column;
     gap: 2rem;
     padding-bottom: 10rem;
-    padding-top: 0.5rem;
+    padding-top: 80px;
+    /* Account for fixed navbar height */
 }
 
 /* ========================================
