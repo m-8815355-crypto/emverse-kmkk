@@ -375,6 +375,317 @@ html.light .portal-header .header-btn:hover {
     border-color: rgba(26, 11, 46, 0.25);
 }
 
+/* ========================================
+   Light Mode - History Page Fixes
+   ======================================== */
+
+html.light .history-container {
+    background: var(--bg-gradient);
+}
+
+/* Keep "History & Legacy" headline white with gradient accent */
+html.light .history-container .page-title {
+    color: #1a0b2e;
+}
+
+html.light .history-container .sticky-header {
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Hero section text */
+html.light .history-container .hero-title {
+    color: #1a0b2e;
+}
+
+html.light .history-container .hero-description {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Pioneer cards - dark text for contrast */
+html.light .history-container .pioneer-content {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .history-container .pioneer-name {
+    color: #1a0b2e;
+}
+
+html.light .history-container .pioneer-description {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+html.light .history-container .detail-title {
+    color: #1a0b2e;
+}
+
+html.light .history-container .detail-text {
+    color: rgba(26, 11, 46, 0.6);
+}
+
+/* Timeline section */
+html.light .history-container .timeline-section-title {
+    color: rgba(26, 11, 46, 0.5);
+}
+
+html.light .history-container .timeline-event {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .history-container .timeline-event-year {
+    color: rgba(26, 11, 46, 0.5);
+}
+
+html.light .history-container .timeline-event-text {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Legacy section */
+html.light .history-container .legacy-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .history-container .legacy-title {
+    color: #1a0b2e;
+}
+
+html.light .history-container .legacy-description {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+html.light .history-container .legacy-item {
+    background: rgba(26, 11, 46, 0.05);
+    border-color: rgba(26, 11, 46, 0.1);
+}
+
+html.light .history-container .legacy-item-title {
+    color: #1a0b2e;
+}
+
+html.light .history-container .legacy-item-subtitle {
+    color: rgba(26, 11, 46, 0.5);
+}
+
+/* Section label */
+html.light .history-container .section-label-text {
+    color: #0077B6;
+}
+
+/* ========================================
+   Light Mode - Applications Page Fixes
+   ======================================== */
+
+html.light .applications-container {
+    background: var(--bg-gradient);
+}
+
+html.light .applications-container .app-nav {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+html.light .applications-container .app-logo-text {
+    color: #1a0b2e;
+}
+
+html.light .applications-container .app-logo-icon {
+    background: rgba(233, 30, 140, 0.15);
+    border-color: rgba(233, 30, 140, 0.3);
+}
+
+html.light .applications-container .app-logo-icon .material-symbols-outlined {
+    color: #E91E8C;
+}
+
+html.light .applications-container .menu-btn {
+    background: rgba(26, 11, 46, 0.08);
+    border-color: rgba(26, 11, 46, 0.15);
+}
+
+html.light .applications-container .menu-btn .material-symbols-outlined {
+    color: #1a0b2e;
+}
+
+/* Page header */
+html.light .applications-container .page-title {
+    color: #1a0b2e;
+}
+
+html.light .applications-container .page-description {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Stat cards */
+html.light .applications-container .stat-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .applications-container .stat-label {
+    color: rgba(26, 11, 46, 0.6);
+}
+
+/* App cards */
+html.light .applications-container .app-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .applications-container .app-card-title {
+    color: #1a0b2e;
+}
+
+html.light .applications-container .app-card-description {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Small cards */
+html.light .applications-container .small-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .applications-container .small-card-title {
+    color: #1a0b2e;
+}
+
+html.light .applications-container .small-card-description {
+    color: rgba(26, 11, 46, 0.6);
+}
+
+/* ========================================
+   Light Mode - Syllabus Page Fixes
+   ======================================== */
+
+html.light .syllabus-container {
+    background: var(--bg-gradient);
+}
+
+html.light .syllabus-container .sticky-header {
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light .syllabus-container .back-button {
+    color: #0077B6;
+}
+
+html.light .syllabus-container .back-button:hover {
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .page-title {
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .header-actions .material-symbols-outlined {
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Hero section */
+html.light .syllabus-container .hero-title {
+    color: #1a0b2e;
+}
+
+/* Tab controls */
+html.light .syllabus-container .tab-controls {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .syllabus-container .tab-btn {
+    color: rgba(26, 11, 46, 0.5);
+}
+
+html.light .syllabus-container .tab-btn:hover {
+    color: rgba(26, 11, 46, 0.8);
+}
+
+html.light .syllabus-container .tab-btn.active {
+    background: #0077B6;
+    color: white;
+}
+
+/* Media container */
+html.light .syllabus-container .media-container {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Mindmap */
+html.light .syllabus-container .mindmap-container {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+html.light .syllabus-container .mindmap-control-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .node-box {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .syllabus-container .node-label {
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .node-connector,
+html.light .syllabus-container .child-connector {
+    background: rgba(26, 11, 46, 0.2);
+}
+
+html.light .syllabus-container .node-children::before {
+    background: rgba(26, 11, 46, 0.2);
+}
+
+/* Concept cards */
+html.light .syllabus-container .concept-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .syllabus-container .concept-title {
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .concept-tag {
+    background: rgba(26, 11, 46, 0.08);
+    color: rgba(26, 11, 46, 0.7);
+}
+
+/* Analytics section */
+html.light .syllabus-container .analytics-title {
+    color: rgba(26, 11, 46, 0.5);
+}
+
+html.light .syllabus-container .chart-container {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .syllabus-container .chart-label {
+    color: rgba(26, 11, 46, 0.4);
+}
+
+/* Failure section */
+html.light .syllabus-container .failure-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .syllabus-container .failure-name {
+    color: #1a0b2e;
+}
+
+html.light .syllabus-container .failure-description {
+    color: rgba(26, 11, 46, 0.6);
+}
+
 body {
     font-family: var(--font-display);
     background: var(--bg-gradient);
