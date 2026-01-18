@@ -43,6 +43,7 @@
         #status {
             margin-top: 20px;
             color: #94a3b8;
+            white-space: pre-wrap;
         }
 
         .info-box {
@@ -80,9 +81,191 @@
     <script type="module">
         import * as THREE from 'three';
         import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
-        // Import the user's Bar Magnet code
-        import { createBarMagnet } from './assets/models/src/BarMagnet.js';
+        // --- INLINED CODE TO AVOID IMPORT ERRORS ---
+
+        // 1. Magnetic Field Logic
+        const DIPOLE_STRENGTH = 0.0005;
+        const POLE_OFFSET = 0.04;
+        const FIELD_LINE_STEP = 0.003;
+        const MAX_STEPS = 180;
+
+        function createMagneticField() {
+            const fieldGroup = new THREE.Group();
+            fieldGroup.userData.fieldLines = [];
+            fieldGroup.userData.particles = [];
+            const fieldLinesPerLayer = 6;
+            const layers = 2;
+            const lineMat = new THREE.LineBasicMaterial({
+                color: 0xff8844,
+                transparent: true,
+                opacity: 0.3
+            });
+
+            for (let layer = 0; layer < layers; layer++) {
+                const radius = 0.006 + layer * 0.005;
+                for (let i = 0; i < fieldLinesPerLayer; i++) {
+                    const angle = (i / fieldLinesPerLayer) * Math.PI * 2;
+                    const startY = Math.cos(angle) * radius;
+                    const startZ = Math.sin(angle) * radius;
+                    const startPoint = new THREE.Vector3(-POLE_OFFSET + 0.005, startY, startZ);
+                    const linePoints = traceLocalFieldLine(startPoint);
+
+                    if (linePoints.length > 10) {
+                        const geometry = new THREE.BufferGeometry().setFromPoints(linePoints);
+                        const line = new THREE.Line(geometry, lineMat.clone());
+                        fieldGroup.add(line);
+                        fieldGroup.userData.fieldLines.push(line);
+                        addFieldParticles(fieldGroup, linePoints, i + layer * fieldLinesPerLayer);
+                    }
+                }
+            }
+            return fieldGroup;
+        }
+
+        function traceLocalFieldLine(start) {
+            const points = [start.clone()];
+            let current = start.clone();
+            const moment = new THREE.Vector3(1, 0, 0).multiplyScalar(DIPOLE_STRENGTH);
+            const dipolePos = new THREE.Vector3(0, 0, 0);
+
+            for (let step = 0; step < MAX_STEPS; step++) {
+                const field = calculateLocalDipoleField(current, dipolePos, moment);
+                const fieldMag = field.length();
+                if (fieldMag < 0.000001) break;
+
+                const direction = field.normalize();
+                current.add(direction.multiplyScalar(FIELD_LINE_STEP));
+                points.push(current.clone());
+
+                if (current.x > POLE_OFFSET - 0.005 && Math.abs(current.y) < 0.01 && Math.abs(current.z) < 0.01) break;
+                if (current.length() > 0.15) break;
+            }
+            return points;
+        }
+
+        function calculateLocalDipoleField(point, dipolePos, moment) {
+            const r = new THREE.Vector3().subVectors(point, dipolePos);
+            const rMag = r.length();
+            if (rMag < 0.01) return moment.clone().normalize().multiplyScalar(DIPOLE_STRENGTH * 5);
+
+            const rHat = r.clone().normalize();
+            const r3 = rMag * rMag * rMag;
+            const mDotRhat = moment.dot(rHat);
+            return rHat.clone().multiplyScalar(3 * mDotRhat).sub(moment.clone()).divideScalar(r3);
+        }
+
+        function addFieldParticles(fieldGroup, points, lineIndex) {
+            const particlesPerLine = 3;
+            const particleMat = new THREE.MeshBasicMaterial({ color: 0xff8844, transparent: true, opacity: 0.9 });
+            const arrowGeo = new THREE.ConeGeometry(0.002, 0.006, 4);
+            arrowGeo.rotateX(Math.PI / 2);
+
+            for (let i = 0; i < particlesPerLine; i++) {
+                const arrow = new THREE.Mesh(arrowGeo, particleMat.clone());
+                arrow.userData = { linePoints: points, progress: i / particlesPerLine, speed: 0.15, lineIndex: lineIndex };
+                fieldGroup.add(arrow);
+                fieldGroup.userData.particles.push(arrow);
+                updateParticlePosition(arrow);
+            }
+        }
+
+        function updateParticlePosition(particle) {
+            const points = particle.userData.linePoints;
+            const progress = particle.userData.progress;
+            const totalSegments = points.length - 1;
+            const floatIndex = progress * totalSegments;
+            const index = Math.floor(floatIndex);
+            const t = floatIndex - index;
+            const i0 = Math.min(index, totalSegments);
+            const i1 = Math.min(index + 1, totalSegments);
+            particle.position.lerpVectors(points[i0], points[i1], t);
+
+            if (i1 < points.length) {
+                const direction = new THREE.Vector3().subVectors(points[i1], points[i0]).normalize();
+                if (direction.length() > 0.0001) {
+                    particle.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), direction);
+                }
+            }
+        }
+
+
+        // 2. Bar Magnet Creation
+        function createBarMagnet() {
+            const magnetGroup = new THREE.Group();
+            const width = 0.08;
+            const height = 0.012;
+            const depth = 0.025;
+            const radius = 0.003;
+            const segments = 4;
+
+            const redMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, metalness: 0.1, roughness: 0.2 });
+            const blueMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, metalness: 0.1, roughness: 0.2 });
+
+            // Note: GLTFExporter supports Basic and Standard/Physical materials best. Avoid special shader materials if possible.
+            // Using MeshStandardMaterial instead of Physical for safer export compatibility, though Physical usually works.
+
+            const poleWidth = width / 2;
+
+            const northGeo = new RoundedBoxGeometry(poleWidth, height, depth, segments, radius);
+            const northMesh = new THREE.Mesh(northGeo, redMat);
+            northMesh.position.x = -poleWidth / 2;
+            northMesh.name = 'northPole';
+
+            const southGeo = new RoundedBoxGeometry(poleWidth, height, depth, segments, radius);
+            const southMesh = new THREE.Mesh(southGeo, blueMat);
+            southMesh.position.x = poleWidth / 2;
+            southMesh.name = 'southPole';
+
+            const nLabel = createTextLabel('N');
+            nLabel.position.set(-poleWidth / 2, height / 2 + 0.0015, 0);
+            nLabel.rotation.x = -Math.PI / 2;
+            nLabel.rotation.z = Math.PI / 2;
+
+            const sLabel = createTextLabel('S');
+            sLabel.position.set(poleWidth / 2, height / 2 + 0.0015, 0);
+            sLabel.rotation.x = -Math.PI / 2;
+            sLabel.rotation.z = Math.PI / 2;
+
+            magnetGroup.add(northMesh);
+            magnetGroup.add(southMesh);
+            magnetGroup.add(nLabel);
+            magnetGroup.add(sLabel);
+
+            // Add the field
+            const field = createMagneticField();
+            magnetGroup.add(field);
+
+            return magnetGroup;
+        }
+
+        function createTextLabel(text) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const size = 64;
+            canvas.width = size;
+            canvas.height = size;
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, size / 2, size / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            // Use standard material for compatibility
+            const material = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+
+            const planeSize = 0.018;
+            const geometry = new THREE.PlaneGeometry(planeSize, planeSize);
+            return new THREE.Mesh(geometry, material);
+        }
+
+        // --- EXPORT LOGIC ---
 
         const btn = document.getElementById('export-btn');
         const status = document.getElementById('status');
@@ -92,16 +275,12 @@
             status.textContent = 'Generating 3D Scene...';
 
             try {
-                // 1. Create the scene
                 const scene = new THREE.Scene();
-
-                // 2. Create the magnet using user's existing logic
                 const magnet = createBarMagnet();
                 scene.add(magnet);
 
                 status.textContent = 'Parsing to GLB...';
 
-                // 3. Export to GLB
                 const exporter = new GLTFExporter();
                 exporter.parse(
                     scene,
