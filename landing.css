@@ -166,6 +166,12 @@ html {
     }
 }
 
+/* Scroll margin for anchor targets on cards */
+.module-feature-card[id] {
+    scroll-margin-top: 100px;
+    /* Offset for fixed navbar + some padding */
+}
+
 
 body {
     font-family: var(--font-display);
@@ -286,7 +292,8 @@ body {
     justify-content: space-between;
     padding: 1.5rem 0;
     position: sticky;
-    top: 0;
+    top: 60px;
+    /* Position below fixed navbar */
     z-index: 50;
     background: linear-gradient(to bottom, rgba(59, 28, 90, 0.8), transparent);
     backdrop-filter: blur(8px);
