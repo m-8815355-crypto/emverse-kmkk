@@ -24,7 +24,9 @@
                 <span class="material-symbols-outlined">arrow_back_ios_new</span>
             </button>
             <h2 class="page-title">Satellite Communication</h2>
-            <button class="share-button"><span class="material-symbols-outlined">share</span></button>
+            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+            </button>
         </div>
 
         <div class="hero-section">
@@ -133,6 +135,7 @@
         </nav>
     </div>
     <script>document.querySelectorAll('.material-symbols-outlined.filled').forEach(i => i.style.fontVariationSettings = "'FILL' 1");</script>
+    <script src="js/theme-toggle.js"></script>
 </body>
 
 </html>

@@ -250,9 +250,9 @@
                 <span class="material-symbols-outlined">arrow_back_ios_new</span>
             </button>
             <h2 class="page-title">Modern Tech: EVs</h2>
-            <div class="info-button">
-                <span class="material-symbols-outlined">info</span>
-            </div>
+            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+            </button>
         </div>
 
         <!-- Hero Section -->
@@ -384,6 +384,7 @@
             icon.style.fontVariationSettings = "'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24";
         });
     </script>
+    <script src="js/theme-toggle.js"></script>
 </body>
 
 </html>

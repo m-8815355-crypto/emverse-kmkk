@@ -2,7 +2,7 @@
    Electromag Learning Portal - Landing Page Styles
    ======================================== */
 
-/* CSS Variables */
+/* CSS Variables - Dark Mode (Default) */
 :root {
     /* Deep Moody Theme */
     --primary-dark: #130F26;
@@ -45,6 +45,40 @@
     --transition-base: 0.5s ease;
     --transition-slow: 0.7s ease;
     --transition-ultra: 1s ease;
+
+    /* Navbar background */
+    --navbar-bg: rgba(20, 10, 40, 0.7);
+}
+
+/* Light Mode Theme */
+html.light {
+    /* Light Theme Colors */
+    --primary-dark: #ffffff;
+    --deep-purple: #f8f0ff;
+    --cyan-glow: #0077B6;
+    --purple-glow: #E91E8C;
+
+    /* Background Gradient - Red/Pink/Blue */
+    --bg-gradient: linear-gradient(135deg, #FFE5EC 0%, #FFD6E0 25%, #E8D5FF 50%, #D5E5FF 75%, #E0F4FF 100%);
+
+    /* Glass Effects for Light Mode */
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-bg-hover: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-blur: blur(50px);
+
+    /* Text Colors */
+    --text-primary: #1a1a2e;
+    --text-secondary: rgba(26, 26, 46, 0.7);
+    --text-muted: rgba(26, 26, 46, 0.5);
+    --text-dim: rgba(26, 26, 46, 0.4);
+
+    /* Shadows */
+    --card-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.15);
+    --glow-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+
+    /* Navbar background */
+    --navbar-bg: rgba(255, 255, 255, 0.85);
 }
 
 /* Reset & Base */
@@ -77,10 +111,11 @@ html {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(20, 10, 40, 0.7);
+    background: var(--navbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--glass-border);
+    transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
 .navbar-logo {
@@ -172,12 +207,132 @@ html {
     /* Offset for fixed navbar + some padding */
 }
 
+/* ========================================
+   Theme Toggle Button
+   ======================================== */
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-left: 1rem;
+}
+
+.theme-toggle:hover {
+    background: var(--glass-bg-hover);
+    transform: scale(1.05);
+}
+
+.theme-toggle .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    transition: transform var(--transition-fast);
+}
+
+.theme-toggle:hover .material-symbols-outlined {
+    transform: rotate(30deg);
+}
+
+/* Light mode specific adjustments */
+html.light .navbar-logo {
+    background: linear-gradient(135deg, #E91E8C 0%, #0077B6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(233, 30, 140, 0.3));
+}
+
+html.light .nav-link::after {
+    background: linear-gradient(90deg, #E91E8C, #0077B6);
+}
+
+html.light .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light .glass-button-primary {
+    background: rgba(233, 30, 140, 0.1);
+    border-color: rgba(233, 30, 140, 0.3);
+    color: #E91E8C;
+}
+
+html.light .glass-button-primary:hover {
+    background: rgba(233, 30, 140, 0.2);
+    border-color: #E91E8C;
+}
+
+html.light .gradient-text {
+    background: linear-gradient(135deg, #E91E8C 0%, #0077B6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html.light .accent {
+    color: #E91E8C;
+}
+
+html.light .featured-badge {
+    background: rgba(233, 30, 140, 0.15);
+    border-color: rgba(233, 30, 140, 0.3);
+    color: #E91E8C;
+}
+
+html.light .widget-icon.cyan {
+    background: linear-gradient(135deg, rgba(0, 119, 182, 0.2) 0%, rgba(0, 150, 200, 0.2) 100%);
+    box-shadow: 0 0 20px rgba(0, 119, 182, 0.15);
+}
+
+html.light .widget-icon.cyan .material-symbols-outlined {
+    color: #0077B6;
+}
+
+html.light .widget-icon.purple {
+    background: linear-gradient(135deg, rgba(233, 30, 140, 0.2) 0%, rgba(200, 50, 150, 0.2) 100%);
+    box-shadow: 0 0 20px rgba(233, 30, 140, 0.15);
+}
+
+html.light .widget-icon.purple .material-symbols-outlined {
+    color: #E91E8C;
+}
+
+html.light .widget-title.cyan {
+    text-shadow: none;
+    color: #0077B6;
+}
+
+html.light .widget-title.purple {
+    text-shadow: none;
+    color: #E91E8C;
+}
+
+html.light .bottom-nav .nav-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .bottom-nav .nav-item.active {
+    color: #E91E8C;
+}
+
+html.light .search-btn {
+    background: linear-gradient(135deg, #E91E8C, #0077B6);
+}
 
 body {
     font-family: var(--font-display);
     background: var(--bg-gradient);
     background-attachment: fixed;
     color: var(--text-primary);
+    transition: background var(--transition-base), color var(--transition-fast);
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.5;

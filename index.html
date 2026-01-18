@@ -25,6 +25,9 @@
             <a href="#history" class="nav-link">History</a>
             <a href="#syllabus" class="nav-link">Learn</a>
             <a href="#applications" class="nav-link">Explore</a>
+            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+            </button>
         </div>
     </nav>
 
@@ -416,6 +419,38 @@
     </div>
 
     <script>
+        // Theme Toggle Functions
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (html.classList.contains('light')) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                themeIcon.textContent = 'dark_mode';
+                localStorage.setItem('emverse-theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.textContent = 'light_mode';
+                localStorage.setItem('emverse-theme', 'light');
+            }
+        }
+
+        // Apply saved theme on page load
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('emverse-theme') || 'dark';
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+
+            html.classList.remove('light', 'dark');
+            html.classList.add(savedTheme);
+
+            if (themeIcon) {
+                themeIcon.textContent = savedTheme === 'light' ? 'light_mode' : 'dark_mode';
+            }
+        })();
+
         // Modal Functions
         function openAITutorModal() {
             document.getElementById('ai-tutor-modal').classList.add('active');
