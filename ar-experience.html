@@ -230,12 +230,39 @@
 
     <script>
         const modelViewer = document.querySelector('model-viewer');
+        const errorMessage = document.getElementById('error-message');
+        const arButton = document.getElementById('ar-button');
 
-        // Handle loading errors (e.g., file not found)
+        // Check if AR is supported on this device/browser
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (!modelViewer.canActivateAR) {
+                    console.log("AR not supported on this device/browser.");
+                    const note = document.querySelector('.note');
+                    if (note) {
+                        note.innerHTML = "⚠️ AR is not available on this device.<br>Try opening this page on a mobile phone via <strong>HTTPS</strong>.";
+                        note.style.color = "#fbbf24";
+                    }
+                }
+            }, 1000); // Give it a moment to initialize
+        });
+
+        // Handle loading errors
         modelViewer.addEventListener('error', (e) => {
             console.error('Error loading model:', e);
-            document.getElementById('error-message').style.display = 'block';
+            errorMessage.innerHTML = `<h3>Error Loading Model</h3><p>${e.detail.type || 'Unknown error'}</p>`;
+            errorMessage.style.display = 'block';
             document.querySelector('.progress-bar').style.display = 'none';
+        });
+
+        // AR Status Logging
+        modelViewer.addEventListener('ar-status', (event) => {
+            console.log('AR Status:', event.detail.status);
+            if (event.detail.status === 'failed') {
+                errorMessage.innerHTML = "<h3>AR Session Failed</h3><p>Camera access denied or device incompatible.</p>";
+                errorMessage.style.display = 'block';
+                setTimeout(() => { errorMessage.style.display = 'none'; }, 3000);
+            }
         });
 
         // Progress bar logic
