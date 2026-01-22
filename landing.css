@@ -3079,3 +3079,38 @@ html.light .founder-image-container {
 .sticky-header .college-logo {
     height: 32px;
 }
+
+/* ========================================
+   Dock Navigation Integration
+   Hide old navigation when Dock is present
+   ======================================== */
+
+/* Dock navigation rules removed - using original navigation */
+
+/* ========================================
+   Light Mode - Module Feature Card Fixes
+   Keep white text on dark glassmorphic cards
+   ======================================== */
+
+html.light .module-feature-card {
+    /* Keep dark background for visual appeal */
+    background: rgba(20, 10, 40, 0.7);
+}
+
+html.light .module-card-title {
+    color: #ffffff !important;
+}
+
+html.light .module-card-description {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html.light .module-card-badge {
+    color: inherit;
+}
+
+/* Widget card text fixes for light mode - keep titles legible */
+html.light .widget-title.cyan,
+html.light .widget-title.purple {
+    text-shadow: none;
+}

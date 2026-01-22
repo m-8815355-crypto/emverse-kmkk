@@ -14,6 +14,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="css/dock.css">
+    <style>
+        /* Hide dock navigation, use original nav */
+        .em-dock {
+            display: none !important;
+        }
+
+        /* Show original navigation elements */
+        .top-navbar {
+            display: flex !important;
+        }
+
+        .portal-header {
+            display: flex !important;
+        }
+
+        .bottom-nav {
+            display: block !important;
+        }
+
+        /* Fix card text contrast for all themes */
+        .module-card-title {
+            color: #ffffff !important;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .module-card-description {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .module-card-badge {
+            color: #ffffff !important;
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -66,9 +100,10 @@
                     <div class="featured-gradient-overlay"></div>
                     <div class="featured-grid">
                         <div class="featured-image-container">
-                            <div class="featured-image"
-                                style="background-image: url('assets/images/em-verse-landing.jpg');">
-                            </div>
+                            <video class="featured-image" autoplay loop muted playsinline
+                                style="object-fit: cover; width: 100%; height: 100%;">
+                                <source src="assets/images/simulation-preview.mp4" type="video/mp4">
+                            </video>
                             <div class="featured-image-gradient"></div>
                             <div class="featured-badge">
                                 <span class="pulse-dot"></span>
@@ -795,18 +830,77 @@
         });
     </script>
 
-    <!-- EM-Vee Floating Button (same as simulator.html) -->
     <script type="module">
         import { GeminiTutor } from './js/GeminiTutor.js';
+        import { AuroraBackground } from './js/Aurora.js';
+        import { EMDock, DockIcons, smoothScrollTo } from './js/Dock.js';
+
+        // Initialize Aurora WebGL Background
+        const aurora = new AuroraBackground({
+            amplitude: 1.0,
+            blend: 0.5,
+            speed: 1.0
+        });
+        aurora.init().catch(err => console.warn('Aurora initialization failed:', err));
+        window.auroraBackground = aurora;
+
+        // Initialize EM-Verse Dock Navigation
+        const dock = new EMDock({
+            baseSize: 44,
+            magnification: 70,
+            distance: 150,
+            items: [
+                {
+                    label: 'Home',
+                    icon: DockIcons.home,
+                    onClick: () => smoothScrollTo('#home')
+                },
+                {
+                    label: 'History',
+                    icon: DockIcons.history,
+                    onClick: () => smoothScrollTo('#history')
+                },
+                {
+                    label: 'Learn',
+                    icon: DockIcons.book,
+                    onClick: () => smoothScrollTo('#syllabus')
+                },
+                {
+                    label: 'Explore',
+                    icon: DockIcons.rocket,
+                    onClick: () => smoothScrollTo('#applications')
+                },
+                {
+                    label: 'Simulate',
+                    icon: DockIcons.simulate,
+                    onClick: () => window.location.href = 'simulator.html'
+                },
+                {
+                    label: 'AR Lab',
+                    icon: DockIcons.ar,
+                    onClick: () => window.open('https://pasta0604.github.io/EM-AR/', '_blank')
+                },
+                {
+                    label: 'Theme',
+                    icon: DockIcons.theme,
+                    onClick: () => {
+                        const html = document.documentElement;
+                        const isLight = html.classList.contains('light');
+                        html.classList.remove('light', 'dark');
+                        html.classList.add(isLight ? 'dark' : 'light');
+                        localStorage.setItem('emverse-theme', isLight ? 'dark' : 'light');
+                    }
+                }
+            ]
+        });
+        dock.init();
+        window.emDock = dock;
 
         // Initialize EM-Vee on the landing page
         document.addEventListener('DOMContentLoaded', () => {
-            // Create a minimal app object for the tutor
             const tutorApp = {
                 currentModule: { name: 'landing' }
             };
-
-            // Initialize Gemini Tutor
             window.geminiTutor = new GeminiTutor(tutorApp);
         });
     </script>
