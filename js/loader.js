@@ -17,17 +17,27 @@
 
     /**
      * Hide the loader with a smooth fade-out
+     * Ensures particle rotation completes a full circle first
      */
     function hideLoader() {
         const loader = document.getElementById('page-loader');
         if (!loader) return;
 
         const elapsed = Date.now() - pageLoadTime;
-        const remainingTime = Math.max(0, CONFIG.minimumLoadTime - elapsed);
+
+        // Particle rotation takes 4000ms for full circle
+        // Calculate time to next complete circle
+        const rotationCycle = 4000;
+        const currentCycleProgress = elapsed % rotationCycle;
+        const timeToCompleteCircle = rotationCycle - currentCycleProgress;
+
+        // Ensure minimum display time and wait for complete circle
+        const minimumWait = Math.max(0, CONFIG.minimumLoadTime - elapsed);
+        const totalWait = Math.max(minimumWait, timeToCompleteCircle);
 
         setTimeout(() => {
             document.body.classList.add(CONFIG.loadedClass);
-        }, remainingTime);
+        }, totalWait);
     }
 
     /**
