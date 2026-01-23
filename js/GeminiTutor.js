@@ -39,7 +39,7 @@ export class GeminiTutor {
      */
     loadApiKey() {
         // Built-in API key for the application
-        const builtInKey = 'gen-lang-client-0984887015';
+        const builtInKey = 'AIzaSyCdat6KilldjiBto8btMVzs5de6C3dxbBE';
 
         // Try to get from localStorage first (user may have set custom key)
         const storedKey = localStorage.getItem('gemini_api_key');
