@@ -101,14 +101,14 @@ class AuroraBackground {
             container: options.container ?? null, // If null, creates its own container
             ...options
         };
-        
+
         this.container = null;
         this.renderer = null;
         this.program = null;
         this.mesh = null;
         this.animateId = null;
         this.isInitialized = false;
-        
+
         // Bind methods
         this.resize = this.resize.bind(this);
         this.update = this.update.bind(this);
@@ -145,11 +145,11 @@ class AuroraBackground {
     async init() {
         // Dynamically import OGL
         const { Renderer, Program, Mesh, Triangle } = await import('https://cdn.jsdelivr.net/npm/ogl@1.0.3/+esm');
-        
+
         // Create container element
         if (this.options.container) {
-            this.container = typeof this.options.container === 'string' 
-                ? document.querySelector(this.options.container) 
+            this.container = typeof this.options.container === 'string'
+                ? document.querySelector(this.options.container)
                 : this.options.container;
         } else {
             this.container = document.createElement('div');
@@ -170,17 +170,17 @@ class AuroraBackground {
         });
 
         // Initialize WebGL renderer
-        this.renderer = new Renderer({ 
-            alpha: true, 
-            premultipliedAlpha: true, 
-            antialias: true 
+        this.renderer = new Renderer({
+            alpha: true,
+            premultipliedAlpha: true,
+            antialias: true
         });
-        
+
         const gl = this.renderer.gl;
         gl.clearColor(0, 0, 0, 0);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        
+
         Object.assign(gl.canvas.style, {
             backgroundColor: 'transparent',
             width: '100%',
@@ -209,7 +209,7 @@ class AuroraBackground {
 
         // Create mesh
         this.mesh = new Mesh(gl, { geometry, program: this.program });
-        
+
         // Append canvas to container
         this.container.appendChild(gl.canvas);
 
@@ -234,12 +234,12 @@ class AuroraBackground {
      */
     resize() {
         if (!this.container || !this.renderer) return;
-        
+
         const width = this.container.offsetWidth;
         const height = this.container.offsetHeight;
-        
+
         this.renderer.setSize(width, height);
-        
+
         if (this.program) {
             this.program.uniforms.uResolution.value = [width, height];
         }
@@ -250,12 +250,12 @@ class AuroraBackground {
      */
     update(t) {
         this.animateId = requestAnimationFrame(this.update);
-        
+
         if (!this.program) return;
 
         // Update time uniform
         this.program.uniforms.uTime.value = t * 0.01 * this.options.speed * 0.1;
-        
+
         // Update other uniforms
         this.program.uniforms.uAmplitude.value = this.options.amplitude;
         this.program.uniforms.uBlend.value = this.options.blend;
@@ -269,7 +269,7 @@ class AuroraBackground {
      */
     setupThemeObserver() {
         const html = document.documentElement;
-        
+
         // Create observer to watch for class changes
         this.themeObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
@@ -291,10 +291,10 @@ class AuroraBackground {
      */
     handleThemeChange() {
         if (!this.program) return;
-        
+
         const colorStopsArray = this.getCurrentColorStops();
         this.program.uniforms.uColorStops.value = colorStopsArray;
-        
+
         const isLight = document.documentElement.classList.contains('light');
         console.log(`🎨 Aurora theme updated: ${isLight ? 'Light Mode' : 'Dark Mode'}`);
     }
@@ -344,8 +344,34 @@ class AuroraBackground {
 // Export for module usage
 export { AuroraBackground, AURORA_COLORS };
 
-// Auto-initialize if script is loaded directly
+// Auto-initialize if script is loaded directly or as a module in a browser environment
 if (typeof window !== 'undefined') {
     window.AuroraBackground = AuroraBackground;
     window.AURORA_COLORS = AURORA_COLORS;
+
+    // Auto-init logic
+    const autoInit = () => {
+        // Check if we are already initialized
+        if (window.auroraBackground) return;
+
+        // Check if we should ignore (e.g. on pages that manually init)
+        const scriptTag = document.querySelector('script[src*="Aurora.js"]');
+        if (scriptTag && scriptTag.hasAttribute('data-manual-init')) return;
+
+        // Create and init
+        const aurora = new AuroraBackground({
+            amplitude: 1.0,
+            blend: 0.5,
+            speed: 1.0
+        });
+        aurora.init().catch(err => console.warn('Aurora initialization failed:', err));
+        window.auroraBackground = aurora;
+    };
+
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', autoInit);
+    } else {
+        autoInit();
+    }
 }
