@@ -64,19 +64,21 @@ body.loaded #page-loader {
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: scale(0.5);
+    margin: -50px 0;
+    /* Compensate for visual scaling */
 }
 
 /* Bar Magnet */
-/* Bar Magnet */
 .loader-magnet {
-    width: 40px;
-    height: 80px;
-    border-radius: 4px;
+    width: 80px;
+    height: 160px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
         0 0 30px rgba(0, 242, 255, 0.2);
-    animation: magnetRotate 3s linear infinite;
+    animation: magnetPulse 2s ease-in-out infinite;
     z-index: 2;
 }
 
@@ -88,10 +90,10 @@ body.loaded #page-loader {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 900;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .magnet-south {
@@ -102,10 +104,10 @@ body.loaded #page-loader {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 900;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Particle Ring */
@@ -307,16 +309,6 @@ body.loaded #page-loader {
     }
 }
 
-@keyframes magnetRotate {
-    0% {
-        transform: rotateY(0deg);
-    }
-
-    100% {
-        transform: rotateY(360deg);
-    }
-}
-
 @keyframes rotateParticles {
     0% {
         transform: rotate(0deg);
@@ -375,13 +367,13 @@ body.loaded #page-loader {
     }
 
     .loader-magnet {
-        width: 30px;
-        height: 60px;
+        width: 60px;
+        height: 120px;
     }
 
     .magnet-north,
     .magnet-south {
-        font-size: 0.8rem;
+        font-size: 1.5rem;
     }
 
     .particle {
