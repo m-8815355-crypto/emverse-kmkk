@@ -1885,6 +1885,12 @@ body {
     color: #F472B6;
 }
 
+.module-card-badge.red {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #EF4444;
+}
+
 .module-card-title {
     font-size: 1.5rem;
     font-weight: 900;
@@ -3165,6 +3171,17 @@ html.light .widget-title.purple {
     color: #B026FF;
 }
 
+/* Red Variant */
+.card-cta-btn.red {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.card-cta-btn.red span,
+.card-cta-btn.red .material-symbols-outlined {
+    color: #EF4444;
+}
+
 /* Hover Effects (Inherited from Card Hover because these are inside the anchor) */
 .module-feature-card:hover .card-cta-btn {
     background: rgba(0, 242, 255, 0.2);
@@ -3184,6 +3201,11 @@ html.light .widget-title.purple {
 .module-feature-card:hover .card-cta-btn.magenta {
     background: rgba(176, 38, 255, 0.2);
     border-color: #B026FF;
+}
+
+.module-feature-card:hover .card-cta-btn.red {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #EF4444;
 }
 
 /* Light Mode Support */
