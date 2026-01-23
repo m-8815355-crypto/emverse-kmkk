@@ -15,6 +15,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="landing.css">
     <link rel="stylesheet" href="css/dock.css">
+    <link rel="stylesheet" href="loader.css">
     <style>
         /* Hide dock navigation, use original nav */
         .em-dock {
@@ -51,6 +52,64 @@
 </head>
 
 <body id="top">
+    <!-- Global Page Loader -->
+    <div id="page-loader">
+        <!-- Aurora Background Canvas -->
+        <canvas id="loader-aurora-canvas"></canvas>
+
+        <!-- Loader Content -->
+        <div class="loader-content">
+            <!-- Magnet with Rotating Particles -->
+            <div class="loader-magnet-container">
+                <!-- Bar Magnet -->
+                <div class="loader-magnet">
+                    <div class="magnet-north">N</div>
+                    <div class="magnet-south">S</div>
+                </div>
+
+                <!-- Particle Ring (24 particles for smooth rotation) -->
+                <div class="loader-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+            </div>
+
+            <!-- Loading Text -->
+            <div class="loader-text">
+                <h2 class="loader-title">EM-Verse</h2>
+                <p class="loader-status">Initializing Simulation...</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Fixed Top Navigation Bar -->
     <nav class="top-navbar">
         <a href="#top" class="navbar-logo">
@@ -916,6 +975,18 @@
             window.geminiTutor = new GeminiTutor(tutorApp);
         });
     </script>
+
+    <!-- Page Loader Aurora Background -->
+    <script type="module">
+        import { Aurora } from './js/Aurora.js';
+        const loaderCanvas = document.getElementById('loader-aurora-canvas');
+        if (loaderCanvas) {
+            new Aurora(loaderCanvas);
+        }
+    </script>
+
+    <!-- Page Transition Loader -->
+    <script src="js/loader.js"></script>
 </body>
 
 </html>
