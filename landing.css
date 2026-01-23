@@ -3114,3 +3114,94 @@ html.light .widget-title.cyan,
 html.light .widget-title.purple {
     text-shadow: none;
 }
+
+/* CTA Buttons for Feature Cards */
+.card-cta-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 242, 255, 0.1);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    border-radius: 0.5rem;
+    width: fit-content;
+    transition: all var(--transition-fast);
+}
+
+.card-cta-btn span:first-child {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cyan-glow);
+}
+
+.card-cta-btn .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--cyan-glow);
+    transition: transform var(--transition-fast);
+}
+
+/* Green Variant */
+.card-cta-btn.green {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.card-cta-btn.green span,
+.card-cta-btn.green .material-symbols-outlined {
+    color: #00ff88;
+}
+
+/* Magenta Variant */
+.card-cta-btn.magenta {
+    background: rgba(176, 38, 255, 0.1);
+    border-color: rgba(176, 38, 255, 0.3);
+}
+
+.card-cta-btn.magenta span,
+.card-cta-btn.magenta .material-symbols-outlined {
+    color: #B026FF;
+}
+
+/* Hover Effects (Inherited from Card Hover because these are inside the anchor) */
+.module-feature-card:hover .card-cta-btn {
+    background: rgba(0, 242, 255, 0.2);
+    border-color: var(--cyan-glow);
+    transform: translateX(5px);
+}
+
+.module-feature-card:hover .card-cta-btn .material-symbols-outlined {
+    transform: translateX(3px);
+}
+
+.module-feature-card:hover .card-cta-btn.green {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: #00ff88;
+}
+
+.module-feature-card:hover .card-cta-btn.magenta {
+    background: rgba(176, 38, 255, 0.2);
+    border-color: #B026FF;
+}
+
+/* Light Mode Support */
+html.light .card-cta-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+html.light .card-cta-btn span,
+html.light .card-cta-btn .material-symbols-outlined {
+    color: #ffffff;
+}
+
+html.light .module-feature-card:hover .card-cta-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #ffffff;
+}
+
+/* Override colors for Light Mode if needed, but since cards stay dark in light mode (per existing CSS), 
+   we can just keep the vibrant colors or slightly adjust brightness if necessary. 
+   The current color scheme should work well on the dark card background even in light mode. */
