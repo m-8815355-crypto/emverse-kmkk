@@ -14,6 +14,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="landing.css">
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <!-- MathJax Library -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
     <style>
         /* Syllabus Page Specific Styles */
         .syllabus-container {
@@ -1414,8 +1432,17 @@
 
             // Update content with slight delay for smooth transition
             setTimeout(() => {
-                document.getElementById('flashcard-question').textContent = card.question;
-                document.getElementById('flashcard-answer').textContent = card.answer;
+                // Use innerHTML to allow MathJax to process the content
+                document.getElementById('flashcard-question').innerHTML = card.question;
+                document.getElementById('flashcard-answer').innerHTML = card.answer;
+
+                // Trigger MathJax to render the new content
+                if (window.MathJax) {
+                    MathJax.typesetPromise([
+                        document.getElementById('flashcard-question'),
+                        document.getElementById('flashcard-answer')
+                    ]).catch((err) => console.error('MathJax rendering error:', err));
+                }
             }, 150);
 
             // Update progress
