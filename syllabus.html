@@ -668,6 +668,222 @@
             opacity: 0.8;
         }
 
+        /* Flashcards Section */
+        .flashcards-section {
+            padding: 1.5rem;
+        }
+
+        .flashcards-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .flashcards-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+        }
+
+        .flashcards-title .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
+        .flashcards-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flashcards-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #B026FF;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .flashcards-badge-text {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #B026FF;
+        }
+
+        .flashcard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 400px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .flashcard-front {
+            border-left: 4px solid var(--cyan-glow);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            border-left: 4px solid #B026FF;
+            background: linear-gradient(135deg, rgba(176, 38, 255, 0.1), rgba(45, 47, 94, 0.4));
+        }
+
+        .flashcard-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        .flashcard-front .flashcard-label {
+            color: var(--cyan-glow);
+        }
+
+        .flashcard-back .flashcard-label {
+            color: #B026FF;
+        }
+
+        .flashcard-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .flashcard-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .flashcard-hint .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        .flashcard-progress {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .flashcard-progress .progress-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .flashcard-progress .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .flashcard-progress .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan-glow), #B026FF);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 1.4%;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .flashcard-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard-btn:hover {
+            background: var(--cyan-glow);
+            color: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+
+        .flashcard-btn:active {
+            transform: scale(0.95);
+        }
+
+        .flashcard-btn.shuffle-btn:hover {
+            background: #B026FF;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.4);
+        }
+
+        .flashcard-btn .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
         @media (min-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -951,47 +1167,57 @@
             </div>
         </section>
 
-        <!-- Analytics Section -->
-        <section class="analytics-section">
-            <div class="analytics-header">
-                <h2 class="analytics-title">Exam Frequency</h2>
-                <div class="analytics-badge">
-                    <div class="analytics-badge-dot"></div>
-                    <span class="analytics-badge-text">High Impact</span>
+        <!-- Flashcards Section -->
+        <section class="flashcards-section">
+            <div class="flashcards-header">
+                <h2 class="flashcards-title">
+                    <span class="material-symbols-outlined">style</span>
+                    Quick Revision Flashcards
+                </h2>
+                <div class="flashcards-badge">
+                    <div class="flashcards-badge-dot"></div>
+                    <span class="flashcards-badge-text">71 Cards</span>
                 </div>
             </div>
-            <div class="chart-container">
-                <div class="chart-bars">
-                    <div class="chart-bar-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 82%;"></div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner" id="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="flashcard-label">QUESTION</div>
+                            <p class="flashcard-text" id="flashcard-question">Loading...</p>
                         </div>
-                        <span class="chart-label">2020</span>
-                    </div>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 78%;"></div>
+                        <div class="flashcard-back">
+                            <div class="flashcard-label">ANSWER</div>
+                            <p class="flashcard-text" id="flashcard-answer">Loading...</p>
                         </div>
-                        <span class="chart-label">2021</span>
                     </div>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 91%;"></div>
-                        </div>
-                        <span class="chart-label">2022</span>
+                </div>
+
+                <div class="flashcard-hint">
+                    <span class="material-symbols-outlined">touch_app</span>
+                    Tap card to flip
+                </div>
+
+                <div class="flashcard-progress">
+                    <div class="progress-text">
+                        <span id="current-card">1</span> / <span id="total-cards">71</span>
                     </div>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 85%;"></div>
-                        </div>
-                        <span class="chart-label">2023</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="flashcard-progress-bar"></div>
                     </div>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 88%;"></div>
-                        </div>
-                        <span class="chart-label">2024</span>
-                    </div>
+                </div>
+
+                <div class="flashcard-controls">
+                    <button class="flashcard-btn" onclick="prevCard()" id="prev-btn">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <button class="flashcard-btn shuffle-btn" onclick="shuffleCards()">
+                        <span class="material-symbols-outlined">shuffle</span>
+                    </button>
+                    <button class="flashcard-btn" onclick="nextCard()" id="next-btn">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -1137,6 +1363,110 @@
         document.querySelectorAll('.material-symbols-outlined.filled').forEach(icon => {
             icon.style.fontVariationSettings = "'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24";
         });
+
+        // Flashcard functionality
+        let flashcards = [];
+        let currentCardIndex = 0;
+        let originalOrder = [];
+
+        // Load flashcards from CSV
+        async function loadFlashcards() {
+            try {
+                const response = await fetch('flashcards.csv');
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim());
+
+                flashcards = lines.map((line, index) => {
+                    // Handle CSV with quoted fields
+                    const match = line.match(/^"?([^"]*)"?,\s*"?([^"]*)"?$/);
+                    if (match) {
+                        return { question: match[1].trim(), answer: match[2].trim() };
+                    }
+                    // Simple split for non-quoted
+                    const parts = line.split(',');
+                    const question = parts[0]?.trim() || '';
+                    const answer = parts.slice(1).join(',').trim().replace(/^"|"$/g, '');
+                    return { question, answer };
+                });
+
+                originalOrder = [...flashcards];
+
+                // Update total count
+                document.getElementById('total-cards').textContent = flashcards.length;
+                document.querySelector('.flashcards-badge-text').textContent = flashcards.length + ' Cards';
+
+                // Show first card
+                showCard(0);
+            } catch (error) {
+                console.error('Error loading flashcards:', error);
+                document.getElementById('flashcard-question').textContent = 'Error loading flashcards';
+            }
+        }
+
+        function showCard(index) {
+            if (flashcards.length === 0) return;
+
+            currentCardIndex = index;
+            const card = flashcards[index];
+
+            // Reset flip state
+            document.getElementById('flashcard').classList.remove('flipped');
+
+            // Update content with slight delay for smooth transition
+            setTimeout(() => {
+                document.getElementById('flashcard-question').textContent = card.question;
+                document.getElementById('flashcard-answer').textContent = card.answer;
+            }, 150);
+
+            // Update progress
+            document.getElementById('current-card').textContent = index + 1;
+            const progressPercent = ((index + 1) / flashcards.length) * 100;
+            document.getElementById('flashcard-progress-bar').style.width = progressPercent + '%';
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            if (currentCardIndex < flashcards.length - 1) {
+                showCard(currentCardIndex + 1);
+            } else {
+                // Loop back to first card
+                showCard(0);
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                showCard(currentCardIndex - 1);
+            } else {
+                // Loop to last card
+                showCard(flashcards.length - 1);
+            }
+        }
+
+        function shuffleCards() {
+            // Fisher-Yates shuffle
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            showCard(0);
+        }
+
+        // Keyboard navigation for flashcards
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                flipCard();
+            }
+        });
+
+        // Load flashcards on page load
+        document.addEventListener('DOMContentLoaded', loadFlashcards);
     </script>
     <script type="module" src="js/Aurora.js"></script>
     <script src="js/theme-toggle.js"></script>

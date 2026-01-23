@@ -1,0 +1,71 @@
+What is the definition of a magnetic field?,A region around a magnet where a magnetic force can be experienced.
+List three common sources of a magnetic field.,"The Earth, bar magnets, and current-carrying conductors."
+Magnetic field lines always point away from the _____ pole and toward the _____ pole.,North; South
+How is a uniform magnetic field represented in a field line diagram?,By parallel lines with equal spacing.
+The number of magnetic field lines per unit cross-sectional area is proportional to the _____ of the magnetic field.,Magnitude (or strength)
+Symbol for magnetic field lines entering the page perpendicularly:,Crosses ($x$)
+Symbol for magnetic field lines exiting the page perpendicularly:,Dotted circles ($\odot$)
+What is the definition of a neutral point in a magnetic field?,A point where the resultant magnetic field strength is zero.
+Formula for the magnetic field magnitude $B$ at a distance $r$ from a long straight wire:,$B = \frac{\mu_{o}I}{2\pi r}$
+What is the value and unit of the permeability of free space $\mu_{o}$?,$4\pi \times 10^{-7} \text{ Hm}^{-1}$
+Which rule is used to determine the direction of the magnetic field $B$ around a straight current-carrying wire?,Right Hand Grip Rule (or Right Hand Rule-2)
+Formula for the magnetic field $B$ at the center of a circular coil with $N$ turns and radius $r$:,$B = \frac{\mu_{o}NI}{2r}$
+Formula for the magnetic field $B$ at the center of a solenoid with $n$ turns per unit length:,$B = \mu_{o}nI$
+How is the turns per unit length $n$ calculated for a solenoid of length $L$ and total turns $N$?,$n = \frac{N}{L}$
+Formula for the magnetic field $B$ at the end of a solenoid:,$B = \frac{1}{2}\mu_{o}nI$
+The Earth's geographic North pole is located near the Earth's magnetic _____ pole.,South
+Vector equation for the magnetic force $\vec{F}_{B}$ on a moving charge $q$:,$\vec{F}_{B} = q\vec{v} \times \vec{B}$
+Formula for the magnitude of magnetic force on a charge $q$ moving at velocity $v$ at an angle $\theta$ to field $B$:,$F = qvB \sin \theta$
+Under what condition is the magnetic force on a moving charged particle zero?,When the particle moves parallel or anti-parallel to the magnetic field ($\theta = 0^{\circ}$ or $180^{\circ}$).
+"If a moving charge is negative, how is the direction of the magnetic force determined using the Right Hand Palm Rule?",The force is in the direction opposite to that indicated by the palm.
+What path does a charged particle follow when entering a uniform magnetic field perpendicularly?,A circular path.
+Formula for the radius $r$ of a charged particle's circular orbit in a uniform magnetic field:,$r = \frac{mv}{Bq}$
+Formula for the period $T$ of a charged particle in circular motion within a magnetic field:,$T = \frac{2\pi m}{Bq}$
+Vector equation for the magnetic force $\vec{F}$ on a current-carrying conductor of length $l$:,$\vec{F} = I\vec{l} \times \vec{B}$
+Under what condition is the magnetic force on a current-carrying conductor at its maximum?,When the conductor is perpendicular to the magnetic field ($\theta = 90^{\circ}$).
+Formula for the magnetic force per unit length $\frac{F}{l}$ between two parallel current-carrying conductors:,$\frac{F}{l} = \frac{\mu_{o}I_{1}I_{2}}{2\pi d}$
+Two parallel wires carrying currents in the same direction will _____ each other.,Attract
+Two parallel wires carrying currents in opposite directions will _____ each other.,Repel
+"In a velocity selector, what is the formula for the selected velocity $v$?",$v = \frac{E}{B}$
+Formula used in a Bainbridge mass spectrometer to determine the charge-to-mass ratio $\frac{q}{m}$:,$\frac{q}{m} = \frac{E}{rBB'}$
+Definition: Magnetic Flux ($\phi$),The scalar product of magnetic flux density $B$ and the surface area vector $A$: $\phi = BA \cos \theta$.
+What is the SI unit of magnetic flux?,Weber ($Wb$) or $\text{Tm}^{2}$.
+"In the magnetic flux formula $\phi = BA \cos \theta$, the angle $\theta$ is measured between the magnetic field and the _____.",Normal vector of the surface area.
+Formula for magnetic flux linkage $\Phi$ for a coil with $N$ turns:,$\Phi = N\phi$
+When is the magnetic flux through a coil zero?,When the magnetic field is parallel to the plane of the coil ($\theta = 90^{\circ}$).
+Define Electromagnetic Induction:,"The production of induced emf whenever the magnetic flux through a loop, coil, or circuit changes."
+State Faraday's Law of Induction:,The induced emf is proportional to the rate of change of magnetic flux.
+State Lenz's Law:,An induced current always flows in a direction that opposes the change in magnetic flux that causes it.
+Mathematical expression for Faraday's Law for a coil of $N$ turns:,$\epsilon = -N \frac{d\phi}{dt}$
+Formula for the motional induced emf in a straight conductor of length $l$ moving at velocity $v$:,$\epsilon = Blv \sin \theta$
+Which hand rule is used to determine the direction of induced current in a straight conductor?,Right Hand Palm Rule (or Fleming's Right Hand Rule).
+Formula for induced emf in a coil when the magnetic field $B$ changes over time:,$\epsilon = -NA \frac{dB}{dt}$
+Formula for induced emf in a coil when the surface area $A$ changes over time:,$\epsilon = -NB \frac{dA}{dt}$
+Formula for the maximum induced emf $\epsilon_{max}$ in a rotating coil:,$\epsilon_{max} = NBA\omega$
+Formula for induced emf in a coil rotating at constant angular velocity $\omega$ as a function of time:,$\epsilon = NBA\omega \sin \omega t$
+Define Self-Induction:,The process of producing an induced emf in a coil due to a change of current flowing through the same coil.
+Define Self-Inductance $L$:,The ratio of the self-induced emf to the rate of change of current in the coil: $L = -\frac{\epsilon}{dI/dt}$.
+What is the SI unit of self-inductance and mutual inductance?,Henry ($H$).
+Formula for self-inductance $L$ in terms of flux linkage $\Phi$ and current $I$:,$L = \frac{N\phi}{I}$
+Formula for the self-inductance of a circular coil $L_{coil}$:,$L_{coil} = \frac{\mu_{o}N^{2}A}{2r}$
+Formula for the self-inductance of a solenoid $L_{solenoid}$:,$L_{solenoid} = \frac{\mu_{o}N^{2}A}{l}$
+What is 'Back EMF'?,"An induced emf that opposes the change in current that created it, according to Lenz's law."
+Formula for the energy $U$ stored in the magnetic field of an inductor:,$U = \frac{1}{2}LI^{2}$
+Define Mutual Induction:,The process of producing an induced emf in one coil due to the change of current in another coil.
+Formula for Mutual Inductance $M$ between two coaxial solenoids:,$M = \frac{\mu_{o}N_{1}N_{2}A}{l}$
+Formula for induced emf in coil 2 ($\epsilon_{2}$) due to changing current in coil 1 ($I_{1}$):,$\epsilon_{2} = -M \frac{dI_{1}}{dt}$
+What component of the Earth's magnetic field is determined in Experiment 4?,"The horizontal component, $\vec{B}_{E}$."
+"According to Lenz's Law, if the current in a coil is increasing, the induced emf will be in the _____ direction of the current.",Opposite
+"According to Lenz's Law, if the current in a coil is decreasing, the induced emf will be in the _____ direction as the current.",Same
+"In a rotating coil, the induced emf is zero when the magnetic field is _____ to the plane of the coil.",Perpendicular
+"In a rotating coil, the induced emf is maximum when the magnetic field is _____ to the plane of the coil.",Parallel
+What serves as the centripetal force for a charged particle moving in a circular path in a magnetic field?,"The magnetic force, $F_{B}$."
+What are the two main functions of an inductor?,To control current and to store energy in its magnetic field.
+How does the mutual inductance change if the number of turns in either coil increases?,"It increases, as $M$ is proportional to the product $N_{1}N_{2}$."
+"If a bar magnet's North pole is moved toward a coil, the coil face near the magnet will become a _____ pole.",North (to repel the approaching magnet)
+"If a bar magnet's North pole is moved away from a coil, the coil face near the magnet will become a _____ pole.",South (to attract the receding magnet)
+"In the mass spectrometer, particles with greater mass travel in paths with _____ radii.",Larger
+What is the relationship between angular velocity $\omega$ and frequency $f$?,$\omega = 2\pi f$
+"A change of magnetic flux can be caused by changing the magnetic field, the area, or the _____ between them.",Angle (orientation)
+"If the velocity of a charged particle is parallel to the magnetic field, what is the resulting path?",A straight line (no magnetic force acts).
+Term: Magnetic Flux Linkage,Definition: The total magnetic flux passing through all $N$ turns of a coil.
