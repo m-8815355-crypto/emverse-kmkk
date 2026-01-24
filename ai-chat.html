@@ -12,6 +12,7 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* ========================================
            AI Chat Page Styles - Glassmorphism Design
@@ -503,6 +504,94 @@
             border-radius: 16px 16px 4px 16px;
         }
 
+        /* Markdown Content Styling */
+        .message.ai .message-bubble h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 1rem 0 0.5rem 0;
+            color: var(--cyan-glow);
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.25rem;
+        }
+
+        .message.ai .message-bubble h3:first-child {
+            margin-top: 0;
+        }
+
+        .message.ai .message-bubble p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+
+        .message.ai .message-bubble ul,
+        .message.ai .message-bubble ol {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .message.ai .message-bubble li {
+            margin: 0.35rem 0;
+            line-height: 1.6;
+        }
+
+        .message.ai .message-bubble strong {
+            color: var(--cyan-glow);
+            font-weight: 600;
+        }
+
+        .message.ai .message-bubble code {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9em;
+            color: #00d4ff;
+        }
+
+        .message.ai .message-bubble pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin: 0.75rem 0;
+            overflow-x: auto;
+        }
+
+        .message.ai .message-bubble pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .message.ai .message-bubble blockquote {
+            border-left: 3px solid var(--cyan-glow);
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        html.light .message.ai .message-bubble h3 {
+            color: var(--cyan-glow);
+        }
+
+        html.light .message.ai .message-bubble strong {
+            color: var(--purple-glow);
+        }
+
+        html.light .message.ai .message-bubble code {
+            background: rgba(0, 119, 182, 0.1);
+            border-color: rgba(0, 119, 182, 0.2);
+            color: #0077B6;
+        }
+
+        html.light .message.ai .message-bubble pre {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
         /* Typing Indicator */
         .typing-indicator {
             display: flex;
@@ -826,33 +915,42 @@
         const GEMINI_MODEL = 'gemini-2.5-flash';
         let chatHistory = [];
 
-        // System prompt for EM-Vee
-        const SYSTEM_PROMPT = `You are EM-Vee, an expert physics tutor specializing in electromagnetism for pre-university and university freshman students. You are integrated into the EM-Verse learning application.
+        // System prompt for Professor EM-Vee
+        const SYSTEM_PROMPT = `You are **Professor EM-Vee**, a Senior Physics Lecturer at the EM-Verse Virtual University.
 
-YOUR EXPERTISE COVERS:
+**Your Persona:**
+* **Tone:** Professional, academic, yet highly accessible and encouraging (like a favorite university professor).
+* **Teaching Style:** You don't just give answers; you derive them. You prioritize conceptual understanding over rote memorization.
+* **Context:** You are teaching students using the 'EM-Verse' 3D simulation app for electromagnetism.
+
+**Your Expertise Covers:**
 - Electromagnetic Induction
-- Faraday's Law of Induction: ε = -dΦ/dt
+- Faraday's Law of Induction
 - Lenz's Law and energy conservation
-- Magnetic flux: Φ = B·A·cos(θ)
-- Solenoids and the right-hand grip rule
-- Transformers and voltage/current relationships
-- Eddy currents and their applications
+- Magnetic flux and flux linkage
+- Solenoids and electromagnets
+- Transformers
+- Eddy currents
 - Mutual and self-inductance
 - Bar magnets and magnetic fields
 - Compass behavior in magnetic fields
 
-BEHAVIOR RULES:
-1. Be accurate and syllabus-aligned for pre-university and university freshman physics
-2. Use proper physics terminology with clear explanations
-3. Show formulas clearly using proper notation
-4. Always emphasize correct SI units
-5. Indicate vector directions where relevant
-6. NEVER hallucinate formulas, laws, or physical constants
-7. If uncertain, clearly state uncertainty and suggest verification
-8. Encourage active learning and experimentation
-9. Keep responses concise but complete
+**Strict Formatting Rules (Markdown):**
+1. **Structure:** Start with a direct answer, then provide the 'Theoretical Underpinning' (explanation), and end with a 'Key Takeaway'.
+2. **No Walls of Text:** Paragraphs must not exceed 3 lines.
+3. **Hierarchy:** Use \`###\` for headers (e.g., \`### The Concept\`, \`### The Math\`, \`### Key Takeaway\`).
+4. **Emphasis:** Use **bold** for laws and defined terms (e.g., **Faraday's Law**).
+5. **Math:** Format all variables and formulas using code style (e.g., \`ε = -N(dΦ/dt)\` or \`F = BIl\`).
+6. **Lists:** Use bullet points for steps or conditions.
 
-Remember: You are a trusted physics tutor. Accuracy is paramount.`;
+**Behavior Rules:**
+1. Be accurate and syllabus-aligned for pre-university and university physics
+2. Use proper physics terminology with clear explanations
+3. Always emphasize correct SI units
+4. NEVER hallucinate formulas, laws, or physical constants
+5. Encourage active learning and experimentation with the simulation
+
+Remember: You are a trusted physics professor. Accuracy and clarity are paramount.`;
 
         // Make functions available globally
         window.sendMessage = sendMessage;
@@ -1018,7 +1116,7 @@ Remember: You are a trusted physics tutor. Accuracy is paramount.`;
             return messageDiv;
         }
 
-        // Add message with typewriter effect
+        // Add message with typewriter effect and Markdown parsing
         async function addMessageWithTypewriter(content, type) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
@@ -1034,18 +1132,28 @@ Remember: You are a trusted physics tutor. Accuracy is paramount.`;
             messageDiv.appendChild(bubble);
             messagesWrapper.appendChild(messageDiv);
 
-            // Typewriter effect
-            const charDelay = 20; // milliseconds between characters
+            // Typewriter effect with Markdown parsing
+            const charDelay = 15; // milliseconds between characters
+            let currentRawText = '';
             let i = 0;
 
             return new Promise((resolve) => {
                 function typeNextChar() {
                     if (i < content.length) {
-                        bubble.textContent += content.charAt(i);
+                        currentRawText += content.charAt(i);
                         i++;
+
+                        // Parse and render Markdown every 5 characters for performance
+                        if (i % 5 === 0 || i === content.length) {
+                            bubble.innerHTML = marked.parse(currentRawText);
+                        }
+
                         scrollToBottom();
                         setTimeout(typeNextChar, charDelay);
                     } else {
+                        // Final render with complete content
+                        bubble.innerHTML = marked.parse(currentRawText);
+                        scrollToBottom();
                         resolve();
                     }
                 }
