@@ -368,7 +368,8 @@ export class FieldVisualizer {
 
         this.arrows.forEach(arrow => {
             if (arrow.userData.line) {
-                arrow.userData.t += 0.005 * speed; // Move along line
+                // Slowed down animation speed (0.25x) for smoother visual
+                arrow.userData.t += 0.00125 * speed; // Move along line
                 this.updateArrowPosition(arrow);
             }
         });
@@ -468,65 +469,52 @@ export class FieldVisualizer {
 
     /**
      * Create a single closed-loop field line for solenoid visualization
+     * Uses smooth elliptical curves with CatmullRomCurve3 for natural appearance
      */
     createSolenoidFieldLoop(worldPos, rotation, length, radius, northX, southX, angle) {
-        const points = [];
-        const numSegments = 60;
-
         // Outer loop parameters - how far the field extends outside
-        const outerExtent = length * 0.8; // How far beyond the poles
-        const outerHeight = radius * 2.5; // How high/wide the loop goes
+        const outerExtent = length * 0.6; // How far beyond the poles
+        const outerHeight = radius * 2.0; // How high/wide the loop goes
 
-        // Calculate perpendicular offset for this loop
+        // Calculate perpendicular offset for this loop (radial distribution)
         const offsetY = Math.sin(angle);
         const offsetZ = Math.cos(angle);
 
-        for (let i = 0; i <= numSegments; i++) {
-            const t = i / numSegments;
-            let x, y, z;
+        // Define key control points for smooth elliptical curve
+        // These create the characteristic oval-shaped field lines
+        const controlPoints = [
+            // North pole exit point (at solenoid face)
+            new THREE.Vector3(northX, offsetY * radius * 0.4, offsetZ * radius * 0.4),
+            // North side outer curve (pulled out for roundness)
+            new THREE.Vector3(northX + outerExtent * 0.5, offsetY * outerHeight * 0.7, offsetZ * outerHeight * 0.7),
+            // Top-right of ellipse
+            new THREE.Vector3(northX + outerExtent, offsetY * outerHeight, offsetZ * outerHeight),
+            // Top of ellipse (middle-right)
+            new THREE.Vector3(length * 0.3, offsetY * outerHeight * 1.1, offsetZ * outerHeight * 1.1),
+            // Top center of ellipse
+            new THREE.Vector3(0, offsetY * outerHeight * 1.15, offsetZ * outerHeight * 1.15),
+            // Top of ellipse (middle-left)
+            new THREE.Vector3(-length * 0.3, offsetY * outerHeight * 1.1, offsetZ * outerHeight * 1.1),
+            // Top-left of ellipse
+            new THREE.Vector3(southX - outerExtent, offsetY * outerHeight, offsetZ * outerHeight),
+            // South side outer curve (pulled out for roundness)
+            new THREE.Vector3(southX - outerExtent * 0.5, offsetY * outerHeight * 0.7, offsetZ * outerHeight * 0.7),
+            // South pole entry point (at solenoid face)
+            new THREE.Vector3(southX, offsetY * radius * 0.4, offsetZ * radius * 0.4),
+        ];
 
-            if (t < 0.25) {
-                // Segment 1: Exit from North pole, curve outward
-                const s = t / 0.25;
-                x = northX + outerExtent * this.easeOutQuad(s);
-                const expansion = this.easeOutQuad(s);
-                y = offsetY * (radius * 0.5 + outerHeight * expansion);
-                z = offsetZ * (radius * 0.5 + outerHeight * expansion);
-            } else if (t < 0.5) {
-                // Segment 2: Curve from North side to middle (top of loop)
-                const s = (t - 0.25) / 0.25;
-                x = northX + outerExtent - (northX + outerExtent) * s;
-                y = offsetY * (radius * 0.5 + outerHeight);
-                z = offsetZ * (radius * 0.5 + outerHeight);
-            } else if (t < 0.75) {
-                // Segment 3: Curve from middle to South side
-                const s = (t - 0.5) / 0.25;
-                x = -(southX + outerExtent) * s + southX + outerExtent;
-                x = southX - outerExtent * (1 - s);
-                y = offsetY * (radius * 0.5 + outerHeight);
-                z = offsetZ * (radius * 0.5 + outerHeight);
-            } else {
-                // Segment 4: Enter South pole, curve inward
-                const s = (t - 0.75) / 0.25;
-                x = southX - outerExtent * (1 - this.easeOutQuad(s));
-                const contraction = 1 - this.easeOutQuad(s);
-                y = offsetY * (radius * 0.5 + outerHeight * contraction);
-                z = offsetZ * (radius * 0.5 + outerHeight * contraction);
-            }
+        // Create smooth curve through control points using CatmullRomCurve3
+        const curve = new THREE.CatmullRomCurve3(controlPoints, false, 'catmullrom', 0.5);
 
-            const localPoint = new THREE.Vector3(x, y, z);
-            const worldPoint = localPoint.clone().applyQuaternion(rotation).add(worldPos);
-            points.push(worldPoint);
-        }
+        // Get high-resolution points along the curve (100 segments for smoothness)
+        const curvePoints = curve.getPoints(100);
 
-        return points;
-    }
+        // Transform all points to world space
+        const worldPoints = curvePoints.map(point => {
+            return point.clone().applyQuaternion(rotation).add(worldPos);
+        });
 
-    /**
-     * Easing function for smooth curves
-     */
-    easeOutQuad(t) {
-        return t * (2 - t);
+        return worldPoints;
     }
 
     /**
