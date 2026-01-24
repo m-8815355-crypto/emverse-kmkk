@@ -117,8 +117,11 @@ export class BarMagnetModule {
             const field = this.app.fieldVisualizer.calculateDipoleField(compassPos, this.magnet);
 
             if (field.length() > 0.001) {
-                // Calculate target rotation (needle points along field direction)
-                const targetAngle = Math.atan2(field.x, field.z);
+                // Calculate target rotation (needle's +X axis should align with field direction)
+                // The needle's red tip (north-seeking pole) points along +X in local space
+                // rotation.y rotates around Y axis, so we need angle in XZ plane
+                // atan2(-z, x) gives angle from +X axis, rotating around Y
+                const targetAngle = Math.atan2(-field.z, field.x);
                 compass.userData.targetRotation = targetAngle;
             }
         }
