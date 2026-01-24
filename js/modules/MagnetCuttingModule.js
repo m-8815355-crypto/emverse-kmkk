@@ -38,6 +38,9 @@ export class MagnetCuttingModule {
         this.separationAnimation = 0;
         this.repulsionActive = false;
 
+        // Field lines for cut pieces
+        this.fieldLineGroups = [];
+
         // HUD elements
         this.infoSprite = null;
         this.tooltipSprite = null;
@@ -392,15 +395,10 @@ export class MagnetCuttingModule {
             line1 = 'Swipe across the magnet to cut it';
             line2 = 'Original: [North | South]';
             line3 = 'What happens to the poles when you cut?';
-        } else if (this.cutCount === 1) {
-            title = '✂️ Cut into 2 Halves!';
-            line1 = 'Each half is now a complete dipole!';
-            line2 = '[N|S]  [N|S]';
-            line3 = 'Cut again to make 4 pieces!';
         } else {
-            title = '✂️ Cut into 4 Pieces!';
-            line1 = 'Each of the 4 pieces is a complete dipole!';
-            line2 = '[N|S]  [N|S]  [N|S]  [N|S]';
+            title = '✂️ Cut into 2 Pieces!';
+            line1 = 'Each half is now a complete dipole!';
+            line2 = '[N|S]    [N|S]';
             line3 = 'You cannot create a magnetic monopole!';
         }
 
@@ -415,7 +413,7 @@ export class MagnetCuttingModule {
         ctx.font = '13px Inter, sans-serif';
         ctx.fillText(line2, 250, 95);
 
-        ctx.fillStyle = this.cutCount >= 2 ? '#ff8888' : '#a0c8e8';
+        ctx.fillStyle = this.cutCount >= 1 ? '#ff8888' : '#a0c8e8';
         ctx.font = 'italic 14px Inter, sans-serif';
         ctx.fillText(line3, 250, 120);
 
@@ -603,27 +601,14 @@ export class MagnetCuttingModule {
     }
 
     performCut() {
-        if (this.cutCount >= 3) return; // Max 3 cuts total
+        if (this.cutCount >= 1) return; // Only allow 1 cut (2 pieces)
 
         this.cutCount++;
         this.isCut = true;
 
-        if (this.cutCount === 1) {
-            // First cut: Hide original magnet, create 2 halves
-            this.originalMagnet.visible = false;
-            this.createCutHalves();
-        } else if (this.cutCount === 2 || this.cutCount === 3) {
-            // Second/Third cut: Create 4 pieces from the 2 halves
-            if (this.leftHalf) {
-                this.app.sceneManager.scene.remove(this.leftHalf);
-                this.leftHalf = null;
-            }
-            if (this.rightHalf) {
-                this.app.sceneManager.scene.remove(this.rightHalf);
-                this.rightHalf = null;
-            }
-            this.createFourPieces();
-        }
+        // Hide original magnet, create 2 halves
+        this.originalMagnet.visible = false;
+        this.createCutHalves();
 
         // Animate cut particles
         this.spawnCutParticles();
@@ -634,12 +619,8 @@ export class MagnetCuttingModule {
         // Update button state
         const cutBtn = document.getElementById('cut-magnet-btn');
         if (cutBtn) {
-            if (this.cutCount === 1) {
-                cutBtn.textContent = '✂️ Cut Again (2→4)';
-            } else {
-                cutBtn.disabled = true;
-                cutBtn.textContent = '✅ Cut into 4 Pieces!';
-            }
+            cutBtn.disabled = true;
+            cutBtn.textContent = '✅ Cut Complete!';
         }
 
         // Update HUD
@@ -749,6 +730,118 @@ export class MagnetCuttingModule {
 
         // Update domain arrows to split
         this.splitDomainArrows();
+
+        // Create magnetic field lines for each piece
+        this.createFieldLinesForPiece(this.leftHalf, magnetWidth / 2, magnetHeight, magnetDepth);
+        this.createFieldLinesForPiece(this.rightHalf, magnetWidth / 2, magnetHeight, magnetDepth);
+    }
+
+    /**
+     * Create magnetic field lines for a magnet piece
+     * Shows 5 curved field lines emanating from N pole and returning to S pole
+     */
+    createFieldLinesForPiece(magnetPiece, pieceWidth, pieceHeight, pieceDepth) {
+        const fieldGroup = new THREE.Group();
+        const numLines = 5;
+
+        // Field line material
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0x00d4aa,
+            transparent: true,
+            opacity: 0.7,
+            linewidth: 2
+        });
+
+        // Create curved field lines
+        for (let i = 0; i < numLines; i++) {
+            const angle = ((i / numLines) - 0.5) * Math.PI * 0.8; // Spread lines vertically
+            const points = this.generateDipoleFieldLinePoints(pieceWidth, angle);
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geometry, lineMaterial.clone());
+            fieldGroup.add(line);
+
+            // Add small arrows along the line to show direction
+            this.addFieldArrows(fieldGroup, points, 3);
+        }
+
+        // Position field group relative to magnet piece
+        fieldGroup.position.copy(magnetPiece.position);
+        this.fieldLineGroups.push({ group: fieldGroup, magnet: magnetPiece });
+        this.app.sceneManager.add(fieldGroup);
+    }
+
+    /**
+     * Generate points for a single dipole field line
+     */
+    generateDipoleFieldLinePoints(pieceWidth, verticalAngle) {
+        const points = [];
+        const numSegments = 30;
+
+        // North pole is on the left (-x), South pole is on the right (+x)
+        const northX = -pieceWidth / 4;
+        const southX = pieceWidth / 4;
+
+        // Height/depth of the curve
+        const curveHeight = pieceWidth * 0.6;
+        const yOffset = Math.sin(verticalAngle) * curveHeight * 0.5;
+        const zOffset = Math.cos(verticalAngle) * 0.3;
+
+        // Create smooth curve from North pole around to South pole
+        for (let i = 0; i <= numSegments; i++) {
+            const t = i / numSegments;
+
+            // Parametric ellipse-like curve
+            // x goes from northX to southX
+            const x = northX + (southX - northX) * t;
+
+            // y follows a sine curve (up in the middle)
+            const normalizedT = (t - 0.5) * 2; // -1 to 1
+            const y = Math.sqrt(1 - normalizedT * normalizedT) * curveHeight + yOffset;
+
+            // z offset for 3D depth
+            const z = zOffset * Math.sin(t * Math.PI);
+
+            points.push(new THREE.Vector3(x, y, z));
+        }
+
+        return points;
+    }
+
+    /**
+     * Add small arrow cones along a field line to indicate direction
+     */
+    addFieldArrows(group, points, numArrows) {
+        const arrowGeometry = new THREE.ConeGeometry(0.04, 0.1, 6);
+        arrowGeometry.rotateX(Math.PI / 2); // Point along +Z for lookAt
+
+        const arrowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00d4aa,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        for (let i = 0; i < numArrows; i++) {
+            const t = (i + 1) / (numArrows + 1);
+            const idx = Math.floor(t * (points.length - 1));
+
+            if (idx >= points.length - 1) continue;
+
+            const arrow = new THREE.Mesh(arrowGeometry.clone(), arrowMaterial.clone());
+            arrow.position.copy(points[idx]);
+
+            // Orient arrow along the field line direction
+            const direction = new THREE.Vector3()
+                .subVectors(points[idx + 1], points[idx])
+                .normalize();
+
+            if (direction.lengthSq() > 0.0001) {
+                const lookTarget = arrow.position.clone().add(direction);
+                arrow.lookAt(lookTarget);
+            }
+
+            group.add(arrow);
+        }
     }
 
     createFourPieces() {
@@ -917,16 +1010,30 @@ export class MagnetCuttingModule {
     }
 
     reset() {
-        // Remove all magnet pieces (4 pieces)
+        // Remove magnet halves
+        if (this.leftHalf) {
+            this.app.interaction.removeDraggable(this.leftHalf);
+            this.app.sceneManager.remove(this.leftHalf);
+            this.leftHalf = null;
+        }
+        if (this.rightHalf) {
+            this.app.interaction.removeDraggable(this.rightHalf);
+            this.app.sceneManager.remove(this.rightHalf);
+            this.rightHalf = null;
+        }
+
+        // Remove legacy magnet pieces
         for (const piece of this.magnetPieces) {
             this.app.interaction.removeDraggable(piece);
             this.app.sceneManager.remove(piece);
         }
         this.magnetPieces = [];
 
-        // Legacy cleanup for leftHalf/rightHalf references
-        this.leftHalf = null;
-        this.rightHalf = null;
+        // Remove field line groups
+        for (const { group } of this.fieldLineGroups) {
+            this.app.sceneManager.remove(group);
+        }
+        this.fieldLineGroups = [];
 
         // Show original magnet
         this.originalMagnet.visible = true;
@@ -960,18 +1067,21 @@ export class MagnetCuttingModule {
     update(deltaTime) {
         this.time += deltaTime;
 
-        // Animate separation after cut (4 pieces spreading apart)
+        // Animate separation after cut (2 pieces spreading apart)
         if (this.isCut && this.separationAnimation < 1) {
             this.separationAnimation += deltaTime * 0.5;
 
-            const separation = Math.min(1, this.separationAnimation) * 0.4;
+            const separation = Math.min(1, this.separationAnimation) * 0.5;
 
-            // Animate all 4 pieces spreading apart
-            if (this.magnetPieces.length === 4) {
-                this.magnetPieces[0].position.x = -1.5 - separation * 1.5;  // Far left moves further left
-                this.magnetPieces[1].position.x = -0.5 - separation * 0.5;  // Left-center moves slightly left
-                this.magnetPieces[2].position.x = 0.5 + separation * 0.5;   // Right-center moves slightly right
-                this.magnetPieces[3].position.x = 1.5 + separation * 1.5;   // Far right moves further right
+            // Animate 2 halves spreading apart
+            if (this.leftHalf && this.rightHalf) {
+                this.leftHalf.position.x = -0.75 - separation * 0.8;
+                this.rightHalf.position.x = 0.75 + separation * 0.8;
+
+                // Update field line positions to follow magnets
+                this.fieldLineGroups.forEach(({ group, magnet }) => {
+                    group.position.copy(magnet.position);
+                });
             }
         }
 
@@ -988,19 +1098,17 @@ export class MagnetCuttingModule {
             }
         });
 
-        // Animate domain arrows position following the magnet pieces (4 pieces)
-        if (this.isCut && this.showDomains && this.magnetPieces.length === 4) {
+        // Animate domain arrows position following the magnet pieces (2 pieces)
+        if (this.isCut && this.showDomains && this.leftHalf && this.rightHalf) {
             const magnetWidth = 3;
             this.domainArrows.forEach(arrow => {
                 const basePos = arrow.userData.basePosition;
-                const pieceIndex = arrow.userData.piece;
+                const piece = arrow.userData.piece;
 
-                if (typeof pieceIndex === 'number' && this.magnetPieces[pieceIndex]) {
-                    const piece = this.magnetPieces[pieceIndex];
-                    // Calculate offset based on which quarter of the magnet this arrow belongs to
-                    const quarterWidth = magnetWidth / 4;
-                    const quarterCenter = -magnetWidth / 2 + quarterWidth * (pieceIndex + 0.5);
-                    arrow.position.x = basePos.x - quarterCenter + piece.position.x;
+                if (piece === 'left') {
+                    arrow.position.x = basePos.x + this.leftHalf.position.x + magnetWidth / 4;
+                } else if (piece === 'right') {
+                    arrow.position.x = basePos.x + this.rightHalf.position.x - magnetWidth / 4;
                 }
             });
         }
@@ -1011,9 +1119,6 @@ export class MagnetCuttingModule {
             this.laserLine.material.opacity = pulse;
             this.laserPlane.material.opacity = pulse * 0.4;
         }
-
-        // Repulsion visual feedback (simplified for 4 pieces - check adjacent pieces)
-        // Not implementing full repulsion for 4 pieces to keep it simple
 
         // Animate swipe guide
         if (!this.isCut) {
@@ -1028,12 +1133,28 @@ export class MagnetCuttingModule {
             this.app.sceneManager.remove(this.originalMagnet);
         }
 
-        // Remove all magnet pieces (4 pieces)
+        // Remove magnet halves
+        if (this.leftHalf) {
+            this.app.interaction.removeDraggable(this.leftHalf);
+            this.app.sceneManager.remove(this.leftHalf);
+        }
+        if (this.rightHalf) {
+            this.app.interaction.removeDraggable(this.rightHalf);
+            this.app.sceneManager.remove(this.rightHalf);
+        }
+
+        // Remove all magnet pieces (legacy 4 pieces support)
         for (const piece of this.magnetPieces) {
             this.app.interaction.removeDraggable(piece);
             this.app.sceneManager.remove(piece);
         }
         this.magnetPieces = [];
+
+        // Remove field line groups
+        for (const { group } of this.fieldLineGroups) {
+            this.app.sceneManager.remove(group);
+        }
+        this.fieldLineGroups = [];
 
         // Remove laser cutter
         if (this.laserLine) this.app.sceneManager.remove(this.laserLine);
