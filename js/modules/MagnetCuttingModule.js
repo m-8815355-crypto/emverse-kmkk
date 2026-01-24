@@ -116,6 +116,97 @@ export class MagnetCuttingModule {
         this.originalMagnet = magnetGroup;
         this.originalMagnet.position.set(0, 0.5, 0);
         this.app.sceneManager.add(this.originalMagnet);
+
+        // Create field lines for original magnet
+        this.createOriginalMagnetFieldLines(width, height, depth);
+    }
+
+    /**
+     * Create magnetic field lines for the original (uncut) magnet
+     * Shows 3 lines above and 3 lines below, from N to S
+     */
+    createOriginalMagnetFieldLines(magnetWidth, magnetHeight, magnetDepth) {
+        this.originalFieldLinesGroup = new THREE.Group();
+
+        // Field line material
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0x00d4aa,
+            transparent: true,
+            opacity: 0.7,
+            linewidth: 2
+        });
+
+        // Create 3 lines above and 3 lines below
+        const lineHeights = [
+            // Above the magnet (positive Y offsets)
+            { yOffset: 0.5, zOffset: 0 },
+            { yOffset: 0.8, zOffset: 0.2 },
+            { yOffset: 0.8, zOffset: -0.2 },
+            // Below the magnet (negative Y offsets)
+            { yOffset: -0.5, zOffset: 0 },
+            { yOffset: -0.8, zOffset: 0.2 },
+            { yOffset: -0.8, zOffset: -0.2 },
+        ];
+
+        for (const config of lineHeights) {
+            const points = this.generateMagnetFieldLinePoints(
+                magnetWidth,
+                magnetHeight,
+                config.yOffset,
+                config.zOffset,
+                config.yOffset > 0 // isAbove
+            );
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geometry, lineMaterial.clone());
+            this.originalFieldLinesGroup.add(line);
+
+            // Add direction arrows
+            this.addFieldArrows(this.originalFieldLinesGroup, points, 2);
+        }
+
+        // Position at original magnet location
+        this.originalFieldLinesGroup.position.copy(this.originalMagnet.position);
+        this.app.sceneManager.add(this.originalFieldLinesGroup);
+    }
+
+    /**
+     * Generate points for a field line going from N pole to S pole
+     * @param {number} magnetWidth - Width of the magnet
+     * @param {number} magnetHeight - Height of the magnet
+     * @param {number} yOffset - Vertical offset from magnet center
+     * @param {number} zOffset - Depth offset for 3D effect
+     * @param {boolean} isAbove - Whether this line curves above or below
+     */
+    generateMagnetFieldLinePoints(magnetWidth, magnetHeight, yOffset, zOffset, isAbove) {
+        const points = [];
+        const numSegments = 40;
+
+        // N pole is on the left (-x), S pole is on the right (+x)
+        const northX = -magnetWidth / 2;
+        const southX = magnetWidth / 2;
+
+        // Maximum height of the curve
+        const curveHeight = Math.abs(yOffset) + magnetHeight * 0.8;
+        const direction = isAbove ? 1 : -1;
+
+        for (let i = 0; i <= numSegments; i++) {
+            const t = i / numSegments;
+
+            // X goes from north pole to south pole
+            const x = northX + (southX - northX) * t;
+
+            // Y follows an arc shape
+            const arcT = Math.sin(t * Math.PI); // 0 -> 1 -> 0
+            const y = direction * arcT * curveHeight;
+
+            // Z for 3D depth effect
+            const z = zOffset * Math.sin(t * Math.PI);
+
+            points.push(new THREE.Vector3(x, y, z));
+        }
+
+        return points;
     }
 
     createLabelSprite(text, color) {
@@ -606,8 +697,11 @@ export class MagnetCuttingModule {
         this.cutCount++;
         this.isCut = true;
 
-        // Hide original magnet, create 2 halves
+        // Hide original magnet and its field lines, create 2 halves
         this.originalMagnet.visible = false;
+        if (this.originalFieldLinesGroup) {
+            this.originalFieldLinesGroup.visible = false;
+        }
         this.createCutHalves();
 
         // Animate cut particles
@@ -737,12 +831,11 @@ export class MagnetCuttingModule {
     }
 
     /**
-     * Create magnetic field lines for a magnet piece
-     * Shows 5 curved field lines emanating from N pole and returning to S pole
+     * Create magnetic field lines for a magnet piece (after cutting)
+     * Shows 3 lines above and 3 lines below, from N pole to S pole
      */
     createFieldLinesForPiece(magnetPiece, pieceWidth, pieceHeight, pieceDepth) {
         const fieldGroup = new THREE.Group();
-        const numLines = 5;
 
         // Field line material
         const lineMaterial = new THREE.LineBasicMaterial({
@@ -752,23 +845,71 @@ export class MagnetCuttingModule {
             linewidth: 2
         });
 
-        // Create curved field lines
-        for (let i = 0; i < numLines; i++) {
-            const angle = ((i / numLines) - 0.5) * Math.PI * 0.8; // Spread lines vertically
-            const points = this.generateDipoleFieldLinePoints(pieceWidth, angle);
+        // Create 3 lines above and 3 lines below
+        const lineConfigs = [
+            // Above the magnet
+            { yOffset: 0.3, zOffset: 0 },
+            { yOffset: 0.5, zOffset: 0.15 },
+            { yOffset: 0.5, zOffset: -0.15 },
+            // Below the magnet
+            { yOffset: -0.3, zOffset: 0 },
+            { yOffset: -0.5, zOffset: 0.15 },
+            { yOffset: -0.5, zOffset: -0.15 },
+        ];
+
+        for (const config of lineConfigs) {
+            const points = this.generatePieceFieldLinePoints(
+                pieceWidth,
+                config.yOffset,
+                config.zOffset
+            );
 
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
             const line = new THREE.Line(geometry, lineMaterial.clone());
             fieldGroup.add(line);
 
-            // Add small arrows along the line to show direction
-            this.addFieldArrows(fieldGroup, points, 3);
+            // Add direction arrows
+            this.addFieldArrows(fieldGroup, points, 2);
         }
 
         // Position field group relative to magnet piece
         fieldGroup.position.copy(magnetPiece.position);
         this.fieldLineGroups.push({ group: fieldGroup, magnet: magnetPiece });
         this.app.sceneManager.add(fieldGroup);
+    }
+
+    /**
+     * Generate points for a piece's field line from N to S
+     */
+    generatePieceFieldLinePoints(pieceWidth, yOffset, zOffset) {
+        const points = [];
+        const numSegments = 30;
+
+        // N pole is on the left (-x), S pole is on the right (+x)
+        const northX = -pieceWidth / 4;
+        const southX = pieceWidth / 4;
+
+        // Curve height based on offset
+        const curveHeight = Math.abs(yOffset) + pieceWidth * 0.3;
+        const direction = yOffset > 0 ? 1 : -1;
+
+        for (let i = 0; i <= numSegments; i++) {
+            const t = i / numSegments;
+
+            // X goes from north pole to south pole
+            const x = northX + (southX - northX) * t;
+
+            // Y follows an arc shape
+            const arcT = Math.sin(t * Math.PI);
+            const y = direction * arcT * curveHeight;
+
+            // Z for 3D depth
+            const z = zOffset * Math.sin(t * Math.PI);
+
+            points.push(new THREE.Vector3(x, y, z));
+        }
+
+        return points;
     }
 
     /**
@@ -1035,8 +1176,11 @@ export class MagnetCuttingModule {
         }
         this.fieldLineGroups = [];
 
-        // Show original magnet
+        // Show original magnet and its field lines
         this.originalMagnet.visible = true;
+        if (this.originalFieldLinesGroup) {
+            this.originalFieldLinesGroup.visible = true;
+        }
         this.isCut = false;
         this.cutCount = 0;
         this.separationAnimation = 0;
@@ -1155,6 +1299,12 @@ export class MagnetCuttingModule {
             this.app.sceneManager.remove(group);
         }
         this.fieldLineGroups = [];
+
+        // Remove original field lines
+        if (this.originalFieldLinesGroup) {
+            this.app.sceneManager.remove(this.originalFieldLinesGroup);
+            this.originalFieldLinesGroup = null;
+        }
 
         // Remove laser cutter
         if (this.laserLine) this.app.sceneManager.remove(this.laserLine);
