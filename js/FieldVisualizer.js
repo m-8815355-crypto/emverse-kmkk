@@ -352,14 +352,14 @@ export class FieldVisualizer {
         const pos = new THREE.Vector3().lerpVectors(p1, p2, alpha);
         arrow.position.copy(pos);
 
-        // Orient
-        const dir = new THREE.Vector3().subVectors(p2, p1).normalize();
+        // Calculate tangent direction (direction of travel)
+        const tangent = new THREE.Vector3().subVectors(p2, p1).normalize();
 
-        // If direction is NaN (zero length segment), skip orientation update
-        if (dir.lengthSq() > 0.0001) {
-            const quaternion = new THREE.Quaternion();
-            quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), dir);
-            arrow.quaternion.copy(quaternion);
+        // If tangent is valid, orient arrow to follow the flow
+        if (tangent.lengthSq() > 0.0001) {
+            // Calculate look target (point slightly ahead in tangent direction)
+            const lookTarget = pos.clone().add(tangent);
+            arrow.lookAt(lookTarget);
         }
     }
 
@@ -571,18 +571,16 @@ export class FieldVisualizer {
     }
 
     createArrowGeometry(scale) {
-        const shape = new THREE.Shape();
-        // Arrow pointing in +X direction (forward along field line flow)
-        shape.moveTo(0, 0);
-        shape.lineTo(0.6 * scale, 0.15 * scale);
-        shape.lineTo(0.4 * scale, 0);
-        shape.lineTo(0.6 * scale, -0.15 * scale);
-        shape.lineTo(0, 0);
+        // Use ConeGeometry for proper 3D arrow shape
+        // ConeGeometry points along +Y by default, so we rotate it to point along +Z
+        // This allows lookAt() to work correctly (lookAt aligns +Z with target)
+        const geometry = new THREE.ConeGeometry(scale * 0.15, scale * 0.4, 6);
 
-        const extrudeSettings = { depth: 0.02, bevelEnabled: false };
-        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        geometry.rotateY(Math.PI / 2);
-        geometry.translate(-scale * 0.3, 0, 0);
+        // Rotate so the cone tip points along +Z (forward direction for lookAt)
+        geometry.rotateX(Math.PI / 2);
+
+        // Center the geometry so the cone tip is at the origin
+        geometry.translate(0, 0, scale * 0.2);
 
         return geometry;
     }

@@ -145,8 +145,8 @@ export class BarMagnetModule {
             needle.rotation.y += diff * Math.min(deltaTime * 5, 1);
         }
 
-        // Animate field lines
-        this.app.fieldVisualizer.animateFieldLines(deltaTime * 60, 1.0);
+        // Animate field lines (doubled speed for bar magnet)
+        this.app.fieldVisualizer.animateFieldLines(deltaTime * 60, 2.0);
     }
 
     cleanup() {
