@@ -821,12 +821,38 @@
     </div>
 
     <script type="module">
-        // Import Gemini Tutor
-        import { GeminiTutor } from './js/GeminiTutor.js';
+        // Gemini API Configuration
+        const GEMINI_API_KEY = 'AIzaSyCdat6KilldjiBto8btMVzs5de6C3dxbBE';
+        const GEMINI_MODEL = 'gemini-1.5-flash';
+        let chatHistory = [];
 
-        // Initialize AI
-        const geminiTutor = new GeminiTutor();
-        window.geminiTutor = geminiTutor;
+        // System prompt for EM-Vee
+        const SYSTEM_PROMPT = `You are EM-Vee, an expert physics tutor specializing in electromagnetism for pre-university and university freshman students. You are integrated into the EM-Verse learning application.
+
+YOUR EXPERTISE COVERS:
+- Electromagnetic Induction
+- Faraday's Law of Induction: ε = -dΦ/dt
+- Lenz's Law and energy conservation
+- Magnetic flux: Φ = B·A·cos(θ)
+- Solenoids and the right-hand grip rule
+- Transformers and voltage/current relationships
+- Eddy currents and their applications
+- Mutual and self-inductance
+- Bar magnets and magnetic fields
+- Compass behavior in magnetic fields
+
+BEHAVIOR RULES:
+1. Be accurate and syllabus-aligned for pre-university and university freshman physics
+2. Use proper physics terminology with clear explanations
+3. Show formulas clearly using proper notation
+4. Always emphasize correct SI units
+5. Indicate vector directions where relevant
+6. NEVER hallucinate formulas, laws, or physical constants
+7. If uncertain, clearly state uncertainty and suggest verification
+8. Encourage active learning and experimentation
+9. Keep responses concise but complete
+
+Remember: You are a trusted physics tutor. Accuracy is paramount.`;
 
         // Make functions available globally
         window.sendMessage = sendMessage;
@@ -848,6 +874,70 @@
         // State
         let isTyping = false;
 
+        // Call Gemini API directly
+        async function callGeminiAPI(userMessage) {
+            // Build conversation contents
+            const contents = [
+                {
+                    role: "user",
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                {
+                    role: "model",
+                    parts: [{ text: "Hello! I'm EM-Vee, your AI physics assistant for electromagnetism. I'm here to help you understand concepts like Faraday's Law, Lenz's Law, magnetic fields, and more. What would you like to learn about?" }]
+                }
+            ];
+
+            // Add chat history
+            for (const msg of chatHistory) {
+                contents.push({
+                    role: msg.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: msg.content }]
+                });
+            }
+
+            // Add current message
+            contents.push({
+                role: "user",
+                parts: [{ text: userMessage }]
+            });
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: contents,
+                    generationConfig: {
+                        temperature: 0.7,
+                        topK: 40,
+                        topP: 0.95,
+                        maxOutputTokens: 2048
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'API request failed');
+            }
+
+            const data = await response.json();
+
+            if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+                const aiResponse = data.candidates[0].content.parts[0].text;
+
+                // Store in chat history
+                chatHistory.push({ role: 'user', content: userMessage });
+                chatHistory.push({ role: 'assistant', content: aiResponse });
+
+                return aiResponse;
+            }
+
+            throw new Error('No response generated');
+        }
+
         // Handle input keypress
         function handleInputKeypress(event) {
             if (event.key === 'Enter' && !isTyping) {
@@ -867,8 +957,9 @@
             if (!message || isTyping) return;
 
             // Hide welcome screen
-            if (welcomeScreen) {
-                welcomeScreen.style.display = 'none';
+            const welcomeEl = document.getElementById('welcomeScreen');
+            if (welcomeEl) {
+                welcomeEl.style.display = 'none';
             }
 
             // Add user message
@@ -884,7 +975,7 @@
 
             try {
                 // Get AI response
-                const response = await geminiTutor.chat(message);
+                const response = await callGeminiAPI(message);
 
                 // Remove thinking indicator
                 thinkingEl.remove();
@@ -895,7 +986,7 @@
             } catch (error) {
                 console.error('Error:', error);
                 thinkingEl.remove();
-                await addMessageWithTypewriter('I apologize, but I encountered an error. Please try again.', 'ai');
+                await addMessageWithTypewriter('I apologize, but I encountered an error: ' + error.message + '. Please try again.', 'ai');
             }
 
             // Re-enable input
@@ -1022,8 +1113,8 @@
                 </div>
             `;
 
-            // Reset Gemini context
-            geminiTutor.chatHistory = [];
+            // Reset chat history
+            chatHistory = [];
 
             // Close sidebar on mobile
             if (window.innerWidth <= 768) {
