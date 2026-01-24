@@ -378,8 +378,155 @@ export class FieldVisualizer {
         this.generateFieldLines([magnet], options);
     }
 
-    generateSolenoidField(solenoid, options) {
-        this.generateFieldLines([solenoid], options);
+    generateSolenoidField(solenoid, options = {}) {
+        const { numLines = 12, numInnerLines = 4 } = options;
+
+        this.clearFieldLines();
+        this.clearArrows();
+
+        if (!solenoid || !solenoid.visible) return;
+        if (solenoid.userData.current < 0.1) return;
+
+        const worldPos = new THREE.Vector3();
+        solenoid.getWorldPosition(worldPos);
+        const rotation = new THREE.Quaternion();
+        solenoid.getWorldQuaternion(rotation);
+
+        const { length, radius, currentDirection } = solenoid.userData;
+        const dir = currentDirection || 1;
+
+        // North pole is on the positive x side when dir = -1
+        // South pole is on the negative x side when dir = -1
+        const northX = (length / 2) * (-dir);
+        const southX = -(length / 2) * (-dir);
+
+        // Create closed-loop field lines around the solenoid
+        for (let i = 0; i < numLines; i++) {
+            const angle = (i / numLines) * Math.PI * 2;
+            const linePoints = this.createSolenoidFieldLoop(
+                worldPos, rotation, length, radius, northX, southX, angle
+            );
+
+            if (linePoints.length > 5) {
+                const geometry = new THREE.BufferGeometry().setFromPoints(linePoints);
+                const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                    color: this.colors.fieldLine,
+                    linewidth: 2,
+                    transparent: true,
+                    opacity: 0.7
+                }));
+                this.scene.add(line);
+                this.fieldLines.push(line);
+
+                // Store line points for arrow animation
+                line.userData.points = linePoints;
+
+                if (this.showArrows) {
+                    this.addArrowsToLine(line, 6);
+                }
+            }
+        }
+
+        // Create straight inner field lines through the center
+        for (let i = 0; i < numInnerLines; i++) {
+            const innerAngle = (i / numInnerLines) * Math.PI * 2;
+            const innerRadius = radius * 0.3;
+            const offsetY = Math.sin(innerAngle) * innerRadius;
+            const offsetZ = Math.cos(innerAngle) * innerRadius;
+
+            const innerPoints = [];
+            const numSegments = 20;
+
+            for (let j = 0; j <= numSegments; j++) {
+                const t = j / numSegments;
+                // Field flows from South to North inside the solenoid
+                const x = southX + (northX - southX) * t;
+                const localPoint = new THREE.Vector3(x, offsetY, offsetZ);
+                const worldPoint = localPoint.applyQuaternion(rotation).add(worldPos);
+                innerPoints.push(worldPoint);
+            }
+
+            if (innerPoints.length > 5) {
+                const geometry = new THREE.BufferGeometry().setFromPoints(innerPoints);
+                const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                    color: this.colors.fieldLine,
+                    linewidth: 2,
+                    transparent: true,
+                    opacity: 0.8
+                }));
+                this.scene.add(line);
+                this.fieldLines.push(line);
+
+                line.userData.points = innerPoints;
+
+                if (this.showArrows) {
+                    this.addArrowsToLine(line, 3);
+                }
+            }
+        }
+    }
+
+    /**
+     * Create a single closed-loop field line for solenoid visualization
+     */
+    createSolenoidFieldLoop(worldPos, rotation, length, radius, northX, southX, angle) {
+        const points = [];
+        const numSegments = 60;
+
+        // Outer loop parameters - how far the field extends outside
+        const outerExtent = length * 0.8; // How far beyond the poles
+        const outerHeight = radius * 2.5; // How high/wide the loop goes
+
+        // Calculate perpendicular offset for this loop
+        const offsetY = Math.sin(angle);
+        const offsetZ = Math.cos(angle);
+
+        for (let i = 0; i <= numSegments; i++) {
+            const t = i / numSegments;
+            let x, y, z;
+
+            if (t < 0.25) {
+                // Segment 1: Exit from North pole, curve outward
+                const s = t / 0.25;
+                x = northX + outerExtent * this.easeOutQuad(s);
+                const expansion = this.easeOutQuad(s);
+                y = offsetY * (radius * 0.5 + outerHeight * expansion);
+                z = offsetZ * (radius * 0.5 + outerHeight * expansion);
+            } else if (t < 0.5) {
+                // Segment 2: Curve from North side to middle (top of loop)
+                const s = (t - 0.25) / 0.25;
+                x = northX + outerExtent - (northX + outerExtent) * s;
+                y = offsetY * (radius * 0.5 + outerHeight);
+                z = offsetZ * (radius * 0.5 + outerHeight);
+            } else if (t < 0.75) {
+                // Segment 3: Curve from middle to South side
+                const s = (t - 0.5) / 0.25;
+                x = -(southX + outerExtent) * s + southX + outerExtent;
+                x = southX - outerExtent * (1 - s);
+                y = offsetY * (radius * 0.5 + outerHeight);
+                z = offsetZ * (radius * 0.5 + outerHeight);
+            } else {
+                // Segment 4: Enter South pole, curve inward
+                const s = (t - 0.75) / 0.25;
+                x = southX - outerExtent * (1 - this.easeOutQuad(s));
+                const contraction = 1 - this.easeOutQuad(s);
+                y = offsetY * (radius * 0.5 + outerHeight * contraction);
+                z = offsetZ * (radius * 0.5 + outerHeight * contraction);
+            }
+
+            const localPoint = new THREE.Vector3(x, y, z);
+            const worldPoint = localPoint.clone().applyQuaternion(rotation).add(worldPos);
+            points.push(worldPoint);
+        }
+
+        return points;
+    }
+
+    /**
+     * Easing function for smooth curves
+     */
+    easeOutQuad(t) {
+        return t * (2 - t);
     }
 
     /**

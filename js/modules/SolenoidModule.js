@@ -336,6 +336,9 @@ export class SolenoidModule {
         // Update particle positions
         const time = this.app.sceneManager.getElapsedTime();
         this.updateParticlePositions(time);
+
+        // Animate field lines (arrows moving along the lines)
+        this.app.fieldVisualizer.animateFieldLines(deltaTime * 60, 1.0);
     }
 
     cleanup() {
