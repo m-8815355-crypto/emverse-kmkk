@@ -118,6 +118,9 @@ export class FieldVisualizer {
 
     /**
      * Calculate magnetic field direction at a point from a bar magnet (Dipole Model)
+     * Using Superposition of Two Monopoles:
+     * - North Pole: Field points OUTWARD (repulsive)
+     * - South Pole: Field points INWARD (attractive)
      */
     calculateDipoleField(point, magnet) {
         const worldPos = new THREE.Vector3();
@@ -136,20 +139,31 @@ export class FieldVisualizer {
             southPole = new THREE.Vector3(-len / 2, 0, 0);
         }
 
+        // Get world positions of both poles
         const northWorld = northPole.clone().applyQuaternion(magnetRotation).add(worldPos);
         const southWorld = southPole.clone().applyQuaternion(magnetRotation).add(worldPos);
 
-        const toNorth = new THREE.Vector3().subVectors(point, northWorld);
-        const toSouth = new THREE.Vector3().subVectors(point, southWorld);
+        // Vector FROM North pole TO compass point (outward direction)
+        const vecFromNorth = new THREE.Vector3().subVectors(point, northWorld);
 
-        const distNorth = Math.max(toNorth.length(), 0.1);
-        const distSouth = Math.max(toSouth.length(), 0.1);
+        // Vector FROM compass point TO South pole (inward direction)
+        const vecToSouth = new THREE.Vector3().subVectors(southWorld, point);
+
+        // Calculate distances with minimum threshold to avoid singularities
+        const distNorth = Math.max(vecFromNorth.length(), 0.1);
+        const distSouth = Math.max(vecToSouth.length(), 0.1);
 
         const strength = magnet.userData.strength || 1;
 
-        const fieldFromNorth = toNorth.normalize().multiplyScalar(strength / (distNorth * distNorth));
-        const fieldFromSouth = toSouth.normalize().multiplyScalar(-strength / (distSouth * distSouth));
+        // Field from North pole: Points AWAY from North (repulsive)
+        // Force = k / r^3 * direction_vector
+        const fieldFromNorth = vecFromNorth.normalize().multiplyScalar(strength / (distNorth * distNorth));
 
+        // Field from South pole: Points TOWARDS South (attractive)
+        // Force = k / r^3 * direction_vector
+        const fieldFromSouth = vecToSouth.normalize().multiplyScalar(strength / (distSouth * distSouth));
+
+        // Superposition: Total field is the sum of both contributions
         return fieldFromNorth.add(fieldFromSouth);
     }
 
