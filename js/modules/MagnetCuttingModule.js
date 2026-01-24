@@ -40,6 +40,7 @@ export class MagnetCuttingModule {
 
         // Field lines for cut pieces
         this.fieldLineGroups = [];
+        this.fieldLineArrows = []; // Animated arrows along field lines
 
         // HUD elements
         this.infoSprite = null;
@@ -148,7 +149,8 @@ export class MagnetCuttingModule {
             { yOffset: -0.8, zOffset: -0.2 },
         ];
 
-        for (const config of lineHeights) {
+        for (let i = 0; i < lineHeights.length; i++) {
+            const config = lineHeights[i];
             const points = this.generateMagnetFieldLinePoints(
                 magnetWidth,
                 magnetHeight,
@@ -161,13 +163,41 @@ export class MagnetCuttingModule {
             const line = new THREE.Line(geometry, lineMaterial.clone());
             this.originalFieldLinesGroup.add(line);
 
-            // Add direction arrows
-            this.addFieldArrows(this.originalFieldLinesGroup, points, 2);
+            // Add animated arrows along each line (2 arrows per line, staggered)
+            this.addAnimatedFieldArrows(this.originalFieldLinesGroup, points, 2, i * 0.15);
         }
 
         // Position at original magnet location
         this.originalFieldLinesGroup.position.copy(this.originalMagnet.position);
         this.app.sceneManager.add(this.originalFieldLinesGroup);
+    }
+
+    /**
+     * Add animated arrows that move along field lines from N to S
+     */
+    addAnimatedFieldArrows(parentGroup, points, numArrows, phaseOffset = 0) {
+        const arrowGeometry = new THREE.ConeGeometry(0.06, 0.15, 6);
+        arrowGeometry.rotateX(Math.PI / 2); // Point along +Z for lookAt
+
+        const arrowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffaa,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        for (let i = 0; i < numArrows; i++) {
+            const arrow = new THREE.Mesh(arrowGeometry.clone(), arrowMaterial.clone());
+            parentGroup.add(arrow);
+
+            // Store arrow data for animation
+            const startT = (i / numArrows) + phaseOffset;
+            this.fieldLineArrows.push({
+                arrow: arrow,
+                points: points,
+                parentGroup: parentGroup,
+                t: startT % 1 // Initial position along line (0-1)
+            });
+        }
     }
 
     /**
@@ -857,7 +887,8 @@ export class MagnetCuttingModule {
             { yOffset: -0.5, zOffset: -0.15 },
         ];
 
-        for (const config of lineConfigs) {
+        for (let i = 0; i < lineConfigs.length; i++) {
+            const config = lineConfigs[i];
             const points = this.generatePieceFieldLinePoints(
                 pieceWidth,
                 config.yOffset,
@@ -868,8 +899,8 @@ export class MagnetCuttingModule {
             const line = new THREE.Line(geometry, lineMaterial.clone());
             fieldGroup.add(line);
 
-            // Add direction arrows
-            this.addFieldArrows(fieldGroup, points, 2);
+            // Add animated arrows along each line
+            this.addAnimatedFieldArrows(fieldGroup, points, 2, i * 0.12);
         }
 
         // Position field group relative to magnet piece
@@ -1170,11 +1201,19 @@ export class MagnetCuttingModule {
         }
         this.magnetPieces = [];
 
-        // Remove field line groups
+        // Remove field line groups (cut pieces only)
         for (const { group } of this.fieldLineGroups) {
             this.app.sceneManager.remove(group);
         }
         this.fieldLineGroups = [];
+
+        // Remove animated arrows from cut pieces (keep original magnet arrows)
+        this.fieldLineArrows = this.fieldLineArrows.filter(arrowData => {
+            if (arrowData.parentGroup === this.originalFieldLinesGroup) {
+                return true; // Keep original magnet arrows
+            }
+            return false; // Remove cut piece arrows
+        });
 
         // Show original magnet and its field lines
         this.originalMagnet.visible = true;
@@ -1257,6 +1296,35 @@ export class MagnetCuttingModule {
             });
         }
 
+        // Animate field line arrows (moving from N to S)
+        this.fieldLineArrows.forEach(arrowData => {
+            const { arrow, points, parentGroup } = arrowData;
+
+            // Move arrow along the line (N to S direction)
+            arrowData.t += deltaTime * 0.3; // Animation speed
+            if (arrowData.t > 1) arrowData.t -= 1; // Loop back
+
+            const t = arrowData.t;
+            const idx = Math.floor(t * (points.length - 1));
+            const alpha = (t * (points.length - 1)) - idx;
+
+            if (idx < points.length - 1) {
+                const p1 = points[idx];
+                const p2 = points[idx + 1];
+
+                // Interpolate position
+                const pos = new THREE.Vector3().lerpVectors(p1, p2, alpha);
+                arrow.position.copy(pos);
+
+                // Orient arrow along the line direction (N to S)
+                const direction = new THREE.Vector3().subVectors(p2, p1).normalize();
+                if (direction.lengthSq() > 0.0001) {
+                    const lookTarget = pos.clone().add(direction);
+                    arrow.lookAt(lookTarget);
+                }
+            }
+        });
+
         // Pulse effect on laser when visible
         if (this.laserLine.visible) {
             const pulse = Math.sin(this.time * 10) * 0.2 + 0.8;
@@ -1299,6 +1367,9 @@ export class MagnetCuttingModule {
             this.app.sceneManager.remove(group);
         }
         this.fieldLineGroups = [];
+
+        // Clear all animated field line arrows
+        this.fieldLineArrows = [];
 
         // Remove original field lines
         if (this.originalFieldLinesGroup) {

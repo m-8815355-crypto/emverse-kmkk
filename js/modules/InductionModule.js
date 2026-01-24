@@ -70,6 +70,9 @@ export class InductionModule {
         // Track magnet movement for velocity calculation
         this.lastMagnetPos.copy(this.magnet.position);
 
+        // Create magnetic field lines around the magnet
+        this.createMagnetFieldLines();
+
         // Setup drag callbacks
         this.app.interaction.onDrag = (obj, pos) => {
             if (obj === this.magnet) {
@@ -77,11 +80,114 @@ export class InductionModule {
                 this.magnet.position.x = 0;
                 this.magnet.position.z = 0;
                 this.updateInduction();
+
+                // Update field lines position with magnet
+                if (this.magnetFieldLinesGroup) {
+                    this.magnetFieldLinesGroup.position.copy(this.magnet.position);
+                }
             }
         };
 
         // Create instruction label
         this.createInstructionLabel();
+    }
+
+    /**
+     * Create magnetic field lines around the bar magnet
+     * Shows magnetic flux that will cut through the coil
+     */
+    createMagnetFieldLines() {
+        this.magnetFieldLinesGroup = new THREE.Group();
+        this.magnetFieldArrows = []; // For animation
+
+        // Field line material
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0x00d4aa,
+            transparent: true,
+            opacity: 0.6,
+            linewidth: 2
+        });
+
+        // Create field lines radiating from N pole (top) to S pole (bottom)
+        // Since magnet is rotated 90° on Z, N is at +Y and S is at -Y
+        const magnetLength = 1.5;
+        const numLines = 6; // 6 field lines around the magnet
+
+        for (let i = 0; i < numLines; i++) {
+            const angle = (i / numLines) * Math.PI * 2;
+            const points = this.generateInductionFieldLinePoints(magnetLength, angle);
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geometry, lineMaterial.clone());
+            this.magnetFieldLinesGroup.add(line);
+
+            // Add animated arrows (2 per line)
+            this.addInductionFieldArrows(points, 2, i * 0.1);
+        }
+
+        // Position at magnet location
+        this.magnetFieldLinesGroup.position.copy(this.magnet.position);
+        this.app.sceneManager.add(this.magnetFieldLinesGroup);
+    }
+
+    /**
+     * Generate points for a field line going from N pole (top) to S pole (bottom)
+     */
+    generateInductionFieldLinePoints(magnetLength, angle) {
+        const points = [];
+        const numSegments = 40;
+
+        // N pole is at top (+y), S pole is at bottom (-y) due to rotation
+        const northY = magnetLength / 2;
+        const southY = -magnetLength / 2;
+
+        // Curve radius based on angle (how far the line extends outward)
+        const curveRadius = 0.8;
+        const xOffset = Math.cos(angle) * curveRadius;
+        const zOffset = Math.sin(angle) * curveRadius;
+
+        for (let i = 0; i <= numSegments; i++) {
+            const t = i / numSegments;
+
+            // Y goes from north pole to south pole
+            const y = northY + (southY - northY) * t;
+
+            // X and Z follow a bulging curve (max at middle)
+            const bulge = Math.sin(t * Math.PI);
+            const x = xOffset * bulge;
+            const z = zOffset * bulge;
+
+            points.push(new THREE.Vector3(x, y, z));
+        }
+
+        return points;
+    }
+
+    /**
+     * Add animated arrows along induction field lines
+     */
+    addInductionFieldArrows(points, numArrows, phaseOffset = 0) {
+        const arrowGeometry = new THREE.ConeGeometry(0.05, 0.12, 6);
+        arrowGeometry.rotateX(Math.PI / 2); // Point along +Z for lookAt
+
+        const arrowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffaa,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        for (let i = 0; i < numArrows; i++) {
+            const arrow = new THREE.Mesh(arrowGeometry.clone(), arrowMaterial.clone());
+            this.magnetFieldLinesGroup.add(arrow);
+
+            // Store arrow data for animation
+            const startT = (i / numArrows) + phaseOffset;
+            this.magnetFieldArrows.push({
+                arrow: arrow,
+                points: points,
+                t: startT % 1
+            });
+        }
     }
 
     createGalvanometer() {
@@ -418,6 +524,37 @@ export class InductionModule {
             const pulse = 0.8 + Math.sin(time * 5 + i) * 0.2;
             arrow.scale.setScalar(pulse);
         }
+
+        // Animate magnetic field arrows (moving from N to S)
+        if (this.magnetFieldArrows) {
+            for (const arrowData of this.magnetFieldArrows) {
+                const { arrow, points } = arrowData;
+
+                // Move arrow along the line (N to S direction)
+                arrowData.t += deltaTime * 0.4; // Animation speed
+                if (arrowData.t > 1) arrowData.t -= 1; // Loop back
+
+                const t = arrowData.t;
+                const idx = Math.floor(t * (points.length - 1));
+                const alpha = (t * (points.length - 1)) - idx;
+
+                if (idx < points.length - 1) {
+                    const p1 = points[idx];
+                    const p2 = points[idx + 1];
+
+                    // Interpolate position
+                    const pos = new THREE.Vector3().lerpVectors(p1, p2, alpha);
+                    arrow.position.copy(pos);
+
+                    // Orient arrow along the line direction (N to S)
+                    const direction = new THREE.Vector3().subVectors(p2, p1).normalize();
+                    if (direction.lengthSq() > 0.0001) {
+                        const lookTarget = pos.clone().add(direction);
+                        arrow.lookAt(lookTarget);
+                    }
+                }
+            }
+        }
     }
 
     cleanup() {
@@ -431,6 +568,13 @@ export class InductionModule {
             this.app.interaction.removeDraggable(this.magnet);
         }
         if (this.galvanometer) this.app.sceneManager.remove(this.galvanometer);
+
+        // Remove magnetic field lines
+        if (this.magnetFieldLinesGroup) {
+            this.app.sceneManager.remove(this.magnetFieldLinesGroup);
+            this.magnetFieldLinesGroup = null;
+        }
+        this.magnetFieldArrows = [];
 
         // Remove wires
         if (this.wires) {
