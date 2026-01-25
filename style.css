@@ -306,11 +306,56 @@ h4 {
     font-weight: 700;
 }
 
-#module-list {
+
+#module-list,
+#module-list-props,
+#module-list-resources {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+/* Resource items - similar to module items but for external links */
+.resource-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border: 1px solid transparent;
+    background: rgba(45, 47, 94, 0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.resource-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--lovable-gradient);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.resource-item:hover::before {
+    opacity: 0.05;
+}
+
+.resource-item:hover {
+    background: var(--surface-light);
+    border-color: var(--border-hover);
+    box-shadow: var(--inner-glow);
+    transform: translateX(4px);
+}
+
+.resource-item:hover .module-icon {
+    color: var(--secondary);
+    filter: drop-shadow(0 0 8px rgba(0, 229, 204, 0.6));
+    transform: scale(1.1);
 }
 
 .module-item {
