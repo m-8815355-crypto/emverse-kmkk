@@ -20,7 +20,6 @@ import { AssemblyModule } from './modules/AssemblyModule.js';
 import { ExamPracticeModule } from './modules/ExamPracticeModule.js';
 import { AITutorModule } from './modules/AITutorModule.js';
 import { MagnetCuttingModule } from './modules/MagnetCuttingModule.js';
-import { RLCircuitModule } from './modules/RLCircuitModule.js';
 import { GeminiTutor } from './GeminiTutor.js';
 
 class ElectromagneticLabApp {
@@ -79,7 +78,6 @@ class ElectromagneticLabApp {
                 lenz: new LenzLawModule(this),
                 electromagnet: new ElectromagnetModule(this),
                 magnetCutting: new MagnetCuttingModule(this),
-                rlCircuit: new RLCircuitModule(this),
                 assembly: new AssemblyModule(this),
                 examPractice: new ExamPracticeModule(this),
                 aiTutor: new AITutorModule(this)
