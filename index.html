@@ -193,58 +193,87 @@
                 </div>
             </section>
 
-            <!-- Widget Row -->
-            <section class="widgets-section">
-                <a href="ai-chat.html" target="_blank" class="widget-card glass-card ai-tutor-widget"
-                    id="ai-tutor-trigger">
-                    <div class="widget-glow cyan"></div>
-                    <div class="widget-content">
-                        <div class="widget-header">
-                            <div class="widget-icon cyan">
-                                <span class="material-symbols-outlined">smart_toy</span>
-                            </div>
-                            <span class="widget-badge">BETA</span>
-                        </div>
-                        <div class="widget-body">
-                            <h3 class="widget-title cyan">EM-Vee</h3>
-                            <p class="widget-description">Stuck on a concept? Get instant answers and formula breakdowns
-                                from our specialized AI helper.</p>
-                        </div>
-                        <span class="widget-action-btn">
-                            <span>ASK A QUESTION</span>
-                        </span>
-                    </div>
-                </a>
-
-                <div class="widget-card glass-card exam-widget" onclick="openExamPracticeModal()">
-                    <div class="widget-glow purple"></div>
-                    <div class="widget-content">
-                        <div class="widget-header">
-                            <div class="widget-icon purple">
-                                <span class="material-symbols-outlined">school</span>
-                            </div>
-                            <div class="mastery-stats">
-                                <p class="mastery-label">Mastery</p>
-                                <p class="mastery-value">72%</p>
-                            </div>
-                        </div>
-                        <div class="widget-body">
-                            <h3 class="widget-title purple">Exam Practice</h3>
-                            <div class="progress-container">
-                                <div class="progress-info">
-                                    <span>WEEKLY GOAL</span>
-                                    <span>15/20 Qs</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 75%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="widget-action-btn purple"
-                            onclick="event.stopPropagation(); openExamPracticeModal()">
-                            <span>TAKE PRACTICE TEST</span>
+            <!-- Exam Practice Section -->
+            <section class="exam-practice-section">
+                <!-- Part 1: Exam Questions -->
+                <div class="exam-row glass-card">
+                    <div class="exam-content">
+                        <span class="exam-badge">EXAM PRACTICE</span>
+                        <h2 class="exam-headline">Exam-Ready in Minutes</h2>
+                        <p class="exam-description">
+                            Train with real exam-style questions designed to test true understanding —
+                            not memorization. Get instant feedback, clear explanations, and
+                            identify weak topics fast.
+                        </p>
+                        <button class="action-btn cyan-btn" onclick="openExamPracticeModal()">
+                            <span>Start 5 Questions</span>
                         </button>
                     </div>
+                    <div class="exam-image-wrapper">
+                        <img src="assets/images/exam-board.png" alt="Physics Problems on Whiteboard" class="exam-image">
+                    </div>
+                </div>
+
+                <!-- Part 2: Flashcards -->
+                <div class="exam-row glass-card reverse-layout">
+                    <div class="exam-image-wrapper">
+                        <img src="assets/images/flashcards.png" alt="Physics Flashcards" class="exam-image">
+                    </div>
+                    <div class="exam-content">
+                        <span class="exam-badge purple-badge">FLASHCARDS</span>
+                        <h2 class="exam-headline">Revise Faster.<br>Remember Longer.</h2>
+                        <p class="exam-description">
+                            Quick, interactive flashcards built for
+                            last-minute revision. Master formulas,
+                            concepts, and definitions anytime —
+                            perfect before tests or class.
+                        </p>
+                        <a href="syllabus.html#flashcards" class="action-btn purple-btn">
+                            <span>Open Flashcards</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EM-Vee Section -->
+            <section class="em-vee-section glass-card">
+                <div class="em-vee-content">
+                    <h2 class="em-vee-headline">MEET <span class="cyan-text">EM-VEE</span></h2>
+                    <p class="em-vee-subheadline">Your personal assistant for electromagnetism.</p>
+
+                    <div class="em-vee-features-grid">
+                        <div class="feature-box">
+                            <span class="material-symbols-outlined icon">check_circle</span>
+                            <span>Instant Answers</span>
+                        </div>
+                        <div class="feature-box">
+                            <span class="material-symbols-outlined icon">functions</span>
+                            <span>Formulas</span>
+                        </div>
+                        <div class="feature-box">
+                            <span class="material-symbols-outlined icon">help</span>
+                            <span>24/7 Help</span>
+                        </div>
+                        <div class="feature-box">
+                            <span class="material-symbols-outlined icon">lightbulb</span>
+                            <span>Exam Tips</span>
+                        </div>
+                    </div>
+
+                    <p class="em-vee-text">
+                        Stuck on a concept? Get instant answers and formula
+                        breakdowns from our specialized AI helper
+                    </p>
+
+                    <a href="ai-chat.html" class="action-btn cyan-btn large">
+                        <span class="material-symbols-outlined">chat</span>
+                        <span>Chat with EM-Vee</span>
+                    </a>
+                </div>
+
+                <div class="em-vee-visual">
+                    <img src="assets/images/em-vee-phone.png" alt="EM-Vee Chat Interface on Phone" class="phone-mockup">
+                    <div class="glow-effect cyan"></div>
                 </div>
             </section>
 
@@ -351,111 +380,89 @@
                 </div>
             </section>
 
-            <!-- Core Modules Section -->
-            <section class="core-modules-section">
-                <div class="section-header">
-                    <div class="section-title">
-                        <span class="title-accent"></span>
-                        Explore More
-                    </div>
+            <!-- Exploration Hub Section -->
+            <section class="exploration-hub-section">
+                <div class="hub-header">
+                    <h2 class="hub-title">EXPLORATION HUB</h2>
+                    <p class="hub-subtitle">Discover the world of electromagnetism.</p>
                 </div>
-                <div class="core-modules-grid">
-                    <!-- History & Foundations Card -->
-                    <a id="history" href="history.html" class="module-feature-card">
-                        <div class="module-card-image"
-                            style="background-image: url('assets/images/history-card-bg.png');"></div>
-                        <div class="module-card-gradient"></div>
-                        <div class="module-card-content">
-                            <div class="module-card-badge cyan">
-                                <span class="material-symbols-outlined">auto_awesome</span>
-                                <span>HISTORY & FOUNDATIONS</span>
-                            </div>
-                            <h3 class="module-card-title">THE ARCHITECTS OF LIGHT</h3>
-                            <p class="module-card-description">Journey through the origins of electromagnetic theory.
-                                Master Maxwell's equations and the brilliant minds that defined the speed of light.</p>
-                            <div class="card-cta-btn">
-                                <span>Explore History</span>
-                                <span class="material-symbols-outlined">arrow_forward</span>
-                            </div>
+
+                <div class="hub-grid">
+                    <!-- History Card -->
+                    <a href="history.html" class="hub-card cyan-theme">
+                        <div class="card-icon-wrapper">
+                            <span class="material-symbols-outlined">explore</span>
+                        </div>
+                        <h3 class="card-title">History of<br>Electromagnetism</h3>
+                        <div class="card-image-box">
+                            <img src="assets/images/history-founders.png" alt="Faraday and Maxwell" class="card-img">
+                        </div>
+                        <div class="card-action">
+                            <span>EXPLORE HISTORY</span>
                         </div>
                     </a>
 
-                    <!-- Student Support Card -->
-                    <a id="syllabus" href="syllabus.html" class="module-feature-card">
-                        <div class="module-card-image"
-                            style="background-image: url('assets/images/physics-card-bg.png');"></div>
-                        <div class="module-card-gradient"></div>
-                        <div class="module-card-content">
-                            <div class="module-card-badge red">
-                                <span class="material-symbols-outlined">restaurant_menu</span>
-                                <span>Uncle Roger's Kitchen</span>
-                            </div>
-                            <h3 class="module-card-title">PHYSICS WITHOUT CRYING IN EXAM HALL</h3>
-                            <p class="module-card-description">Put on your orange polo and grab your MSG, because we
-                                aren’t just solving equations—we’re cooking up some serious physics! In this Uncle
-                                Roger's Kitchen, we treat Electromagnetic Induction like the ultimate fried rice recipe.
-                            </p>
-                            <div class="card-cta-btn red">
-                                <span>Start Cooking</span>
-                                <span class="material-symbols-outlined">arrow_forward</span>
-                            </div>
+                    <!-- Kitchen Card -->
+                    <a href="syllabus.html" class="hub-card orange-theme">
+                        <div class="card-icon-wrapper">
+                            <span class="material-symbols-outlined">restaurant_menu</span>
+                        </div>
+                        <h3 class="card-title">Uncle Roger's<br>Kitchen</h3>
+                        <p class="card-micro-sub">(Physics, but easy)</p>
+                        <div class="card-image-box">
+                            <img src="assets/images/physics-chef.png" alt="Uncle Roger Physics" class="card-img">
+                        </div>
+                        <div class="card-action">
+                            <span>START COOKING</span>
                         </div>
                     </a>
 
-                    <!-- Modern Tech Card -->
-                    <a id="applications" href="applications.html" class="module-feature-card">
-                        <div class="module-card-image"
-                            style="background-image: url('assets/images/modern-tech-bg.png');"></div>
-                        <div class="module-card-gradient"></div>
-                        <div class="module-card-content">
-                            <div class="module-card-badge magenta">
-                                <span class="material-symbols-outlined">rocket_launch</span>
-                                <span>MODERN TECH</span>
+                    <!-- Real World Apps Card (Full Width) -->
+                    <a href="applications.html" class="hub-card full-width purple-theme">
+                        <div class="card-content-side">
+                            <div class="card-icon-wrapper">
+                                <span class="material-symbols-outlined">settings_input_component</span>
                             </div>
-                            <h3 class="module-card-title">EM IN TODAY'S WORLD</h3>
-                            <p class="module-card-description">From 5G networks to wireless charging and fiber optics.
-                                Explore the real-world applications driving the future of communication.</p>
-                            <div class="card-cta-btn magenta">
-                                <span>Discover Tech</span>
-                                <span class="material-symbols-outlined">arrow_forward</span>
+                            <h3 class="card-title">Real-World<br>Applications</h3>
+                            <div class="card-action floating">
+                                <span>DISCOVER TECH</span>
                             </div>
+                        </div>
+                        <div class="card-image-box wide">
+                            <img src="assets/images/ev-car.png" alt="EV Charging" class="card-img">
                         </div>
                     </a>
                 </div>
             </section>
+            <nav class="bottom-nav">
+                <div class="nav-container glass-nav">
+                    <div class="nav-item active">
+                        <span class="material-symbols-outlined filled">home</span>
+                        <span class="nav-label">HOME</span>
+                    </div>
 
-        </main>
+                    <a href="history.html" class="nav-item">
+                        <span class="material-symbols-outlined">history_edu</span>
+                        <span class="nav-label">HISTORY</span>
+                    </a>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <div class="nav-container glass-nav">
-                <div class="nav-item active">
-                    <span class="material-symbols-outlined filled">home</span>
-                    <span class="nav-label">HOME</span>
-                </div>
+                    <div class="nav-search">
+                        <a href="simulator.html" class="search-btn">
+                            <span class="material-symbols-outlined">grid_view</span>
+                        </a>
+                    </div>
 
-                <a href="history.html" class="nav-item">
-                    <span class="material-symbols-outlined">history_edu</span>
-                    <span class="nav-label">HISTORY</span>
-                </a>
+                    <a href="syllabus.html" class="nav-item">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        <span class="nav-label">LEARN</span>
+                    </a>
 
-                <div class="nav-search">
-                    <a href="simulator.html" class="search-btn">
-                        <span class="material-symbols-outlined">grid_view</span>
+                    <a href="applications.html" class="nav-item">
+                        <span class="material-symbols-outlined">explore</span>
+                        <span class="nav-label">EXPLORE</span>
                     </a>
                 </div>
-
-                <a href="syllabus.html" class="nav-item">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="nav-label">LEARN</span>
-                </a>
-
-                <a href="applications.html" class="nav-item">
-                    <span class="material-symbols-outlined">explore</span>
-                    <span class="nav-label">EXPLORE</span>
-                </a>
-            </div>
-        </nav>
+            </nav>
     </div>
 
     <!-- EM-Vee Modal -->
