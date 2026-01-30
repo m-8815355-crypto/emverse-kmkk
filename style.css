@@ -41,8 +41,8 @@
     --inner-glow: inset 0 0 30px rgba(0, 82, 255, 0.1);
 
     /* Typography */
-    --font-primary: 'Crimson Text', Georgia, serif;
-    --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Montserrat', sans-serif;
 
     /* Spacing */
     --sidebar-width: 280px;
