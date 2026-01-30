@@ -204,6 +204,68 @@
             display: block;
         }
 
+        /* Video Thumbnail Styling */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .video-thumbnail.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .play-button-overlay {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 242, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid var(--cyan-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+
+        .play-button-overlay .material-symbols-outlined {
+            font-size: 48px;
+            color: var(--cyan-glow);
+            margin-left: 6px;
+        }
+
+        .video-thumbnail:hover .play-button-overlay {
+            transform: scale(1.15);
+            background: var(--cyan-glow);
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.4);
+        }
+
+        .video-thumbnail:hover .play-button-overlay .material-symbols-outlined {
+            color: #080821;
+        }
+
         /* Mind Map */
         .mindmap-container {
             width: 100%;
@@ -955,8 +1017,17 @@
         <div class="media-container video-mode" id="media-container">
             <!-- Video Tab -->
             <div class="tab-content" id="video-content">
-                <iframe src="https://drive.google.com/file/d/18d33Bppo8jfSzTMaD7-wS42DqBBjLyXz/preview" allow="autoplay"
-                    title="Physics Video Lecture"></iframe>
+                <div class="video-wrapper">
+                    <div class="video-thumbnail" id="video-thumbnail" onclick="startVideo()"
+                        style="background-image: url('assets/images/ben-thumbnail.png');">
+                        <div class="play-button-overlay">
+                            <span class="material-symbols-outlined">play_arrow</span>
+                        </div>
+                    </div>
+                    <iframe id="lecture-video"
+                        src="https://drive.google.com/file/d/18d33Bppo8jfSzTMaD7-wS42DqBBjLyXz/preview" allow="autoplay"
+                        title="Physics Video Lecture"></iframe>
+                </div>
             </div>
 
             <!-- Slides Tab -->
@@ -1329,6 +1400,11 @@
                 container.classList.remove('video-mode');
                 container.classList.add('expanded');
             }
+        }
+
+        function startVideo() {
+            const thumbnail = document.getElementById('video-thumbnail');
+            thumbnail.classList.add('hidden');
         }
 
         function toggleNode(nodeId) {
