@@ -1024,8 +1024,8 @@
                             <span class="material-symbols-outlined">play_arrow</span>
                         </div>
                     </div>
-                    <iframe id="lecture-video"
-                        src="https://drive.google.com/file/d/18d33Bppo8jfSzTMaD7-wS42DqBBjLyXz/preview" allow="autoplay"
+                    <iframe id="lecture-video" src="https://www.youtube.com/embed/9r6S6hjX4a8"
+                        allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen
                         title="Physics Video Lecture"></iframe>
                 </div>
             </div>
@@ -1404,7 +1404,16 @@
 
         function startVideo() {
             const thumbnail = document.getElementById('video-thumbnail');
+            const video = document.getElementById('lecture-video');
             thumbnail.classList.add('hidden');
+
+            // Add autoplay to YouTube URL on click
+            const currentSrc = video.src;
+            if (currentSrc.indexOf('?') > -1) {
+                video.src += '&autoplay=1';
+            } else {
+                video.src += '?autoplay=1';
+            }
         }
 
         function toggleNode(nodeId) {
