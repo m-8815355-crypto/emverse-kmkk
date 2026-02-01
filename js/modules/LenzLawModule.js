@@ -22,13 +22,13 @@ export class LenzLawModule {
     }
 
     init() {
-        // Create copper tube
+        // Create copper tube (scaled to 3/4 original size)
         this.tube = this.app.components.createCopperTube({
-            height: 5,
-            outerRadius: 0.5,
-            innerRadius: 0.42
+            height: 3.75,        // 5 * 0.75
+            outerRadius: 0.375,  // 0.5 * 0.75
+            innerRadius: 0.315   // 0.42 * 0.75
         });
-        this.tube.position.set(0, 2.5, 0);
+        this.tube.position.set(0, 1.875, 0); // Adjusted Y position for smaller tube
 
         // Make tube transparent as requested (50-70%)
         this.tube.traverse(child => {

@@ -102,13 +102,13 @@ export class TransformerModule {
             draggable: false
         };
 
-        // Iron core - using visible steel blue-gray color
+        // Iron core - bright "Galvanized Steel" for high contrast against dark background
         const coreMaterial = new THREE.MeshStandardMaterial({
-            color: 0x5a6a7a, // Visible steel blue-gray
-            metalness: 0.7,
-            roughness: 0.35,
-            emissive: 0x1a2a3a,
-            emissiveIntensity: 0.15
+            color: 0xD3D3D3, // Galvanized Steel - bright gray for visibility
+            metalness: 1.0,  // Full metalness to react to scene lights
+            roughness: 0.3,  // Smooth, slightly reflective surface
+            emissive: 0x111111, // Subtle self-emissive glow to prevent complete blackness in shadows
+            emissiveIntensity: 0.3
         });
 
         // Core dimensions
@@ -147,17 +147,20 @@ export class TransformerModule {
         coreLabel.scale.set(0.8, 0.3, 1);
         group.add(coreLabel);
 
-        // Primary coil (left side) - copper wire
-        const primaryCoil = this.createCoilWinding(-coreWidth / 3, primaryTurns, 0.4, coreHeight * 0.6, 0xd4a574);
+        // Primary coil (left side) - rich copper wire
+        const primaryCoil = this.createCoilWinding(-coreWidth / 3, primaryTurns, 0.4, coreHeight * 0.6, 0xB87333, true);
         primaryCoil.userData.isPrimary = true;
         group.add(primaryCoil);
         group.userData.primaryCoil = primaryCoil;
 
-        // Secondary coil (right side) - copper wire  
-        const secondaryCoil = this.createCoilWinding(coreWidth / 3, secondaryTurns, 0.35, coreHeight * 0.6, 0xd4a574);
+        // Secondary coil (right side) - bright gold wire for visual distinction
+        const secondaryCoil = this.createCoilWinding(coreWidth / 3, secondaryTurns, 0.35, coreHeight * 0.6, 0xFFD700, false);
         secondaryCoil.userData.isSecondary = true;
         group.add(secondaryCoil);
         group.userData.secondaryCoil = secondaryCoil;
+
+        // Add rim lights near iron core corners for better 3D definition
+        this.addRimLights(group, coreWidth, coreHeight);
 
         group.position.set(0, 0.5, 0);
         this.transformer = group;
@@ -170,16 +173,19 @@ export class TransformerModule {
         canvas.height = 96;
         const ctx = canvas.getContext('2d');
 
-        ctx.fillStyle = 'rgba(90, 106, 122, 0.9)';
+        // Dark background for contrast against bright galvanized steel
+        ctx.fillStyle = 'rgba(40, 45, 50, 0.95)';
         ctx.roundRect(10, 10, 236, 76, 8);
         ctx.fill();
 
-        ctx.strokeStyle = '#8090a0';
+        // Bright border matching galvanized steel
+        ctx.strokeStyle = '#D3D3D3';
         ctx.lineWidth = 2;
         ctx.roundRect(10, 10, 236, 76, 8);
         ctx.stroke();
 
-        ctx.fillStyle = '#c0d0e0';
+        // Bright text for readability
+        ctx.fillStyle = '#E8E8E8';
         ctx.font = 'bold 28px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -190,14 +196,37 @@ export class TransformerModule {
         return new THREE.Sprite(material);
     }
 
-    createCoilWinding(xPos, turns, radius, height, color) {
+    /**
+     * Add rim lights near the iron core corners for enhanced 3D definition
+     * These act as subtle edge lights to define the core shape against dark backgrounds
+     */
+    addRimLights(group, coreWidth, coreHeight) {
+        const rimLightColor = 0xE0FFFF; // Cool white / faint cyan
+        const rimLightIntensity = 0.4;
+        const rimLightDistance = 3;
+
+        // Front-left rim light
+        const rimLight1 = new THREE.PointLight(rimLightColor, rimLightIntensity, rimLightDistance);
+        rimLight1.position.set(-coreWidth / 2.5, coreHeight / 3, 1.2);
+        group.add(rimLight1);
+
+        // Front-right rim light
+        const rimLight2 = new THREE.PointLight(rimLightColor, rimLightIntensity, rimLightDistance);
+        rimLight2.position.set(coreWidth / 2.5, coreHeight / 3, 1.2);
+        group.add(rimLight2);
+
+        // Store references for potential cleanup
+        this.rimLights = [rimLight1, rimLight2];
+    }
+
+    createCoilWinding(xPos, turns, radius, height, color, isPrimary = true) {
         const group = new THREE.Group();
         const wireRadius = 0.025;
 
         const coilMaterial = new THREE.MeshStandardMaterial({
             color: color,
-            metalness: 0.6,
-            roughness: 0.3,
+            metalness: 1.0, // Full metalness for realistic metallic wire appearance
+            roughness: 0.25, // Smooth, shiny wire surface
             emissive: color,
             emissiveIntensity: 0
         });
@@ -214,13 +243,15 @@ export class TransformerModule {
         }
 
         const curve = new THREE.CatmullRomCurve3(points);
-        const geom = new THREE.TubeGeometry(curve, segments * 2, wireRadius, 8, false);
+        // Increased radial segments from 8 to 16 for smoother, more "wire-like" rounded appearance
+        const geom = new THREE.TubeGeometry(curve, segments * 2, wireRadius, 16, false);
         const mesh = new THREE.Mesh(geom, coilMaterial);
         mesh.castShadow = true;
         group.add(mesh);
 
         group.position.x = xPos;
         group.userData.material = coilMaterial;
+        group.userData.isPrimaryCoil = isPrimary; // Track coil type for animation
         return group;
     }
 
@@ -467,7 +498,7 @@ export class TransformerModule {
             });
         }
 
-        const primaryCoil = this.createCoilWinding(-coreWidth / 3, primary, 0.4, coreHeight * 0.6, 0xd4a574);
+        const primaryCoil = this.createCoilWinding(-coreWidth / 3, primary, 0.4, coreHeight * 0.6, 0xB87333, true);
         primaryCoil.userData.isPrimary = true;
         this.transformer.add(primaryCoil);
         this.transformer.userData.primaryCoil = primaryCoil;
@@ -481,7 +512,7 @@ export class TransformerModule {
             });
         }
 
-        const secondaryCoil = this.createCoilWinding(coreWidth / 3, secondary, 0.35, coreHeight * 0.6, 0xd4a574);
+        const secondaryCoil = this.createCoilWinding(coreWidth / 3, secondary, 0.35, coreHeight * 0.6, 0xFFD700, false);
         secondaryCoil.userData.isSecondary = true;
         this.transformer.add(secondaryCoil);
         this.transformer.userData.secondaryCoil = secondaryCoil;
