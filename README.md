@@ -27,9 +27,6 @@ A physics engine featuring multiple simulation modules:
 | **Magnet Cutting** | Understand dipoles vs monopoles |
 | **Assembly Puzzle** | Build components piece by piece |
 
-### 🤖 EM-Vee AI Tutor (Beta)
-
-Powered by Gemini AI, this specialized assistant provides instant answers and formula breakdowns for electromagnetism concepts.
 
 ### 📱 AR Experience
 
@@ -91,8 +88,7 @@ python -m http.server 8080
 - **Three.js** (v0.160) – 3D rendering engine
 - **ES Modules** – Modern JavaScript architecture
 - **CSS3** – Glassmorphism effects and animations
-- **Google Fonts** – Crimson Text & Inter
-- **Gemini AI** – Intelligent tutoring system
+- **Google Fonts** – Montserrat & Inter
 
 ---
 
@@ -105,7 +101,6 @@ EM Simulation/
 ├── syllabus.html           # Learning content & flashcards
 ├── history.html            # History of electromagnetism
 ├── applications.html       # Modern tech applications
-├── ai-chat.html            # EM-Vee AI Tutor interface
 ├── style.css               # Simulator styling
 ├── landing.css             # Landing page styling
 ├── js/
@@ -114,7 +109,6 @@ EM Simulation/
 │   ├── ComponentLibrary.js # 3D component factories
 │   ├── FieldVisualizer.js  # Magnetic field rendering
 │   ├── InteractionManager.js # User input handling
-│   ├── GeminiTutor.js      # AI tutor integration
 │   └── modules/            # Simulation modules
 │       ├── BarMagnetModule.js
 │       ├── SolenoidModule.js

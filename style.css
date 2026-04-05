@@ -57,38 +57,6 @@
     --transition-slow: 0.4s ease;
 }
 
-body.light-mode {
-    /* Light Mode - Softer Lovable */
-    --bg-gradient-start: #e8ebf5;
-    --bg-gradient-end: #fce7f3;
-    --primary: #0052FF;
-    --primary-light: #3374FF;
-    --primary-dark: #0041CC;
-    --secondary: #F43F5E;
-    --secondary-light: #FF6B85;
-    --secondary-dark: #D91D47;
-    --accent: #A855F7;
-
-    /* Neutrals */
-    --surface: rgba(255, 255, 255, 0.7);
-    --surface-light: rgba(248, 250, 255, 0.8);
-    --surface-dark: rgba(230, 235, 250, 0.9);
-    --text-primary: #2a2c5c;
-    --text-secondary: #5456a8;
-    --text-muted: #7a8db0;
-    --border: rgba(0, 82, 255, 0.25);
-    --border-hover: rgba(244, 63, 94, 0.5);
-
-    /* Effects */
-    --glass-bg: rgba(255, 255, 255, 0.5);
-    --glass-border: rgba(0, 82, 255, 0.2);
-    --glass-blur: blur(20px);
-    --glow: 0 0 20px rgba(0, 82, 255, 0.3), 0 0 30px rgba(244, 63, 94, 0.2);
-    --glow-strong: 0 0 30px rgba(0, 82, 255, 0.5), 0 0 50px rgba(244, 63, 94, 0.3);
-    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
-    --inner-glow: inset 0 0 30px rgba(0, 82, 255, 0.08);
-}
 
 /* Reset & Base */
 *,

@@ -200,10 +200,6 @@ export class ExamPracticeModule {
                         <span class="btn-icon">💡</span>
                         Get Hint
                     </button>
-                    <button class="exam-btn secondary" id="ask-ai-btn">
-                        <span class="btn-icon">🤖</span>
-                        Ask EM-Vee
-                    </button>
                     <button class="exam-btn primary" id="show-answer-btn">
                         <span class="btn-icon">✓</span>
                         Show Answer
@@ -328,28 +324,6 @@ export class ExamPracticeModule {
         setTimeout(() => hint.remove(), 8000);
     }
 
-    askAITutor() {
-        const q = this.questions[this.currentQuestion];
-
-        // Open EM-Vee with context
-        if (this.app.geminiTutor) {
-            if (!this.app.geminiTutor.isOpen) {
-                this.app.geminiTutor.toggleChat();
-            }
-
-            // Send contextual question
-            const message = `I'm working on this exam question:\n\n**${q.title}**\n${q.scenario}\n\nGiven: ${q.data.join(', ')}\n\nQuestion: ${q.question}\n\nCan you help me understand how to approach this problem?`;
-
-            setTimeout(() => {
-                const input = document.getElementById('gemini-input');
-                if (input) {
-                    input.value = message;
-                    input.dispatchEvent(new Event('input'));
-                }
-            }, 500);
-        }
-    }
-
     setupExamListeners() {
         document.getElementById('show-answer-btn').addEventListener('click', () => {
             this.showAnswer();
@@ -366,10 +340,6 @@ export class ExamPracticeModule {
 
         document.getElementById('hint-btn').addEventListener('click', () => {
             this.showHint();
-        });
-
-        document.getElementById('ask-ai-btn').addEventListener('click', () => {
-            this.askAITutor();
         });
     }
 

@@ -18,9 +18,7 @@ import { ElectromagnetModule } from './modules/ElectromagnetModule.js';
 
 import { AssemblyModule } from './modules/AssemblyModule.js';
 import { ExamPracticeModule } from './modules/ExamPracticeModule.js';
-import { AITutorModule } from './modules/AITutorModule.js';
 import { MagnetCuttingModule } from './modules/MagnetCuttingModule.js';
-import { GeminiTutor } from './GeminiTutor.js';
 
 class ElectromagneticLabApp {
     constructor() {
@@ -79,14 +77,10 @@ class ElectromagneticLabApp {
                 electromagnet: new ElectromagnetModule(this),
                 magnetCutting: new MagnetCuttingModule(this),
                 assembly: new AssemblyModule(this),
-                examPractice: new ExamPracticeModule(this),
-                aiTutor: new AITutorModule(this)
+                examPractice: new ExamPracticeModule(this)
             };
 
             this.currentModule = null;
-
-            // Initialize EM-Vee
-            this.geminiTutor = new GeminiTutor(this);
 
             // Setup UI event listeners
             this.setupUIListeners();
@@ -228,22 +222,6 @@ class ElectromagneticLabApp {
             }
         });
 
-        // Theme Toggle
-        const themeToggleBtn = document.getElementById('theme-toggle-btn');
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            this.fieldVisualizer.setTheme(isLight ? 'light' : 'dark');
-            this.sceneManager.setTheme(isLight ? 'light' : 'dark');
-
-            // Re-render current module field visualization
-            if (this.currentModule && this.currentModule.updateFieldVisualization) {
-                this.currentModule.updateFieldVisualization();
-            }
-
-            // Update tooltip/icon if needed
-            themeToggleBtn.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
-        });
 
         // Panel Toggle
         const panelToggleBtn = document.getElementById('panel-toggle-btn');

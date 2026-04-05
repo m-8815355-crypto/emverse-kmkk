@@ -126,9 +126,6 @@
                 <span class="material-symbols-outlined">view_in_ar</span>
                 <span>AR</span>
             </a>
-            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
-            </button>
         </div>
     </nav>
 
@@ -235,48 +232,7 @@
                 </div>
             </section>
 
-            <!-- EM-Vee Section -->
-            <section class="em-vee-section">
-                <div class="em-vee-content">
-                    <h2 class="em-vee-headline">MEET <span class="cyan-text">EM-VEE</span></h2>
-                    <p class="em-vee-subheadline">Your personal assistant for electromagnetism.</p>
 
-                    <div class="em-vee-features-grid">
-                        <div class="feature-box">
-                            <span class="material-symbols-outlined icon">check_circle</span>
-                            <span>Instant Answers</span>
-                        </div>
-                        <div class="feature-box">
-                            <span class="material-symbols-outlined icon">functions</span>
-                            <span>Formulas</span>
-                        </div>
-                        <div class="feature-box">
-                            <span class="material-symbols-outlined icon">help</span>
-                            <span>24/7 Help</span>
-                        </div>
-                        <div class="feature-box">
-                            <span class="material-symbols-outlined icon">lightbulb</span>
-                            <span>Exam Tips</span>
-                        </div>
-                    </div>
-
-                    <p class="em-vee-text">
-                        Stuck on a concept? Get instant answers and formula
-                        breakdowns from our specialized AI helper
-                    </p>
-
-                    <a href="ai-chat.html" class="action-btn cyan-btn large">
-                        <span class="material-symbols-outlined">chat</span>
-                        <span>Chat with EM-Vee</span>
-                    </a>
-                </div>
-
-                <div class="em-vee-visual">
-                    <img src="assets/images/hand-holding-em-vee.png" alt="EM-Vee Chat Montserratface on Phone"
-                        class="phone-mockup">
-                    <div class="glow-effect cyan"></div>
-                </div>
-            </section>
 
             <!-- What is Electromagnetism Section -->
             <section class="em-intro-section">
@@ -469,41 +425,7 @@
             </footer>
     </div>
 
-    <!-- EM-Vee Modal -->
-    <div id="ai-tutor-modal" class="modal-overlay" onclick="closeAITutorModal(event)">
-        <div class="modal-container glass-card" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <div class="modal-title-area">
-                    <div class="widget-icon cyan">
-                        <span class="material-symbols-outlined">smart_toy</span>
-                    </div>
-                    <div>
-                        <h2 class="modal-title">EM-Vee</h2>
-                        <p class="modal-subtitle">Powered by Gemini AI</p>
-                    </div>
-                </div>
-                <button class="modal-close-btn" onclick="closeAITutorModal(event)">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="chat-container" id="ai-chat-container">
-                    <div class="chat-welcome">
-                        <span class="material-symbols-outlined chat-icon">psychology</span>
-                        <h3>Welcome to EM-Vee!</h3>
-                        <p>Ask me anything about electromagnetism, from basic concepts to complex problems.</p>
-                    </div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="ai-chat-input" placeholder="Ask a question about electromagnetism..."
-                        onkeypress="if(event.key==='Enter') sendAIMessage()">
-                    <button class="send-btn" onclick="sendAIMessage()">
-                        <span class="material-symbols-outlined">send</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Exam Practice Modal -->
     <div id="exam-practice-modal" class="modal-overlay" onclick="closeExamPracticeModal(event)">
@@ -580,50 +502,7 @@
     </div>
 
     <script>
-        // Theme Toggle Functions
-        function toggleTheme() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-
-            if (html.classList.contains('light')) {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.textContent = 'dark_mode';
-                localStorage.setItem('emverse-theme', 'dark');
-            } else {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.textContent = 'light_mode';
-                localStorage.setItem('emverse-theme', 'light');
-            }
-        }
-
-        // Apply saved theme on page load
-        (function initTheme() {
-            const savedTheme = localStorage.getItem('emverse-theme') || 'dark';
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-
-            html.classList.remove('light', 'dark');
-            html.classList.add(savedTheme);
-
-            if (themeIcon) {
-                themeIcon.textContent = savedTheme === 'light' ? 'light_mode' : 'dark_mode';
-            }
-        })();
-
         // Modal Functions
-        function openAITutorModal() {
-            document.getElementById('ai-tutor-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAITutorModal(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('ai-tutor-modal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
         function openExamPracticeModal() {
             document.getElementById('exam-practice-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -644,27 +523,6 @@
             if (event) event.stopPropagation();
             document.getElementById('puzzle-intro-modal').classList.remove('active');
             document.body.style.overflow = '';
-        }
-
-        // EM-Vee chat placeholder
-        function sendAIMessage() {
-            const input = document.getElementById('ai-chat-input');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const container = document.getElementById('ai-chat-container');
-            // Clear welcome if present
-            const welcome = container.querySelector('.chat-welcome');
-            if (welcome) welcome.remove();
-
-            // Add user message
-            container.innerHTML += `<div class="chat-message user"><p>${message}</p></div>`;
-
-            // Add AI response placeholder
-            container.innerHTML += `<div class="chat-message ai"><p>EM-Vee is here to help! Ask me anything about electromagnetism.</p></div>`;
-
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
         }
 
         // Exam Practice - Full Question Bank
@@ -894,7 +752,6 @@
         // Close modals on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeAITutorModal();
                 closeExamPracticeModal();
                 closePuzzleModal();
             }
@@ -916,7 +773,6 @@
     </script>
 
     <script type="module">
-        import { GeminiTutor } from './js/GeminiTutor.js';
         import { AuroraBackground } from './js/Aurora.js';
         import { EMDock, DockIcons, smoothScrollTo } from './js/Dock.js';
 
@@ -964,30 +820,11 @@
                     label: 'AR Lab',
                     icon: DockIcons.ar,
                     onClick: () => window.open('https://em-ar.vercel.app/', '_blank')
-                },
-                {
-                    label: 'Theme',
-                    icon: DockIcons.theme,
-                    onClick: () => {
-                        const html = document.documentElement;
-                        const isLight = html.classList.contains('light');
-                        html.classList.remove('light', 'dark');
-                        html.classList.add(isLight ? 'dark' : 'light');
-                        localStorage.setItem('emverse-theme', isLight ? 'dark' : 'light');
-                    }
                 }
             ]
         });
         dock.init();
         window.emDock = dock;
-
-        // Initialize EM-Vee on the landing page
-        document.addEventListener('DOMContentLoaded', () => {
-            const tutorApp = {
-                currentModule: { name: 'landing' }
-            };
-            window.geminiTutor = new GeminiTutor(tutorApp);
-        });
     </script>
 
     <!-- Page Loader Aurora Background -->
