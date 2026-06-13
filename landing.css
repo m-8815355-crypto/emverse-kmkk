@@ -4,30 +4,30 @@
 
 /* CSS Variables - Dark Mode (Default) */
 :root {
-    /* Deep Moody Theme */
-    --primary-dark: #130F26;
-    --deep-purple: #2D1B4E;
-    --cyan-glow: #00F2FF;
-    --purple-glow: #B026FF;
+    /* Color Hunt Palette 2f2fe4162e931a1953080616 Theme */
+    --primary-dark: #080616;
+    --deep-purple: #1A1953;
+    --cyan-glow: #2F2FE4;
+    --purple-glow: #2F2FE4;
 
-    /* Background Gradient */
-    --bg-gradient: radial-gradient(circle at top right, #3B1C5A 0%, #1A123D 45%, #0B0915 100%);
+    /* Background Gradient (Deep Navy #1A1953 & Deep Black/Purple #080616) */
+    --bg-gradient: radial-gradient(circle at top right, #162E93 0%, #1A1953 45%, #080616 100%);
 
-    /* Glass Effects */
-    --glass-bg: rgba(255, 255, 255, 0.04);
-    --glass-bg-hover: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    /* Glass Effects using Navy */
+    --glass-bg: rgba(26, 25, 83, 0.15);
+    --glass-bg-hover: rgba(26, 25, 83, 0.3);
+    --glass-border: rgba(47, 47, 228, 0.25);
     --glass-blur: blur(50px);
 
-    /* Text Colors */
+    /* Text Colors are white */
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
+    --text-secondary: rgba(255, 255, 255, 0.75);
+    --text-muted: rgba(255, 255, 255, 0.55);
     --text-dim: rgba(255, 255, 255, 0.4);
 
-    /* Shadows */
-    --card-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.8);
-    --glow-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    /* Shadows use Deep Black/Purple (#080616) */
+    --card-shadow: 0 24px 50px -12px rgba(8, 6, 22, 0.8);
+    --glow-shadow: 0 0 20px rgba(8, 6, 22, 0.4);
 
     /* Fonts */
     --font-display: 'Montserrat', sans-serif;
@@ -47,7 +47,7 @@
     --transition-ultra: 1s ease;
 
     /* Navbar background */
-    --navbar-bg: rgba(20, 10, 40, 0.7);
+    --navbar-bg: rgba(26, 25, 83, 0.75);
 }
 
 /* Reset & Base */
@@ -93,7 +93,7 @@ html {
     letter-spacing: 0.05em;
     color: var(--text-primary);
     text-decoration: none;
-    background: linear-gradient(135deg, #00D4FF 0%, #B026FF 100%);
+    background: linear-gradient(135deg, #162E93 0%, #2F2FE4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -200,7 +200,7 @@ html {
 
 .ar-button .material-symbols-outlined {
     font-size: 1.25rem;
-    color: #B026FF;
+    color: #2F2FE4;
 }
 
 .ar-button span:last-child {
@@ -274,7 +274,7 @@ body {
 }
 
 .glass-button-primary:hover {
-    border-color: #00D4FF;
+    border-color: #2F2FE4;
     background: rgba(0, 242, 255, 0.2);
     box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
 }
@@ -292,7 +292,7 @@ body {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, #00D4FF 0%, #B026FF 100%);
+    background: linear-gradient(135deg, #162E93 0%, #2F2FE4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -404,7 +404,7 @@ body {
 
 .header-title h1.header-headline {
     font-size: 1.75rem;
-    background: linear-gradient(135deg, #00D4FF 0%, #B026FF 100%);
+    background: linear-gradient(135deg, #162E93 0%, #2F2FE4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -590,7 +590,7 @@ body {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #00D4FF;
+    background: #2F2FE4;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -2550,7 +2550,7 @@ a.widget-card .widget-description {
 
 .card-cta-btn.magenta span,
 .card-cta-btn.magenta .material-symbols-outlined {
-    color: #B026FF;
+    color: #2F2FE4;
 }
 
 /* Red Variant */
@@ -2582,7 +2582,7 @@ a.widget-card .widget-description {
 
 .module-feature-card:hover .card-cta-btn.magenta {
     background: rgba(176, 38, 255, 0.2);
-    border-color: #B026FF;
+    border-color: #2F2FE4;
 }
 
 .module-feature-card:hover .card-cta-btn.red {

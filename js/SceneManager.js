@@ -36,7 +36,9 @@ export class SceneManager {
     }
 
     setupCamera() {
-        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+        const width = this.canvas.clientWidth || window.innerWidth || 800;
+        const height = this.canvas.clientHeight || window.innerHeight || 600;
+        const aspect = width / height;
         this.camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
         this.camera.position.set(5, 4, 5);
         this.camera.lookAt(0, 0, 0);
@@ -83,8 +85,8 @@ export class SceneManager {
     }
 
     setupGrid() {
-        // Grid helper
-        this.gridHelper = new THREE.GridHelper(20, 40, 0x1e6b5c, 0x0d3530);
+        // Grid helper: accent (0x2f2fe4) and primary (0x162e93)
+        this.gridHelper = new THREE.GridHelper(20, 40, 0x2f2fe4, 0x162e93);
         this.gridHelper.material.opacity = 0.3;
         this.gridHelper.material.transparent = true;
         this.gridHelper.visible = true; // Make grid visible by default
@@ -106,8 +108,8 @@ export class SceneManager {
         const bgGeometry = new THREE.SphereGeometry(100, 32, 32);
         this.bgMaterial = new THREE.ShaderMaterial({
             uniforms: {
-                topColor: { value: new THREE.Color(0x1a3a35) },
-                bottomColor: { value: new THREE.Color(0x0a1f1c) }
+                topColor: { value: new THREE.Color(0x1a1953) },
+                bottomColor: { value: new THREE.Color(0x080616) }
             },
             vertexShader: `
                 varying vec3 vWorldPosition;
@@ -150,13 +152,13 @@ export class SceneManager {
             this.ground.material.opacity = 0.08;
 
         } else {
-            // Dark mode: Lovable Gradient
-            this.bgMaterial.uniforms.topColor.value.setHex(0x2d2f5e);
-            this.bgMaterial.uniforms.bottomColor.value.setHex(0x1a1b3d);
+            // Dark mode: Color Hunt Palette
+            this.bgMaterial.uniforms.topColor.value.setHex(0x1a1953);
+            this.bgMaterial.uniforms.bottomColor.value.setHex(0x080616);
 
-            // Grid: Blue to Rose gradient effect
+            // Grid: Bright blue to dark blue
             this.scene.remove(this.gridHelper);
-            this.gridHelper = new THREE.GridHelper(20, 40, 0x0052FF, 0xF43F5E);
+            this.gridHelper = new THREE.GridHelper(20, 40, 0x2f2fe4, 0x162e93);
             this.gridHelper.material.opacity = 0.25;
             this.gridHelper.material.transparent = true;
             this.gridHelper.visible = this.currentGridVisible !== undefined ? this.currentGridVisible : false;
@@ -168,8 +170,8 @@ export class SceneManager {
     }
 
     handleResize() {
-        const width = this.canvas.clientWidth;
-        const height = this.canvas.clientHeight;
+        const width = this.canvas.clientWidth || window.innerWidth || 800;
+        const height = this.canvas.clientHeight || window.innerHeight || 600;
 
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();

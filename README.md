@@ -6,7 +6,7 @@
 
 ## 🎯 Core Mission
 
-EM-Verse bridges the gap between complex electromagnetic theory and genuine intuitive understanding through 3D simulations and Augmented Reality.
+EM-Verse bridges the gap between complex electromagnetic theory and genuine intuitive understanding through 3D simulations and Augmented Reality, with a focused study on fundamental magnetic fields and electromagnetism.
 
 ---
 
@@ -14,18 +14,12 @@ EM-Verse bridges the gap between complex electromagnetic theory and genuine intu
 
 ### 🧲 Interactive 3D Simulator
 
-A physics engine featuring multiple simulation modules:
+A physics engine featuring interactive simulation modules:
 
 | Module | Description |
 |--------|-------------|
 | **Bar Magnet & Compass** | Explore magnetic fields interactively |
-| **Solenoid** | Right-hand rule demonstrations |
-| **Electromagnetic Induction** | Generate virtual electricity |
-| **Transformer** | AC voltage transfer visualization |
-| **Lenz's Law** | Magnetic braking experiments |
-| **Electromagnet** | Build and experiment |
-| **Magnet Cutting** | Understand dipoles vs monopoles |
-| **Assembly Puzzle** | Build components piece by piece |
+| **Solenoid** | Visualize current flow and the right-hand rule |
 
 
 ### 📱 AR Experience
@@ -34,13 +28,7 @@ Augmented Reality integration at [em-ar.vercel.app](https://em-ar.vercel.app/) m
 
 ### 📚 Learning Resources
 
-- **History & Foundations** – Journey through the origins of electromagnetic theory, Maxwell's equations, and the pioneers who defined the speed of light
 - **Syllabus/Learn Section** – "Uncle Roger's Kitchen" themed physics lessons ("Physics Without Crying in Exam Hall"), complete with **Quick Revision Flashcards** for fast, interactive study sessions
-- **Modern Tech Applications** – Real-world applications including 5G/6G networks, wireless charging, MRI scanners, maglev trains, EVs, and satellite communication
-
-### � Exam Practice
-
-Quiz functionality with scenario-based questions, immediate feedback, and detailed explanations to test electromagnetic knowledge.
 
 ---
 
@@ -96,11 +84,8 @@ python -m http.server 8080
 
 ```
 EM Simulation/
-├── index.html              # Main landing page
-├── simulator.html          # 3D physics simulator
+├── simulator.html          # Main 3D physics simulator page
 ├── syllabus.html           # Learning content & flashcards
-├── history.html            # History of electromagnetism
-├── applications.html       # Modern tech applications
 ├── style.css               # Simulator styling
 ├── landing.css             # Landing page styling
 ├── js/
@@ -111,13 +96,7 @@ EM Simulation/
 │   ├── InteractionManager.js # User input handling
 │   └── modules/            # Simulation modules
 │       ├── BarMagnetModule.js
-│       ├── SolenoidModule.js
-│       ├── InductionModule.js
-│       ├── TransformerModule.js
-│       ├── LenzLawModule.js
-│       ├── ElectromagnetModule.js
-│       ├── MagnetCuttingModule.js
-│       └── AssemblyModule.js
+│       └── SolenoidModule.js
 └── assets/
     └── images/             # UI assets and backgrounds
 ```

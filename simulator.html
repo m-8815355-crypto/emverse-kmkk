@@ -16,14 +16,6 @@
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader-content">
-            <div class="loader-spinner"></div>
-            <h2>Electromagnetic Lab</h2>
-            <p>Initializing simulation...</p>
-        </div>
-    </div>
 
     <!-- Main Application -->
     <div id="app">
@@ -39,14 +31,10 @@
             <div class="sidebar-header">
                 <img src="assets/images/kmkk-logo.png" alt="Kolej Matrikulasi Kejuruteraan Kedah"
                     style="height: 40px; margin-bottom: 0.75rem;">
-                <div class="logo">
-                    <span class="logo-icon">⚡</span>
-                    <h1>EM Lab</h1>
+                <div>
+                    <h1>KMKK EM Lab</h1>
                 </div>
                 <p class="tagline">Montserratactive Physics Simulator</p>
-                <a href="index.html" class="back-to-portal-link">
-                    ← Back to Portal
-                </a>
             </div>
 
             <nav class="module-nav">
@@ -67,60 +55,6 @@
                     </li>
                     <li class="module-item" data-module="solenoid">
                         <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="7" y="4" width="10" height="16" rx="1" fill="currentColor" opacity="0.2" />
-                            <path
-                                d="M7 8C7 6 9 6 9 8C9 10 7 10 7 12C7 14 9 14 9 16M15 8C15 6 17 6 17 8C17 10 15 10 15 12C15 14 17 14 17 16"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Solenoid</span>
-                            <span class="module-desc">Right-hand rule demo</span>
-                        </div>
-                    </li>
-                    <li class="module-item" data-module="induction">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.3" />
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <path d="M8 4L10 6M16 4L14 6M4 8L6 10M20 8L18 10" stroke="currentColor" stroke-width="1.5"
-                                stroke-linecap="round" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Electromagnetic Induction</span>
-                            <span class="module-desc">Generate electricity</span>
-                        </div>
-                    </li>
-                    <li class="module-item" data-module="transformer">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="5" y="6" width="4" height="12" rx="1" fill="currentColor" opacity="0.3" />
-                            <rect x="15" y="6" width="4" height="12" rx="1" fill="currentColor" opacity="0.3" />
-                            <path
-                                d="M5 9C5 7 7 7 7 9C7 11 5 11 5 13C5 15 7 15 7 17M9 9C9 7 11 7 11 9C11 11 9 11 9 13C9 15 11 15 11 17"
-                                stroke="currentColor" stroke-width="1.5" />
-                            <path
-                                d="M13 9C13 7 15 7 15 9C15 11 13 11 13 13C13 15 15 15 15 17M17 9C17 7 19 7 19 9C19 11 17 11 17 13C17 15 19 15 19 17"
-                                stroke="currentColor" stroke-width="1.5" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Transformer</span>
-                            <span class="module-desc">AC voltage transfer</span>
-                        </div>
-                    </li>
-                    <li class="module-item" data-module="lenz">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="8" y="4" width="8" height="4" rx="1" fill="#e74c3c" />
-                            <rect x="7" y="12" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.5"
-                                fill="none" />
-                            <path d="M9 14L9 18M15 14L15 18M12 14L12 18" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M10 6L10 10M14 6L14 10" stroke="currentColor" stroke-width="1.5" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Lenz's Law</span>
-                            <span class="module-desc">Magnetic braking</span>
-                        </div>
-                    </li>
-                    <li class="module-item" data-module="electromagnet">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="9" y="4" width="6" height="10" rx="1" fill="currentColor" opacity="0.2" />
                             <path d="M9 7C9 5 11 5 11 7C11 9 9 9 9 11M13 7C13 5 15 5 15 7C15 9 13 9 13 11"
                                 stroke="currentColor" stroke-width="2" />
@@ -131,62 +65,34 @@
                                 stroke-linecap="round" />
                         </svg>
                         <div class="module-info">
-                            <span class="module-name">Electromagnet</span>
-                            <span class="module-desc">Build &amp; experiment</span>
+                            <span class="module-name">Solenoid</span>
+                            <span class="module-desc">Current flow &amp; right-hand rule</span>
                         </div>
                     </li>
 
-                </ul>
-
-                <h3 style="margin-top: 1.5rem;">Magnet Properties</h3>
-                <ul id="module-list-props">
-                    <li class="module-item" data-module="magnetCutting">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Bar magnet (full) -->
-                            <rect x="3" y="9" width="8" height="6" fill="#e74c3c" rx="1" />
-                            <rect x="11" y="9" width="8" height="6" fill="#3498db" rx="1" />
-                            <!-- Cut line (laser beam) -->
-                            <line x1="11" y1="4" x2="11" y2="20" stroke="#00ff88" stroke-width="2"
-                                stroke-dasharray="2,2" />
-                            <!-- Scissors/laser icon -->
-                            <path d="M11 2L9 5L11 4L13 5L11 2Z" fill="#00ff88" />
-                            <!-- N and S labels -->
-                            <text x="7" y="13" font-size="4" fill="white" text-anchor="middle"
-                                font-weight="bold">N</text>
-                            <text x="15" y="13" font-size="4" fill="white" text-anchor="middle"
-                                font-weight="bold">S</text>
-                            <!-- Split indication arrows -->
-                            <path d="M6 17L4 19" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                opacity="0.5" />
-                            <path d="M16 17L18 19" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                opacity="0.5" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Magnet Cutting</span>
-                            <span class="module-desc">Dipoles vs monopoles</span>
-                        </div>
-                    </li>
-                    <li class="module-item" data-module="assembly">
-                        <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"
-                                fill="currentColor" opacity="0.2" />
-                            <rect x="13" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"
-                                fill="currentColor" opacity="0.3" />
-                            <rect x="4" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"
-                                fill="currentColor" opacity="0.3" />
-                            <rect x="13" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"
-                                fill="currentColor" opacity="0.4" />
-                        </svg>
-                        <div class="module-info">
-                            <span class="module-name">Assembly Puzzle</span>
-                            <span class="module-desc">Build components piece by piece</span>
-                        </div>
-                    </li>
-                </ul>
 
                 <h3 style="margin-top: 1.5rem;">Study Resources</h3>
                 <ul id="module-list-resources">
-                    <li class="resource-item">
+                    <li class="resource-item" onclick="window.location.href='syllabus.html'">
+                        <a href="syllabus.html"
+                            style="display: flex; align-items: center; text-decoration: none; color: inherit; width: 100%;">
+                            <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="3" width="14" height="18" rx="2" fill="currentColor" opacity="0.2"
+                                    stroke="currentColor" stroke-width="1.5" />
+                                <line x1="9" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <div class="module-info">
+                                <span class="module-name">Syllabus &amp; Notes</span>
+                                <span class="module-desc">Lectures, slides &amp; mind maps</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="resource-item" onclick="window.location.href='syllabus.html#flashcards'">
                         <a href="syllabus.html#flashcards"
                             style="display: flex; align-items: center; text-decoration: none; color: inherit; width: 100%;">
                             <svg class="module-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

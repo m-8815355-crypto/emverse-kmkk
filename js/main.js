@@ -10,15 +10,6 @@ import { InteractionManager, SliderManager } from './InteractionManager.js';
 // Import simulation modules
 import { BarMagnetModule } from './modules/BarMagnetModule.js';
 import { SolenoidModule } from './modules/SolenoidModule.js';
-import { InductionModule } from './modules/InductionModule.js';
-import { TransformerModule } from './modules/TransformerModule.js';
-import { LenzLawModule } from './modules/LenzLawModule.js';
-import { ElectromagnetModule } from './modules/ElectromagnetModule.js';
-
-
-import { AssemblyModule } from './modules/AssemblyModule.js';
-import { ExamPracticeModule } from './modules/ExamPracticeModule.js';
-import { MagnetCuttingModule } from './modules/MagnetCuttingModule.js';
 
 class ElectromagneticLabApp {
     constructor() {
@@ -70,14 +61,7 @@ class ElectromagneticLabApp {
             // Initialize modules
             this.modules = {
                 barMagnet: new BarMagnetModule(this),
-                solenoid: new SolenoidModule(this),
-                induction: new InductionModule(this),
-                transformer: new TransformerModule(this),
-                lenz: new LenzLawModule(this),
-                electromagnet: new ElectromagnetModule(this),
-                magnetCutting: new MagnetCuttingModule(this),
-                assembly: new AssemblyModule(this),
-                examPractice: new ExamPracticeModule(this)
+                solenoid: new SolenoidModule(this)
             };
 
             this.currentModule = null;
@@ -134,21 +118,15 @@ class ElectromagneticLabApp {
 
         } catch (error) {
             console.error('Initialization error:', error);
-            const loadingScreen = document.getElementById('loading-screen');
-            if (loadingScreen) {
-                loadingScreen.innerHTML = `<div style="color:red; padding:2rem; text-align:center;">
-                    <h2>Error Initializing</h2>
-                    <p>${error.message}</p>
-                </div>`;
-            }
             return;
         }
 
-        // Hide loading screen
+        // Trigger resize after layout finishes settling
         setTimeout(() => {
-            const loadingScreen = document.getElementById('loading-screen');
-            if (loadingScreen) loadingScreen.classList.add('hidden');
-        }, 500);
+            if (this.sceneManager) {
+                this.sceneManager.handleResize();
+            }
+        }, 100);
 
         // Start animation loop
         this.animate();
@@ -416,6 +394,10 @@ class ElectromagneticLabApp {
 }
 
 // Initialize app when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.app = new ElectromagneticLabApp();
+    });
+} else {
     window.app = new ElectromagneticLabApp();
-});
+}

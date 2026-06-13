@@ -171,24 +171,28 @@
 
         /* Media Container */
         .media-container {
-            width: 100%;
-            max-width: 100%;
+            width: 90%;
+            max-width: 760px;
+            margin: 0 auto 2rem;
             transition: all 0.5s ease;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(8, 8, 33, 0.2);
             position: relative;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .media-container.video-mode {
-            width: 100%;
-            min-height: 50vh;
+            width: 90%;
+            max-width: 760px;
             aspect-ratio: 16 / 9;
         }
 
         .media-container.expanded {
-            height: 75vh;
-            min-height: 75vh;
+            width: 90%;
+            max-width: 760px;
+            height: 48vh;
+            min-height: 48vh;
         }
 
         .tab-content {
@@ -199,7 +203,6 @@
         .media-container iframe {
             width: 100% !important;
             height: 100% !important;
-            min-height: 50vh;
             border: none;
             display: block;
         }
@@ -263,7 +266,7 @@
         }
 
         .video-thumbnail:hover .play-button-overlay .material-symbols-outlined {
-            color: #080821;
+            color: #080616;
         }
 
         /* Mind Map */
@@ -369,7 +372,7 @@
         }
 
         .node-box.magenta {
-            border-left: 4px solid #B026FF;
+            border-left: 4px solid #2F2FE4;
         }
 
         .node-box.lime {
@@ -487,7 +490,7 @@
         }
 
         .concept-card.magenta {
-            border-left: 4px solid #B026FF;
+            border-left: 4px solid #2F2FE4;
         }
 
         .concept-label {
@@ -502,7 +505,7 @@
         }
 
         .concept-label.magenta {
-            color: #B026FF;
+            color: #2F2FE4;
         }
 
         .concept-title {
@@ -538,7 +541,7 @@
         }
 
         .concept-footer .material-symbols-outlined.magenta {
-            color: #B026FF;
+            color: #2F2FE4;
         }
 
         /* Analytics Section */
@@ -785,7 +788,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #B026FF;
+            background: #2F2FE4;
             animation: pulse 2s ease-in-out infinite;
         }
 
@@ -794,7 +797,7 @@
             font-weight: 900;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #B026FF;
+            color: #2F2FE4;
         }
 
         .flashcard-container {
@@ -850,7 +853,7 @@
 
         .flashcard-back {
             transform: rotateY(180deg);
-            border-left: 4px solid #B026FF;
+            border-left: 4px solid #2F2FE4;
             background: linear-gradient(135deg, rgba(176, 38, 255, 0.1), rgba(45, 47, 94, 0.4));
         }
 
@@ -868,7 +871,7 @@
         }
 
         .flashcard-back .flashcard-label {
-            color: #B026FF;
+            color: #2F2FE4;
         }
 
         .flashcard-text {
@@ -917,7 +920,7 @@
 
         .flashcard-progress .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--cyan-glow), #B026FF);
+            background: linear-gradient(90deg, var(--cyan-glow), #2F2FE4);
             border-radius: 2px;
             transition: width 0.3s ease;
             width: 1.4%;
@@ -956,7 +959,7 @@
         }
 
         .flashcard-btn.shuffle-btn:hover {
-            background: #B026FF;
+            background: #2F2FE4;
             box-shadow: 0 0 20px rgba(176, 38, 255, 0.4);
         }
 
@@ -988,10 +991,6 @@
             </button>
             <div class="header-actions">
                 <span class="material-symbols-outlined">analytics</span>
-                <a href="https://em-ar.vercel.app/" target="_blank" class="ar-button" aria-label="EM-Verse AR">
-                    <span class="material-symbols-outlined">view_in_ar</span>
-                    <span>AR</span>
-                </a>
             </div>
         </header>
 
@@ -1006,7 +1005,6 @@
         <!-- Tab Controls -->
         <div class="tab-controls">
             <button class="tab-btn active" data-tab="video" onclick="switchTab('video')">Lecture</button>
-            <button class="tab-btn" data-tab="slides" onclick="switchTab('slides')">The Menu</button>
             <button class="tab-btn" data-tab="map" onclick="switchTab('map')">Mind Map</button>
         </div>
 
@@ -1025,12 +1023,6 @@
                         allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen
                         title="Physics Video Lecture"></iframe>
                 </div>
-            </div>
-
-            <!-- Slides Tab -->
-            <div class="tab-content" id="slides-content" style="display: none;">
-                <iframe src="https://drive.google.com/file/d/1Ar_7SyvgtZMPjfJVlX9ftK5sac6HddTe/preview"
-                    title="Course Slides" style="background: white;"></iframe>
             </div>
 
             <!-- Mind Map Tab -->
@@ -1339,14 +1331,9 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="nav-container glass-nav">
-                <a href="index.html" class="nav-item">
+                <a href="simulator.html" class="nav-item">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-label">HOME</span>
-                </a>
-
-                <a href="history.html" class="nav-item">
-                    <span class="material-symbols-outlined">history_edu</span>
-                    <span class="nav-label">HISTORY</span>
                 </a>
 
                 <div class="nav-search">
@@ -1360,10 +1347,6 @@
                     <span class="nav-label">LEARN</span>
                 </a>
 
-                <a href="applications.html" class="nav-item">
-                    <span class="material-symbols-outlined">explore</span>
-                    <span class="nav-label">EXPLORE</span>
-                </a>
             </div>
         </nav>
     </div>
