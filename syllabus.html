@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Physics without Crying in the Hall - Master Electromagnetic Induction with interactive learning materials.">
+    <title>Physics without Crying | EM-Verse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="landing.css">
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <!-- MathJax Library -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        /* Syllabus Page Specific Styles */
+        .syllabus-container {
+            min-height: 100vh;
+            background: transparent;
+            overflow-x: hidden;
+            padding-bottom: 8rem;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            padding: 1rem 1.5rem;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: none;
+            border: none;
+            color: var(--cyan-glow);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+        }
+
+        .back-button .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
+        .page-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-actions .material-symbols-outlined {
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .header-actions .material-symbols-outlined:hover {
+            color: var(--cyan-glow);
+        }
+
+        /* Hero Section */
+        .syllabus-hero {
+            padding: 2rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(228, 76, 76, 0.2);
+            border: 1px solid rgba(228, 76, 76, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .hero-badge span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #E44C4C;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .hero-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+        }
+
+        .hero-title .accent {
+            color: var(--cyan-glow);
+            font-style: italic;
+        }
+
+        /* Tab Controls */
+        .tab-controls {
+            display: flex;
+            padding: 0.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            border: 1px solid var(--glass-border);
+            margin: 1rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            background: none;
+            border: none;
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .tab-btn:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab-btn.active {
+            background: var(--cyan-glow);
+            color: var(--primary-dark);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+
+        /* Media Container */
+        .media-container {
+            width: 90%;
+            max-width: 760px;
+            margin: 0 auto 2rem;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(8, 8, 33, 0.2);
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .media-container.video-mode {
+            width: 90%;
+            max-width: 760px;
+            aspect-ratio: 16 / 9;
+        }
+
+        .media-container.expanded {
+            width: 90%;
+            max-width: 760px;
+            height: 48vh;
+            min-height: 48vh;
+        }
+
+        .tab-content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .media-container iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+            display: block;
+        }
+
+        /* Video Thumbnail Styling */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .video-thumbnail.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .play-button-overlay {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 242, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid var(--cyan-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+
+        .play-button-overlay .material-symbols-outlined {
+            font-size: 48px;
+            color: var(--cyan-glow);
+            margin-left: 6px;
+        }
+
+        .video-thumbnail:hover .play-button-overlay {
+            transform: scale(1.15);
+            background: var(--cyan-glow);
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.4);
+        }
+
+        .video-thumbnail:hover .play-button-overlay .material-symbols-outlined {
+            color: #080616;
+        }
+
+        /* Mind Map */
+        .mindmap-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: rgba(8, 8, 33, 0.3);
+        }
+
+        .mindmap-controls {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mindmap-control-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .mindmap-control-btn:hover,
+        .mindmap-control-btn:active {
+            background: var(--cyan-glow);
+            color: var(--primary-dark);
+        }
+
+        .mindmap-canvas {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            cursor: grab;
+            padding: 5rem;
+        }
+
+        .mindmap-canvas:active {
+            cursor: grabbing;
+        }
+
+        .mindmap-tree {
+            display: flex;
+            align-items: center;
+            min-width: max-content;
+            height: 100%;
+            transform-origin: center left;
+            transition: transform 0.3s ease;
+        }
+
+        .mindmap-node {
+            display: flex;
+            align-items: center;
+        }
+
+        .node-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            padding: 0.75rem 1.25rem;
+            border-radius: 1rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 160px;
+            max-width: 220px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .node-box:hover {
+            transform: scale(1.05);
+        }
+
+        .node-box:active {
+            transform: scale(0.95);
+        }
+
+        .node-box.root {
+            border: 2px solid var(--cyan-glow);
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+
+        .node-box.cyan {
+            border-left: 4px solid var(--cyan-glow);
+        }
+
+        .node-box.magenta {
+            border-left: 4px solid #2F2FE4;
+        }
+
+        .node-box.lime {
+            border-left: 4px solid #C9EB17;
+        }
+
+        .node-box.red {
+            border-left: 4px solid #E44C4C;
+        }
+
+        .node-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            line-height: 1.2;
+            flex: 1;
+        }
+
+        .node-box.root .node-label {
+            color: var(--cyan-glow);
+            font-size: 0.875rem;
+        }
+
+        .node-expand {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .node-expand.expanded {
+            transform: rotate(90deg);
+            color: var(--text-primary);
+        }
+
+        .node-connector {
+            width: 3rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .node-children {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .node-children::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .child-node {
+            display: flex;
+            align-items: center;
+        }
+
+        .child-connector {
+            width: 1rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-right: 1rem;
+        }
+
+        .mindmap-hint {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1.5rem;
+            background: rgba(8, 8, 33, 0.8);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--cyan-glow);
+            pointer-events: none;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Concepts Grid */
+        .concepts-section {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .concept-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            padding: 1.25rem;
+            border-radius: 1rem;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .concept-card.cyan {
+            border-left: 4px solid var(--cyan-glow);
+        }
+
+        .concept-card.magenta {
+            border-left: 4px solid #2F2FE4;
+        }
+
+        .concept-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .concept-label.cyan {
+            color: var(--cyan-glow);
+        }
+
+        .concept-label.magenta {
+            color: #2F2FE4;
+        }
+
+        .concept-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-style: italic;
+            line-height: 1;
+            margin-top: 0.5rem;
+        }
+
+        .concept-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .concept-tag {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .concept-footer .material-symbols-outlined {
+            font-size: 1.25rem;
+            opacity: 0.8;
+        }
+
+        .concept-footer .material-symbols-outlined.cyan {
+            color: var(--cyan-glow);
+        }
+
+        .concept-footer .material-symbols-outlined.magenta {
+            color: #2F2FE4;
+        }
+
+        /* Analytics Section */
+        .analytics-section {
+            padding: 1.5rem 1.5rem 2rem;
+        }
+
+        .analytics-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .analytics-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analytics-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cyan-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .analytics-badge-text {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+        }
+
+        .chart-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 10rem;
+            gap: 1rem;
+        }
+
+        .chart-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-bar-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .chart-bar {
+            width: 100%;
+            background: var(--cyan-glow);
+            border-radius: 6px 6px 0 0;
+            opacity: 0.6;
+            transition: all var(--transition-fast);
+        }
+
+        .chart-bar:hover {
+            opacity: 1;
+        }
+
+        .chart-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Failure Radar */
+        .failure-section {
+            padding: 0 1.5rem 5rem;
+        }
+
+        .failure-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #E44C4C;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .failure-title .material-symbols-outlined {
+            font-size: 0.875rem;
+        }
+
+        .failure-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid rgba(228, 76, 76, 0.5);
+            padding: 1.25rem;
+            border-radius: 1rem;
+        }
+
+        .failure-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .failure-name {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+            font-style: italic;
+        }
+
+        .failure-badge {
+            background: rgba(228, 76, 76, 0.2);
+            color: #E44C4C;
+            font-size: 8px;
+            font-weight: 900;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .failure-description {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* Learn More Section */
+        .learn-more-section {
+            padding: 0 1.5rem 2rem;
+        }
+
+        .learn-more-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(30, 107, 92, 0.25));
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .learn-more-link:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.25), rgba(30, 107, 92, 0.35));
+            border-color: var(--cyan-glow);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0, 242, 255, 0.2);
+        }
+
+        .learn-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .learn-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--cyan-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .learn-desc {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .external-icon {
+            font-size: 1.5rem;
+            color: var(--cyan-glow);
+            opacity: 0.8;
+        }
+
+        /* Flashcards Section */
+        .flashcards-section {
+            padding: 1.5rem;
+        }
+
+        .flashcards-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .flashcards-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+        }
+
+        .flashcards-title .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
+        .flashcards-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flashcards-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2F2FE4;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .flashcards-badge-text {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #2F2FE4;
+        }
+
+        .flashcard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 400px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .flashcard-front {
+            border-left: 4px solid var(--cyan-glow);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            border-left: 4px solid #2F2FE4;
+            background: linear-gradient(135deg, rgba(176, 38, 255, 0.1), rgba(45, 47, 94, 0.4));
+        }
+
+        .flashcard-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        .flashcard-front .flashcard-label {
+            color: var(--cyan-glow);
+        }
+
+        .flashcard-back .flashcard-label {
+            color: #2F2FE4;
+        }
+
+        .flashcard-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .flashcard-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .flashcard-hint .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        .flashcard-progress {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .flashcard-progress .progress-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .flashcard-progress .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .flashcard-progress .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan-glow), #2F2FE4);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 1.4%;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .flashcard-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard-btn:hover {
+            background: var(--cyan-glow);
+            color: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+
+        .flashcard-btn:active {
+            transform: scale(0.95);
+        }
+
+        .flashcard-btn.shuffle-btn:hover {
+            background: #2F2FE4;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.4);
+        }
+
+        .flashcard-btn .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .concepts-section {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="syllabus-container">
+        <!-- Sticky Header -->
+        <header class="sticky-header">
+            <button class="back-button" onclick="window.history.back()">
+                <img src="assets/images/kmkk-logo.png" alt="KMKK" class="college-logo"
+                    style="height: 28px; margin-right: 0.5rem;">
+                <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                <span class="page-title">Topic 5: Induction</span>
+            </button>
+            <div class="header-actions">
+                <span class="material-symbols-outlined">analytics</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="syllabus-hero">
+            <div class="hero-badge">
+                <span>Uncle Roger's Kitchen</span>
+            </div>
+            <h1 class="hero-title">Physics without <br><span class="accent">Crying in the Hall</span></h1>
+        </section>
+
+        <!-- Tab Controls -->
+        <div class="tab-controls">
+            <button class="tab-btn active" data-tab="video" onclick="switchTab('video')">Lecture</button>
+            <button class="tab-btn" data-tab="map" onclick="switchTab('map')">Mind Map</button>
+        </div>
+
+        <!-- Media Container -->
+        <div class="media-container video-mode" id="media-container">
+            <!-- Video Tab -->
+            <div class="tab-content" id="video-content">
+                <div class="video-wrapper">
+                    <div class="video-thumbnail" id="video-thumbnail" onclick="startVideo()"
+                        style="background-image: url('assets/images/ben-thumbnail.png');">
+                        <div class="play-button-overlay">
+                            <span class="material-symbols-outlined">play_arrow</span>
+                        </div>
+                    </div>
+                    <iframe id="lecture-video" src="https://www.youtube.com/embed/9r6S6hjX4a8"
+                        allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen
+                        title="Physics Video Lecture"></iframe>
+                </div>
+            </div>
+
+            <!-- Mind Map Tab -->
+            <div class="tab-content mindmap-container" id="map-content" style="display: none;">
+                <div class="mindmap-controls">
+                    <button class="mindmap-control-btn" onclick="zoomIn()">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                    <button class="mindmap-control-btn" onclick="zoomOut()">
+                        <span class="material-symbols-outlined">remove</span>
+                    </button>
+                    <button class="mindmap-control-btn" onclick="resetZoom()">
+                        <span class="material-symbols-outlined">restart_alt</span>
+                    </button>
+                </div>
+
+                <div class="mindmap-canvas" id="mindmap-canvas">
+                    <div class="mindmap-tree" id="mindmap-tree">
+                        <!-- Root Node -->
+                        <div class="mindmap-node">
+                            <div class="node-box root" onclick="toggleNode('root')">
+                                <span class="node-label">Electromagnetic Induction</span>
+                                <span class="material-symbols-outlined node-expand expanded"
+                                    id="root-expand">chevron_right</span>
+                            </div>
+                        </div>
+                        <div class="node-connector"></div>
+
+                        <!-- Children Container -->
+                        <div class="node-children" id="root-children">
+                            <!-- Flux Node -->
+                            <div class="child-node">
+                                <div class="child-connector"></div>
+                                <div class="mindmap-node">
+                                    <div class="node-box cyan" onclick="toggleNode('flux')">
+                                        <span class="node-label">Magnetic Flux (φ)</span>
+                                        <span class="material-symbols-outlined node-expand"
+                                            id="flux-expand">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div class="node-connector" id="flux-connector" style="display: none;"></div>
+                                <div class="node-children" id="flux-children" style="display: none;">
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Definition</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Formulas</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Key Units</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- EMF Node -->
+                            <div class="child-node">
+                                <div class="child-connector"></div>
+                                <div class="mindmap-node">
+                                    <div class="node-box magenta" onclick="toggleNode('emf')">
+                                        <span class="node-label">Induced EMF (ε)</span>
+                                        <span class="material-symbols-outlined node-expand"
+                                            id="emf-expand">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div class="node-connector" id="emf-connector" style="display: none;"></div>
+                                <div class="node-children" id="emf-children" style="display: none;">
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Faraday's Law</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Lenz's Law</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Applications</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Direction Rules</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Self-Inductance Node -->
+                            <div class="child-node">
+                                <div class="child-connector"></div>
+                                <div class="mindmap-node">
+                                    <div class="node-box lime" onclick="toggleNode('self')">
+                                        <span class="node-label">Self-Inductance (L)</span>
+                                        <span class="material-symbols-outlined node-expand"
+                                            id="self-expand">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div class="node-connector" id="self-connector" style="display: none;"></div>
+                                <div class="node-children" id="self-children" style="display: none;">
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Definition</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Formulas</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Unit: Henry (H)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Energy Node -->
+                            <div class="child-node">
+                                <div class="child-connector"></div>
+                                <div class="mindmap-node">
+                                    <div class="node-box red" onclick="toggleNode('energy')">
+                                        <span class="node-label">Energy in Inductor (U)</span>
+                                        <span class="material-symbols-outlined node-expand"
+                                            id="energy-expand">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div class="node-connector" id="energy-connector" style="display: none;"></div>
+                                <div class="node-children" id="energy-children" style="display: none;">
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Formula: U = ½LI²</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Stored in magnetic field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mutual Inductance Node -->
+                            <div class="child-node">
+                                <div class="child-connector"></div>
+                                <div class="mindmap-node">
+                                    <div class="node-box cyan" onclick="toggleNode('mutual')">
+                                        <span class="node-label">Mutual Inductance (M)</span>
+                                        <span class="material-symbols-outlined node-expand"
+                                            id="mutual-expand">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div class="node-connector" id="mutual-connector" style="display: none;"></div>
+                                <div class="node-children" id="mutual-children" style="display: none;">
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Definition</span>
+                                        </div>
+                                    </div>
+                                    <div class="child-node">
+                                        <div class="child-connector"></div>
+                                        <div class="node-box">
+                                            <span class="node-label">Formulas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mindmap-hint">
+                    Tap nodes to expand right • Pinch to zoom
+                </div>
+            </div>
+        </div>
+
+        <!-- Concepts Preview -->
+        <section class="concepts-section">
+            <div class="concept-card cyan">
+                <div>
+                    <span class="concept-label cyan">5.1 Concept</span>
+                    <h4 class="concept-title">Flux</h4>
+                </div>
+                <div class="concept-footer">
+                    <span class="concept-tag">Raw Spaghetti</span>
+                    <span class="material-symbols-outlined cyan">restaurant_menu</span>
+                </div>
+            </div>
+            <div class="concept-card magenta">
+                <div>
+                    <span class="concept-label magenta">5.2 Law</span>
+                    <h4 class="concept-title">Induction</h4>
+                </div>
+                <div class="concept-footer">
+                    <span class="concept-tag">Flavor Pulse</span>
+                    <span class="material-symbols-outlined magenta">bolt</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flashcards Section -->
+        <section id="flashcards" class="flashcards-section">
+            <div class="flashcards-header">
+                <h2 class="flashcards-title">
+                    <span class="material-symbols-outlined">style</span>
+                    Quick Revision Flashcards
+                </h2>
+                <div class="flashcards-badge">
+                    <div class="flashcards-badge-dot"></div>
+                    <span class="flashcards-badge-text">71 Cards</span>
+                </div>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner" id="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="flashcard-label">QUESTION</div>
+                            <p class="flashcard-text" id="flashcard-question">Loading...</p>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="flashcard-label">ANSWER</div>
+                            <p class="flashcard-text" id="flashcard-answer">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-hint">
+                    <span class="material-symbols-outlined">touch_app</span>
+                    Tap card to flip
+                </div>
+
+                <div class="flashcard-progress">
+                    <div class="progress-text">
+                        <span id="current-card">1</span> / <span id="total-cards">71</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="flashcard-progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="flashcard-controls">
+                    <button class="flashcard-btn" onclick="prevCard()" id="prev-btn">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <button class="flashcard-btn shuffle-btn" onclick="shuffleCards()">
+                        <span class="material-symbols-outlined">shuffle</span>
+                    </button>
+                    <button class="flashcard-btn" onclick="nextCard()" id="next-btn">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Failure Radar -->
+        <section class="failure-section">
+            <h2 class="failure-title">
+                <span class="material-symbols-outlined">warning</span>
+                FAILURE RADAR
+            </h2>
+            <div class="failure-card">
+                <div class="failure-header">
+                    <h4 class="failure-name">Lenz's Law Signs</h4>
+                    <span class="failure-badge">Avoid Haiyaa!</span>
+                </div>
+                <p class="failure-description">Negative sign means it fights the change! Don't forget, or you are
+                    failure.</p>
+            </div>
+        </section>
+
+        <!-- Learn More Section -->
+        <section class="learn-more-section">
+            <a href="https://www.damtp.cam.ac.uk/user/tong/em/em.pdf" target="_blank" rel="noopener noreferrer"
+                class="learn-more-link">
+                <div class="learn-info">
+                    <span class="learn-title">📚 Learn More</span>
+                    <span class="learn-desc">Cambridge Physics Notes (PDF) - Advanced Electromagnetic Theory</span>
+                </div>
+                <span class="external-icon">↗</span>
+            </a>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-container glass-nav">
+                <a href="simulator.html" class="nav-item">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="nav-label">HOME</span>
+                </a>
+
+                <div class="nav-search">
+                    <a href="simulator.html" class="search-btn">
+                        <span class="material-symbols-outlined">grid_view</span>
+                    </a>
+                </div>
+
+                <a href="syllabus.html" class="nav-item active">
+                    <span class="material-symbols-outlined filled">menu_book</span>
+                    <span class="nav-label">LEARN</span>
+                </a>
+
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        let currentZoom = 0.85;
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Show selected content
+            document.getElementById(`${tabName}-content`).style.display = 'block';
+
+            // Adjust container mode
+            const container = document.getElementById('media-container');
+            if (tabName === 'video') {
+                container.classList.add('video-mode');
+                container.classList.remove('expanded');
+            } else {
+                container.classList.remove('video-mode');
+                container.classList.add('expanded');
+            }
+        }
+
+        function startVideo() {
+            const thumbnail = document.getElementById('video-thumbnail');
+            const video = document.getElementById('lecture-video');
+            thumbnail.classList.add('hidden');
+
+            // Add autoplay to YouTube URL on click
+            const currentSrc = video.src;
+            if (currentSrc.indexOf('?') > -1) {
+                video.src += '&autoplay=1';
+            } else {
+                video.src += '?autoplay=1';
+            }
+        }
+
+        function toggleNode(nodeId) {
+            const children = document.getElementById(`${nodeId}-children`);
+            const connector = document.getElementById(`${nodeId}-connector`);
+            const expand = document.getElementById(`${nodeId}-expand`);
+
+            if (!children) return;
+
+            const isVisible = children.style.display !== 'none';
+
+            children.style.display = isVisible ? 'none' : 'flex';
+            if (connector) connector.style.display = isVisible ? 'none' : 'block';
+            if (expand) expand.classList.toggle('expanded', !isVisible);
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.1, 2.5);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.1, 0.3);
+            updateZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 0.85;
+            updateZoom();
+            // Also reset node states
+            document.querySelectorAll('.node-children').forEach(el => {
+                if (el.id !== 'root-children') {
+                    el.style.display = 'none';
+                }
+            });
+            document.querySelectorAll('.node-expand').forEach(el => {
+                if (el.id !== 'root-expand') {
+                    el.classList.remove('expanded');
+                } else {
+                    el.classList.add('expanded');
+                }
+            });
+        }
+
+        function updateZoom() {
+            document.getElementById('mindmap-tree').style.transform = `scale(${currentZoom})`;
+        }
+
+        // Material symbols filled for active state
+        document.querySelectorAll('.material-symbols-outlined.filled').forEach(icon => {
+            icon.style.fontVariationSettings = "'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24";
+        });
+
+        // Flashcard functionality
+        let flashcards = [];
+        let currentCardIndex = 0;
+        let originalOrder = [];
+
+        // Load flashcards from CSV
+        async function loadFlashcards() {
+            try {
+                const response = await fetch('flashcards.csv');
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim());
+
+                flashcards = lines.map((line, index) => {
+                    // Handle CSV with quoted fields
+                    const match = line.match(/^"?([^"]*)"?,\s*"?([^"]*)"?$/);
+                    if (match) {
+                        return { question: match[1].trim(), answer: match[2].trim() };
+                    }
+                    // Simple split for non-quoted
+                    const parts = line.split(',');
+                    const question = parts[0]?.trim() || '';
+                    const answer = parts.slice(1).join(',').trim().replace(/^"|"$/g, '');
+                    return { question, answer };
+                });
+
+                originalOrder = [...flashcards];
+
+                // Update total count
+                document.getElementById('total-cards').textContent = flashcards.length;
+                document.querySelector('.flashcards-badge-text').textContent = flashcards.length + ' Cards';
+
+                // Show first card
+                showCard(0);
+            } catch (error) {
+                console.error('Error loading flashcards:', error);
+                document.getElementById('flashcard-question').textContent = 'Error loading flashcards';
+            }
+        }
+
+        function showCard(index) {
+            if (flashcards.length === 0) return;
+
+            currentCardIndex = index;
+            const card = flashcards[index];
+
+            // Reset flip state
+            document.getElementById('flashcard').classList.remove('flipped');
+
+            // Update content with slight delay for smooth transition
+            setTimeout(() => {
+                // Use innerHTML to allow MathJax to process the content
+                document.getElementById('flashcard-question').innerHTML = card.question;
+                document.getElementById('flashcard-answer').innerHTML = card.answer;
+
+                // Trigger MathJax to render the new content
+                if (window.MathJax) {
+                    MathJax.typesetPromise([
+                        document.getElementById('flashcard-question'),
+                        document.getElementById('flashcard-answer')
+                    ]).catch((err) => console.error('MathJax rendering error:', err));
+                }
+            }, 150);
+
+            // Update progress
+            document.getElementById('current-card').textContent = index + 1;
+            const progressPercent = ((index + 1) / flashcards.length) * 100;
+            document.getElementById('flashcard-progress-bar').style.width = progressPercent + '%';
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            if (currentCardIndex < flashcards.length - 1) {
+                showCard(currentCardIndex + 1);
+            } else {
+                // Loop back to first card
+                showCard(0);
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                showCard(currentCardIndex - 1);
+            } else {
+                // Loop to last card
+                showCard(flashcards.length - 1);
+            }
+        }
+
+        function shuffleCards() {
+            // Fisher-Yates shuffle
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            showCard(0);
+        }
+
+        // Keyboard navigation for flashcards
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                flipCard();
+            }
+        });
+
+        // Load flashcards on page load
+        document.addEventListener('DOMContentLoaded', loadFlashcards);
+    </script>
+    <script type="module" src="js/Aurora.js"></script>
+</body>
+
+</html>
